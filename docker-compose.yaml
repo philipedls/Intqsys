@@ -20,7 +20,7 @@ services:
       - .docker/dbdata:/var/lib/postgresql/data
     environment:
       - POSTGRES_PASSWORD=postgres
-      - POSTGRES_DB=postgres
+      - POSTGRES_DB=gofila
 
   pgadmin:
     image: dpage/pgadmin4
