@@ -1,4 +1,5 @@
-import { Column, CreateDateColumn, Entity, Generated, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
+import { Column, CreateDateColumn, Entity, Generated, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
+import { Licences } from "./licences.models";
 
 @Entity({ name: 'formas_pagamento' })
 export class Payments {
@@ -24,4 +25,7 @@ export class Payments {
 
     @Column()
     descricao: string
+
+    @OneToMany(() => Licences, licensa => licensa.pagamento)
+    licensas: Licences[]
 }

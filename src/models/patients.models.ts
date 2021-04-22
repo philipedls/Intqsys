@@ -1,4 +1,5 @@
-import { Column, CreateDateColumn, Entity, Generated, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
+import { Column, CreateDateColumn, Entity, Generated, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
+import { Schedules } from "./schedules.models";
 
 @Entity({ name: 'pacientes' })
 export class Patients {
@@ -39,4 +40,7 @@ export class Patients {
 
     @Column()
     token: number
+
+    @OneToMany(() => Schedules, agendamento => agendamento.paciente)
+    agendamentos: Schedules[]
 }

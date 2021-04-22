@@ -1,8 +1,9 @@
-import { Column, CreateDateColumn, Entity, Generated, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
+import { Column, CreateDateColumn, Entity, Generated, ManyToOne, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
+import { Companies } from "./companies.models";
 
-@Entity({name:'totems'})
+@Entity({ name: 'totems' })
 export class Totems {
-    
+
     @PrimaryGeneratedColumn('uuid')
     id_totem: string
 
@@ -30,5 +31,8 @@ export class Totems {
 
     @Column()
     codigo: string
+
+    @ManyToOne(() => Companies, empresa => empresa.avaliacoes)
+    empresa: Companies
 
 }

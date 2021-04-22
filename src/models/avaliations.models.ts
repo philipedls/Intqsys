@@ -1,4 +1,5 @@
-import { Column, CreateDateColumn, Entity, Generated, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
+import { Column, CreateDateColumn, Entity, Generated, ManyToOne, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
+import { Companies } from "./companies.models";
 
 @Entity({ name: 'avaliacoes' })
 export class Avaliations {
@@ -27,5 +28,8 @@ export class Avaliations {
 
     @Column()
     email_autor: string
+
+    @ManyToOne(() => Companies, empresa => empresa.avaliacoes)
+    empresa: Companies
 
 }

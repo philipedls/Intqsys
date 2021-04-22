@@ -1,4 +1,7 @@
-import { Column, CreateDateColumn, Entity, Generated, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
+import { Column, CreateDateColumn, Entity, Generated, ManyToOne, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
+import { Hourlies } from "./hourly.models";
+import { Patients } from "./patients.models";
+import { Services } from "./services.models";
 
 @Entity({ name: 'agendamentos' })
 export class Schedules {
@@ -33,5 +36,14 @@ export class Schedules {
 
     @Column()
     token: number
+
+    @ManyToOne(() => Hourlies, horario => horario.agendamentos)
+    horario: Hourlies
+
+    @ManyToOne(() => Services, servico => servico.agendamentos)
+    servico: Services
+
+    @ManyToOne(() => Patients, paciente => paciente.agendamentos)
+    paciente: Patients
 
 }

@@ -1,4 +1,11 @@
-import { Column, CreateDateColumn, Entity, Generated, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
+import { Column, CreateDateColumn, Entity, Generated, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
+import { Avaliations } from "./avaliations.models";
+import { Hourlies } from "./hourly.models";
+import { Licences } from "./licences.models";
+import { Paineis } from "./panels.models";
+import { Services } from "./services.models";
+import { Totems } from "./totems.models";
+import { Users } from "./users.models";
 
 @Entity({ name: 'empresas' })
 export class Companies {
@@ -64,5 +71,25 @@ export class Companies {
     @Column()
     email_cobranca: string
 
+    @OneToMany(() => Avaliations, avaliacao => avaliacao.empresa)
+    avaliacoes: Avaliations[]
+
+    @OneToMany(() => Totems, totem => totem.empresa)
+    totems: Totems[]
+
+    @OneToMany(() => Licences, licences => licences.empresa)
+    licensas: Licences[]
+
+    @OneToMany(() => Hourlies, horarios => horarios.empresa)
+    horarios: Hourlies[]
+
+    @OneToMany(() => Services, servico => servico.empresas)
+    servicos: Services[]
+
+    @OneToMany(() => Users, usuario => usuario.empresa)
+    usuarios: Users[]
+
+    @OneToMany(() => Paineis, painel => painel.empresa)
+    paineis: Paineis[]
 
 }

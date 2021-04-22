@@ -1,8 +1,9 @@
-import { Column, CreateDateColumn, Entity, Generated, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
+import { Column, CreateDateColumn, Entity, Generated, ManyToOne, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
+import { Licences } from "./licences.models";
 
 @Entity({ name: 'cobrancas' })
 export class Charges {
-    
+
     @PrimaryGeneratedColumn('uuid')
     id_cobranca: string
 
@@ -21,5 +22,8 @@ export class Charges {
 
     @Column()
     data_vencimento: Date
+
+    @ManyToOne(() => Licences, empresa => empresa.cobrancas)
+    licensa: Licences
 
 }

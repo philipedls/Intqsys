@@ -1,8 +1,9 @@
-import { Column, CreateDateColumn, Entity, Generated, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
+import { Column, CreateDateColumn, Entity, Generated, ManyToOne, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
+import { Companies } from "./companies.models";
 
 @Entity({ name: 'paineis' })
 export class Paineis {
-    
+
     @PrimaryGeneratedColumn('uuid')
     id_painel: string
 
@@ -27,4 +28,7 @@ export class Paineis {
 
     @Column()
     data_cancelamento: Date
+
+    @ManyToOne(() => Companies, empresa => empresa.avaliacoes)
+    empresa: Companies
 }
