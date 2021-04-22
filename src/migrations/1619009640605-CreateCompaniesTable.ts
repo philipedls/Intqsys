@@ -9,10 +9,9 @@ export class CreateCompaniesTable1619009640605 implements MigrationInterface {
                 columns: [
                     {
                         name: 'id_empresa',
-                        type: 'varchar',
+                        type: 'uuid',
                         isPrimary: true,
                         generationStrategy: 'uuid',
-                        default: 'uuid_generate_v4()'
                     },
                     {
                         name: 'id',
@@ -24,12 +23,12 @@ export class CreateCompaniesTable1619009640605 implements MigrationInterface {
                     {
                         name: 'data_cadastro',
                         type: 'timestamp',
-                        default: 'CURRENT_TIMESTAMP'
+                        default: 'now()'
                     },
                     {
                         name: 'data_atualizado',
                         type: 'timestamp',
-                        default: 'CURRENT_TIMESTAMP'
+                        default: 'now()'
                     },
                     {
                         name: 'razao_social',
@@ -90,7 +89,7 @@ export class CreateCompaniesTable1619009640605 implements MigrationInterface {
                     {
                         name: 'data_desativacao',
                         type: 'timestamp',
-                        default: 'CURRENT_TIMESTAMP'
+                        default: 'now()'
                     },
                     {
                         name: 'email_cobranca',

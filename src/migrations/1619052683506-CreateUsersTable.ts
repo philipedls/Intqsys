@@ -23,12 +23,12 @@ export class CreateUsersTable1619052683506 implements MigrationInterface {
                     {
                         name: 'data_cadastro',
                         type: 'timestamp',
-                        default: 'CURRENT_TIMESTAMP'
+                        default: 'now()'
                     },
                     {
                         name: 'data_atualizado',
                         type: 'timestamp',
-                        default: 'CURRENT_TIMESTAMP'
+                        default: 'now()'
                     },
                     {
                         name: 'nome',

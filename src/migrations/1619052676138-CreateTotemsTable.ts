@@ -23,12 +23,12 @@ export class CreateTotemsTable1619052676138 implements MigrationInterface {
                     {
                         name: 'data_cadastro',
                         type: 'timestamp',
-                        default: 'CURRENT_TIMESTAMP'
+                        default: 'now()'
                     },
                     {
                         name: 'data_atualizado',
                         type: 'timestamp',
-                        default: 'CURRENT_TIMESTAMP'
+                        default: 'now()'
                     },
                     {
                         name: 'cancelado',
@@ -49,7 +49,7 @@ export class CreateTotemsTable1619052676138 implements MigrationInterface {
                     {
                         name: 'dat_cancelado',
                         type: 'timestamp',
-                        default: 'CURRENT_TIMESTAMP'
+                        default: 'now()'
                     }
                 ]
             })

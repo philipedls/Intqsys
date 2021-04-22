@@ -23,12 +23,12 @@ export class CreateSchedulesTable1619052653999 implements MigrationInterface {
                     {
                         name: 'data_cadastro',
                         type: 'timestamp',
-                        default: 'CURRENT_TIMESTAMP'
+                        default: 'now()'
                     },
                     {
                         name: 'data_atualizado',
                         type: 'timestamp',
-                        default: 'CURRƒENT_TIMESTAMP'
+                        default: 'now()'
                     },
                     {
                         name: 'status',
@@ -45,7 +45,7 @@ export class CreateSchedulesTable1619052653999 implements MigrationInterface {
                     {
                         name: 'data_cancelamento',
                         type: 'timestamp',
-                        default: 'CURRENT_TIMESTAMP'
+                        default: 'now()'
                     },
                     {
                         name: 'token',

@@ -23,12 +23,12 @@ export class CreateServicesTable1619052660944 implements MigrationInterface {
                     {
                         name: 'data_cadastro',
                         type: 'timestamp',
-                        default: 'CURRENT_TIMESTAMP'
+                        default: 'now()'
                     },
                     {
                         name: 'data_atualizado',
                         type: 'timestamp',
-                        default: 'CURRENT_TIMESTAMP'
+                        default: 'now()'
                     },
                     {
                         name: 'status',

@@ -23,23 +23,23 @@ export class CreateLicensesTable1619052597468 implements MigrationInterface {
                     {
                         name: 'data_cadastro',
                         type: 'timestamp',
-                        default: 'CURRENT_TIMESTAMP'
+                        default: 'now()'
                     },
                     {
                         name: 'data_atualizado',
                         type: 'timestamp',
-                        default: 'CURRENT_TIMESTAMP'
+                        default: 'now()'
                     },
                     {
                         name: 'valor',
                         type: 'varchar'
                     },
                     {
-                        name: 'stalicensas_coltus',
+                        name: 'status',
                         type: 'boolean'
                     },
                     {
-                        name: '',
+                        name: 'licensas_col',
                         type: 'varchar'
                     },
                 ]

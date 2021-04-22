@@ -23,12 +23,12 @@ export class CreatePatientsTable1619052628625 implements MigrationInterface {
                     {
                         name: 'data_cadastro',
                         type: 'timestamp',
-                        default: 'CURRENT_TIMESTAMP'
+                        default: 'now()'
                     },
                     {
                         name: 'data_atualizado',
                         type: 'timestamp',
-                        default: 'CURRENT_TIMESTAMP'
+                        default: 'now()'
                     },
                     {
                         name: 'status',
@@ -57,7 +57,7 @@ export class CreatePatientsTable1619052628625 implements MigrationInterface {
                     {
                         name: 'data_cancelamento',
                         type: 'timestamp',
-                        default: 'CURRENT_TIMESTAMP'
+                        default: 'now()'
                     },
                     {
                         name: 'token',

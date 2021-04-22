@@ -23,12 +23,12 @@ export class CreateChargesTable1619052555512 implements MigrationInterface {
                     {
                         name: 'data_cadastro',
                         type: 'timestamp',
-                        default: 'CURRENT_TIMESTAMP'
+                        default: 'now()'
                     },
                     {
                         name: 'data_atualizado',
                         type: 'timestamp',
-                        default: 'CURRENT_TIMESTAMP'
+                        default: 'now()'
                     },
                     {
                         name: 'status',
@@ -37,7 +37,7 @@ export class CreateChargesTable1619052555512 implements MigrationInterface {
                     {
                         name: 'data_vencimento',
                         type: 'timestamp',
-                        default: 'CURRENT_TIMESTAMP'
+                        default: 'now()'
                     },
                 ]
             }));
