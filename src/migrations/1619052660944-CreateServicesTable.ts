@@ -46,6 +46,10 @@ export class CreateServicesTable1619052660944 implements MigrationInterface {
                         name: 'token',
                         type: 'int',
                     },
+                    {
+                        name: 'empresas_id_empresa',
+                        type: 'uuid'
+                    }
                 ]
             }));
     }

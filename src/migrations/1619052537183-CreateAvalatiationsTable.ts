@@ -46,6 +46,10 @@ export class CreateAvalatiationsTable1619052537183 implements MigrationInterface
                         name: 'email_autor',
                         type: 'varchar'
                     },
+                    {
+                        name: 'empresas_id_empresa',
+                        type: 'uuid'
+                    }
                 ]
             })
         );

@@ -1,0 +1,37 @@
+import { MigrationInterface, QueryRunner, TableForeignKey } from "typeorm";
+
+export class RelationCompaniesSchedules1619306634892 implements MigrationInterface {
+
+    public async up(queryRunner: QueryRunner): Promise<void> {
+        await queryRunner.createForeignKeys(
+            'agendamentos',
+            [
+                new TableForeignKey(
+                    {
+                        columnNames: ['servicos_id_servico'],
+                        referencedTableName: 'servicos',
+                        referencedColumnNames: ['id_servico']
+                    }
+                ),
+                new TableForeignKey(
+                    {
+                        columnNames: ['horarios_id_horario'],
+                        referencedTableName: 'horarios',
+                        referencedColumnNames: ['id_horario']
+                    }
+                ),
+                new TableForeignKey(
+                    {
+                        columnNames: ['pacientes_id_paciente'],
+                        referencedTableName: 'pacientes',
+                        referencedColumnNames: ['id_paciente']
+                    }
+                )
+            ]
+        );
+    }
+
+    public async down(queryRunner: QueryRunner): Promise<void> {
+    }
+
+}

@@ -41,7 +41,14 @@ export class CreateLicensesTable1619052597468 implements MigrationInterface {
                     {
                         name: 'licensas_col',
                         type: 'varchar'
+                    }, {
+                        name: 'empresas_id_empresa',
+                        type: 'uuid'
                     },
+                    {
+                        name: 'pagamentos_id_pagamento',
+                        type: 'uuid'
+                    }
                 ]
             })
         );

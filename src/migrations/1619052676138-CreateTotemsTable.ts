@@ -50,6 +50,10 @@ export class CreateTotemsTable1619052676138 implements MigrationInterface {
                         name: 'dat_cancelado',
                         type: 'timestamp',
                         default: 'now()'
+                    },
+                    {
+                        name: 'empresas_id_empresa',
+                        type: 'uuid'
                     }
                 ]
             })

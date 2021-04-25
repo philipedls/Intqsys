@@ -51,6 +51,18 @@ export class CreateSchedulesTable1619052653999 implements MigrationInterface {
                         name: 'token',
                         type: 'int',
                     },
+                    {
+                        name: 'servicos_id_servico',
+                        type: 'uuid'
+                    },
+                    {
+                        name: 'horarios_id_horario',
+                        type: 'uuid'
+                    },
+                    {
+                        name: 'pacientes_id_paciente',
+                        type: 'uuid'
+                    }
                 ]
             }));
     }

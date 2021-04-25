@@ -54,6 +54,10 @@ export class CreateUsersTable1619052683506 implements MigrationInterface {
                         name: 'token',
                         type: 'int'
                     },
+                    {
+                        name: 'empresas_id_empresa',
+                        type: 'uuid'
+                    }
                 ]
             })
         );

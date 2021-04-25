@@ -42,6 +42,10 @@ export class CreateHourliesTable1619052585694 implements MigrationInterface {
                         name: 'token',
                         type: 'int',
                     },
+                    {
+                        name: 'empresas_id_empresa',
+                        type: 'uuid'
+                    }
                 ]
             }));
     }

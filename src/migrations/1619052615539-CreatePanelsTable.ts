@@ -47,6 +47,10 @@ export class CreatePanelsTable1619052615539 implements MigrationInterface {
                         type: 'timestamp',
                         default: 'now()'
                     },
+                    {
+                        name: 'empresas_id_empresa',
+                        type: 'uuid'
+                    }
                 ]
             }));
     }
