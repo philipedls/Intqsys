@@ -17,11 +17,11 @@ export class Companies {
     @Generated('increment')
     id: number
 
-    @CreateDateColumn('timestamp')
-    data_cadastro: Date
+    // @CreateDateColumn('timestamp')
+    // data_cadastro: Date
 
-    @UpdateDateColumn('timestamo')
-    data_atualizado: Date
+    // @UpdateDateColumn('timestamo')
+    // data_atualizado: Date
 
     @Column()
     razao_social: string
@@ -71,25 +71,25 @@ export class Companies {
     @Column()
     email_cobranca: string
 
-    @OneToMany(() => Avaliations, avaliacao => avaliacao.empresa)
-    avaliacoes: Avaliations[]
+    // @OneToMany(type => Avaliations, avaliacao => avaliacao.empresa)
+    // avaliacoes: Avaliations[]
 
-    @OneToMany(() => Totems, totem => totem.empresa)
-    totems: Totems[]
+    // @OneToMany(type => Totems, totem => totem.empresa)
+    // totems: Totems[]
 
-    @OneToMany(() => Licences, licences => licences.empresa)
-    licensas: Licences[]
+    // @OneToMany(type => Licences, licences => licences.empresa)
+    // licensas: Licences[]
 
-    @OneToMany(() => Hourlies, horarios => horarios.empresa)
-    horarios: Hourlies[]
+    // @OneToMany(type => Hourlies, horarios => horarios.empresa)
+    // horarios: Hourlies[]
 
-    @OneToMany(() => Services, servico => servico.empresas)
-    servicos: Services[]
+    // @OneToMany(type => Services, servico => servico.empresas)
+    // servicos: Services[]
 
-    @OneToMany(() => Users, usuario => usuario.empresa)
-    usuarios: Users[]
+    // @OneToMany(type => Users, usuario => usuario.empresa)
+    // usuarios: Users[]
 
-    @OneToMany(() => Paineis, painel => painel.empresa)
-    paineis: Paineis[]
+    // @OneToMany(type => Paineis, painel => painel.empresa)
+    // paineis: Paineis[]
 
 }

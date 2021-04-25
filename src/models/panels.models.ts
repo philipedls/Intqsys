@@ -1,3 +1,4 @@
+import { type } from "node:os";
 import { Column, CreateDateColumn, Entity, Generated, ManyToOne, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
 import { Companies } from "./companies.models";
 
@@ -11,11 +12,11 @@ export class Paineis {
     @Generated('increment')
     id: number
 
-    @CreateDateColumn('timestamp')
-    data_cadastro: Date
+    // @CreateDateColumn('timestamp')
+    // data_cadastro: Date
 
-    @UpdateDateColumn('timestamo')
-    data_atualizado: Date
+    // @UpdateDateColumn('timestamo')
+    // data_atualizado: Date
 
     @Column()
     titulo: string
@@ -29,6 +30,9 @@ export class Paineis {
     @Column()
     data_cancelamento: Date
 
-    @ManyToOne(() => Companies, empresa => empresa.avaliacoes)
-    empresa: Companies
+    @Column('uuid')
+    empresas_id_empresa: string
+
+    // @ManyToOne(type => Companies, empresa => empresa.avaliacoes)
+    // empresa: Companies
 }

@@ -13,12 +13,6 @@ export class Schedules {
     @Generated('increment')
     id: number
 
-    @CreateDateColumn('timestamp')
-    data_cadastro: Date
-
-    @UpdateDateColumn('timestamo')
-    data_atualizado: Date
-
     @Column()
     data_atendimento: Date
 
@@ -37,13 +31,22 @@ export class Schedules {
     @Column()
     token: number
 
-    @ManyToOne(() => Hourlies, horario => horario.agendamentos)
-    horario: Hourlies
+    @Column('uuid')
+    horarios_id_horario: string
 
-    @ManyToOne(() => Services, servico => servico.agendamentos)
-    servico: Services
+    @Column('uuid')
+    servicos_id_servicos: string
 
-    @ManyToOne(() => Patients, paciente => paciente.agendamentos)
-    paciente: Patients
+    @Column('uuid')
+    pacientes_id_paciente: string
+
+    // @ManyToOne(type => Hourlies, horario => horario.agendamentos)
+    // horario: Hourlies
+
+    // @ManyToOne(type => Services, servico => servico.agendamentos)
+    // servico: Services
+
+    // @ManyToOne(type => Patients, paciente => paciente.agendamentos)
+    // paciente: Patients
 
 }

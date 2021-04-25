@@ -1,3 +1,4 @@
+import { type } from "node:os";
 import { Column, CreateDateColumn, Entity, Generated, ManyToOne, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
 import { Companies } from "./companies.models";
 import { Schedules } from "./schedules.models";
@@ -12,11 +13,11 @@ export class Services {
     @Generated('increment')
     id: number
 
-    @CreateDateColumn('timestamp')
-    data_cadastro: Date
+    // @CreateDateColumn('timestamp')
+    // data_cadastro: Date
 
-    @UpdateDateColumn('timestamo')
-    data_atualizado: Date
+    // @UpdateDateColumn('timestamo')
+    // data_atualizado: Date
 
     @Column()
     titulo: string
@@ -30,10 +31,13 @@ export class Services {
     @Column()
     token: number
 
-    @ManyToOne(() => Companies, empresa => empresa.avaliacoes)
-    empresas: Companies
+    @Column('uuid')
+    empresas_id_empresa: string
 
-    @OneToMany(() => Schedules, agendamento => agendamento.servico)
-    agendamentos: Schedules[]
+    // @ManyToOne(type => Companies, empresa => empresa.avaliacoes)
+    // empresas: Companies
+
+    // @OneToMany(type => Schedules, agendamento => agendamento.servico)
+    // agendamentos: Schedules[]
 
 }
