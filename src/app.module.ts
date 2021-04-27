@@ -16,11 +16,8 @@ import { Services } from './models/services.models';
 import { Totems } from './models/totems.models';
 import { Users } from './models/users.models';
 import { AuthModule } from './modules/auth/auth.module';
-import { AuthService } from './modules/auth/auth.service';
 import { CompanyController } from './modules/company/company.controller';
-import { CompanyModule } from './modules/company/company.module';
 import { UserController } from './modules/users/users.controller';
-import { UsersModule } from './modules/users/users.module';
 import { UsersService } from './modules/users/users.service';
 
 
