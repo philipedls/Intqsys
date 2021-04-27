@@ -11,6 +11,7 @@ export class CreateAvalatiationsTable1619052537183 implements MigrationInterface
                         name: 'id_avaliacao',
                         type: 'uuid',
                         isPrimary: true,
+                        isGenerated: true,
                         generationStrategy: 'uuid',
                     },
                     {
@@ -32,11 +33,12 @@ export class CreateAvalatiationsTable1619052537183 implements MigrationInterface
                     },
                     {
                         name: 'nota',
-                        type: 'int'
+                        type: 'int',
+                        isNullable: true
                     },
                     {
                         name: 'autor',
-                        type: 'varchar'
+                        type: 'varchar',
                     },
                     {
                         name: 'telefone_autor',
@@ -46,6 +48,11 @@ export class CreateAvalatiationsTable1619052537183 implements MigrationInterface
                         name: 'email_autor',
                         type: 'varchar'
                     },
+                    {
+                        name: 'empresas_id_empresa',
+                        type: 'uuid',
+                        isNullable: true
+                    }
                 ]
             })
         );

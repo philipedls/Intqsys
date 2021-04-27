@@ -11,11 +11,11 @@ export class Patients {
     @Generated('increment')
     id: number
 
-    @CreateDateColumn('timestamp')
-    data_cadastro: Date
+    // @CreateDateColumn('timestamp')
+    // data_cadastro: Date
 
-    @UpdateDateColumn('timestamo')
-    data_atualizado: Date
+    // @UpdateDateColumn('timestamo')
+    // data_atualizado: Date
 
     @Column()
     status: boolean
@@ -41,6 +41,6 @@ export class Patients {
     @Column()
     token: number
 
-    @OneToMany(() => Schedules, agendamento => agendamento.paciente)
-    agendamentos: Schedules[]
+    // @OneToMany(type => Schedules, agendamento => agendamento.paciente)
+    // agendamentos: Schedules[]
 }

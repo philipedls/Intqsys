@@ -11,6 +11,7 @@ export class CreatePanelsTable1619052615539 implements MigrationInterface {
                         name: 'id_painel',
                         type: 'uuid',
                         isPrimary: true,
+                        isGenerated: true,
                         generationStrategy: 'uuid',
                     },
                     {
@@ -36,17 +37,24 @@ export class CreatePanelsTable1619052615539 implements MigrationInterface {
                     },
                     {
                         name: 'status',
-                        type: 'boolean'
+                        type: 'boolean',
+                        isNullable: true
                     },
                     {
                         name: 'cancelado',
                         type: 'varchar',
+                        isNullable: true
                     },
                     {
                         name: 'data_cancelamento',
                         type: 'timestamp',
-                        default: 'now()'
+                        isNullable: true
                     },
+                    {
+                        name: 'empresas_id_empresa',
+                        type: 'uuid',
+                        isNullable: true
+                    }
                 ]
             }));
     }

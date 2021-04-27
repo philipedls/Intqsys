@@ -11,6 +11,7 @@ export class CreateHourliesTable1619052585694 implements MigrationInterface {
                         name: 'id_horario',
                         type: 'uuid',
                         isPrimary: true,
+                        isGenerated: true,
                         generationStrategy: 'uuid',
                     },
                     {
@@ -32,7 +33,8 @@ export class CreateHourliesTable1619052585694 implements MigrationInterface {
                     },
                     {
                         name: 'hora',
-                        type: 'varchar'
+                        type: 'varchar',
+                        isNullable: true
                     },
                     {
                         name: 'status',
@@ -42,6 +44,11 @@ export class CreateHourliesTable1619052585694 implements MigrationInterface {
                         name: 'token',
                         type: 'int',
                     },
+                    {
+                        name: 'empresas_id_empresa',
+                        type: 'uuid',
+                        isNullable: true
+                    }
                 ]
             }));
     }

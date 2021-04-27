@@ -11,11 +11,11 @@ export class Payments {
     @Generated('increment')
     id: number
 
-    @CreateDateColumn('timestamp')
-    data_cadastro: Date
+    // @CreateDateColumn('timestamp')
+    // data_cadastro: Date
 
-    @UpdateDateColumn('timestamo')
-    data_atualizado: Date
+    // @UpdateDateColumn('timestamo')
+    // data_atualizado: Date
 
     @Column()
     titulo: string
@@ -26,6 +26,6 @@ export class Payments {
     @Column()
     descricao: string
 
-    @OneToMany(() => Licences, licensa => licensa.pagamento)
-    licensas: Licences[]
+    // @OneToMany(type => Licences, licensa => licensa.pagamento)
+    // licensas: Licences[]
 }

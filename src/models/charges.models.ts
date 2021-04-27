@@ -11,11 +11,11 @@ export class Charges {
     @Generated('increment')
     id: number
 
-    @CreateDateColumn('timestamp')
-    data_cadastro: Date
+    // @CreateDateColumn('timestamp')
+    // data_cadastro: Date
 
-    @UpdateDateColumn('timestamo')
-    data_atualizado: Date
+    // @UpdateDateColumn('timestamo')
+    // data_atualizado: Date
 
     @Column()
     status: boolean
@@ -23,7 +23,10 @@ export class Charges {
     @Column()
     data_vencimento: Date
 
-    @ManyToOne(() => Licences, empresa => empresa.cobrancas)
-    licensa: Licences
+    @Column('uuid')
+    empresas_id_empresa: string
+
+    // @ManyToOne(type => Licences, empresa => empresa.cobrancas)
+    // licensa: Licences
 
 }

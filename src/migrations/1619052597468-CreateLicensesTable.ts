@@ -11,6 +11,7 @@ export class CreateLicensesTable1619052597468 implements MigrationInterface {
                         name: 'id_licensa',
                         type: 'uuid',
                         isPrimary: true,
+                        isGenerated: true,
                         generationStrategy: 'uuid',
                     },
                     {
@@ -36,12 +37,23 @@ export class CreateLicensesTable1619052597468 implements MigrationInterface {
                     },
                     {
                         name: 'status',
-                        type: 'boolean'
+                        type: 'boolean',
+                        isNullable: true
                     },
                     {
                         name: 'licensas_col',
-                        type: 'varchar'
+                        type: 'varchar',
+                        isNullable: true
+                    }, {
+                        name: 'empresas_id_empresa',
+                        type: 'uuid',
+                        isNullable: true
                     },
+                    {
+                        name: 'pagamentos_id_pagamento',
+                        type: 'uuid',
+                        isNullable: true
+                    }
                 ]
             })
         );

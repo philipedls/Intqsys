@@ -11,11 +11,11 @@ export class Avaliations {
     @Generated('increment')
     id: number
 
-    @CreateDateColumn('timestamp')
-    data_cadastro: Date
+    // @CreateDateColumn('timestamp')
+    // data_cadastro!: Date
 
-    @UpdateDateColumn('timestamo')
-    data_atualizado: Date
+    // @UpdateDateColumn('timestamo')
+    // data_atualizado!: Date
 
     @Column()
     nota: number
@@ -29,7 +29,10 @@ export class Avaliations {
     @Column()
     email_autor: string
 
-    @ManyToOne(() => Companies, empresa => empresa.avaliacoes)
-    empresa: Companies
+    @Column('uuid')
+    empresas_id_empresa: string
+
+    // @ManyToOne(type => Companies, empresa => empresa.avaliacoes)
+    // empresa: Companies
 
 }

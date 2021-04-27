@@ -11,6 +11,7 @@ export class CreateTotemsTable1619052676138 implements MigrationInterface {
                         name: 'id_totem',
                         type: 'uuid',
                         isPrimary: true,
+                        isGenerated: true,
                         generationStrategy: 'uuid',
                     },
                     {
@@ -45,11 +46,17 @@ export class CreateTotemsTable1619052676138 implements MigrationInterface {
                     {
                         name: 'totem_col',
                         type: 'varchar',
+                        isNullable: true
                     },
                     {
                         name: 'dat_cancelado',
                         type: 'timestamp',
-                        default: 'now()'
+                        isNullable: true
+                    },
+                    {
+                        name: 'empresas_id_empresa',
+                        type: 'uuid',
+                        isNullable: true
                     }
                 ]
             })
