@@ -12,6 +12,7 @@ export class CreateChargesTable1619052555512 implements MigrationInterface {
                             name: 'id_cobranca',
                             type: 'uuid',
                             isPrimary: true,
+                            isGenerated: true,
                             generationStrategy: 'uuid',
                         },
                         {
@@ -38,11 +39,12 @@ export class CreateChargesTable1619052555512 implements MigrationInterface {
                         {
                             name: 'data_vencimento',
                             type: 'timestamp',
-                            default: 'now()'
+                            isNullable: true
                         },
                         {
                             name: 'licensas_id_licensa',
-                            type: 'uuid'
+                            type: 'uuid',
+                            isNullable: true
                         }
                     ]
                 }

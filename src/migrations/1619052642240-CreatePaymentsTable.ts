@@ -11,6 +11,7 @@ export class CreatePaymentsTable1619052642240 implements MigrationInterface {
                         name: 'id_pagamento',
                         type: 'uuid',
                         isPrimary: true,
+                        isGenerated: true,
                         generationStrategy: 'uuid',
                     },
                     {
@@ -32,7 +33,8 @@ export class CreatePaymentsTable1619052642240 implements MigrationInterface {
                     },
                     {
                         name: 'status',
-                        type: 'boolean'
+                        type: 'boolean',
+                        isNullable: true
                     },
                     {
                         name: 'titulo',

@@ -45,23 +45,27 @@ export class CreateSchedulesTable1619052653999 implements MigrationInterface {
                     {
                         name: 'data_cancelamento',
                         type: 'timestamp',
-                        default: 'now()'
+                        isNullable: true
                     },
                     {
                         name: 'token',
                         type: 'int',
+                        isNullable: true
                     },
                     {
                         name: 'servicos_id_servico',
-                        type: 'uuid'
+                        type: 'uuid',
+                        isNullable: true
                     },
                     {
                         name: 'horarios_id_horario',
-                        type: 'uuid'
+                        type: 'uuid',
+                        isNullable: true
                     },
                     {
                         name: 'pacientes_id_paciente',
-                        type: 'uuid'
+                        type: 'uuid',
+                        isNullable: true
                     }
                 ]
             }));

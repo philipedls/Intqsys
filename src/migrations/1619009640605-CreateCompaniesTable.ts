@@ -11,6 +11,7 @@ export class CreateCompaniesTable1619009640605 implements MigrationInterface {
                         name: 'id_empresa',
                         type: 'uuid',
                         isPrimary: true,
+                        isGenerated: true,
                         generationStrategy: 'uuid',
                     },
                     {
@@ -32,7 +33,7 @@ export class CreateCompaniesTable1619009640605 implements MigrationInterface {
                     },
                     {
                         name: 'razao_social',
-                        type: 'varchar'
+                        type: 'varchar',
                     },
                     {
                         name: 'nome_fantasia',
@@ -56,7 +57,8 @@ export class CreateCompaniesTable1619009640605 implements MigrationInterface {
                     },
                     {
                         name: 'complemento',
-                        type: 'varchar'
+                        type: 'varchar',
+                        isNullable: true
                     },
                     {
                         name: 'bairro',
@@ -72,7 +74,8 @@ export class CreateCompaniesTable1619009640605 implements MigrationInterface {
                     },
                     {
                         name: 'logo',
-                        type: 'varchar'
+                        type: 'varchar',
+                        isNullable: true
                     },
                     {
                         name: 'atende_feriado',
@@ -84,12 +87,13 @@ export class CreateCompaniesTable1619009640605 implements MigrationInterface {
                     },
                     {
                         name: 'token',
-                        type: 'int'
+                        type: 'int',
+                        isNullable: true
                     },
                     {
                         name: 'data_desativacao',
                         type: 'timestamp',
-                        default: 'now()'
+                        isNullable: true
                     },
                     {
                         name: 'email_cobranca',

@@ -11,6 +11,7 @@ export class CreateUsersTable1619052683506 implements MigrationInterface {
                         name: 'id_usuario',
                         type: 'uuid',
                         isPrimary: true,
+                        isGenerated: true,
                         generationStrategy: 'uuid',
                     },
                     {
@@ -48,15 +49,18 @@ export class CreateUsersTable1619052683506 implements MigrationInterface {
                     },
                     {
                         name: 'status',
-                        type: 'boolean'
+                        type: 'boolean',
+                        isNullable: true
                     },
                     {
                         name: 'token',
-                        type: 'int'
+                        type: 'int',
+                        isNullable: true
                     },
                     {
                         name: 'empresas_id_empresa',
-                        type: 'uuid'
+                        type: 'uuid',
+                        isNullable: true
                     }
                 ]
             })

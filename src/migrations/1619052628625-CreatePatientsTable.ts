@@ -11,6 +11,7 @@ export class CreatePatientsTable1619052628625 implements MigrationInterface {
                         name: 'id_paciente',
                         type: 'uuid',
                         isPrimary: true,
+                        isGenerated: true,
                         generationStrategy: 'uuid',
                     },
                     {
@@ -32,7 +33,8 @@ export class CreatePatientsTable1619052628625 implements MigrationInterface {
                     },
                     {
                         name: 'status',
-                        type: 'boolean'
+                        type: 'boolean',
+                        isNullable: true
                     },
                     {
                         name: 'paciente_nome',
@@ -57,11 +59,12 @@ export class CreatePatientsTable1619052628625 implements MigrationInterface {
                     {
                         name: 'data_cancelamento',
                         type: 'timestamp',
-                        default: 'now()'
+                        isNullable: true
                     },
                     {
                         name: 'token',
                         type: 'int',
+                        isNullable: true
                     },
                 ]
             }));

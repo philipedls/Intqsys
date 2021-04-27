@@ -11,6 +11,7 @@ export class CreateServicesTable1619052660944 implements MigrationInterface {
                         name: 'id_servico',
                         type: 'uuid',
                         isPrimary: true,
+                        isGenerated: true,
                         generationStrategy: 'uuid',
                     },
                     {
@@ -32,7 +33,8 @@ export class CreateServicesTable1619052660944 implements MigrationInterface {
                     },
                     {
                         name: 'status',
-                        type: 'boolean'
+                        type: 'boolean',
+                        isNullable: true
                     },
                     {
                         name: 'titulo',
@@ -40,15 +42,18 @@ export class CreateServicesTable1619052660944 implements MigrationInterface {
                     },
                     {
                         name: 'imagem',
-                        type: 'varchar'
+                        type: 'varchar',
+                        isNullable: true
                     },
                     {
                         name: 'token',
                         type: 'int',
+                        isNullable: true
                     },
                     {
                         name: 'empresas_id_empresa',
-                        type: 'uuid'
+                        type: 'uuid',
+                        isNullable: true
                     }
                 ]
             }));
