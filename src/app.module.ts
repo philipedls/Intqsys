@@ -15,9 +15,18 @@ import { Schedules } from './models/schedules.models';
 import { Services } from './models/services.models';
 import { Totems } from './models/totems.models';
 import { Users } from './models/users.models';
+import { AuthModule } from './modules/auth/auth.module';
+import { AuthService } from './modules/auth/auth.service';
+import { CompanyController } from './modules/company/company.controller';
+import { CompanyModule } from './modules/company/company.module';
+import { UserController } from './modules/users/users.controller';
+import { UsersModule } from './modules/users/users.module';
+import { UsersService } from './modules/users/users.service';
+
 
 @Module({
   imports: [
+    AuthModule,
     ConfigModule.forRoot(),
     TypeOrmModule.forRoot({
       type: process.env.TYPEORM_CONNECTION as any,
@@ -28,9 +37,10 @@ import { Users } from './models/users.models';
       database: process.env.TYPEORM_DATABASE,
       entities: [Avaliations, Charges, Companies, Hourlies, Licences, Paineis, Patients, Payments, Schedules, Services, Totems, Users]
     }),
-    TypeOrmModule.forFeature([Avaliations, Charges, Companies, Hourlies, Licences, Paineis, Patients, Payments, Schedules, Services, Totems, Users])
+    TypeOrmModule.forFeature([Avaliations, Charges, Companies, Hourlies, Licences, Paineis, Patients, Payments, Schedules, Services, Totems, Users]),
+
   ],
-  controllers: [AppController],
-  providers: [AppService],
+  controllers: [AppController, CompanyController, UserController],
+  providers: [AppService, UsersService,],
 })
 export class AppModule { }

@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 
 @Injectable()
 export class AppService {
-  getWelcome(): string {
+  getHello(): string {
     return 'Welcome to Gofila API';
   }
 }
