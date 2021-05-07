@@ -18,6 +18,8 @@ import { Users } from './models/users.models';
 import { AuthModule } from './modules/auth/auth.module';
 import { CompanyController } from './modules/company/company.controller';
 import { CompanyService } from './modules/company/company.service';
+import { PanelController } from './modules/panel/panel.controller';
+import { PanelService } from './modules/panel/panel.service';
 import { UserController } from './modules/users/users.controller';
 import { UsersService } from './modules/users/users.service';
 
@@ -38,7 +40,7 @@ import { UsersService } from './modules/users/users.service';
     TypeOrmModule.forFeature([Avaliations, Charges, Companies, Hourlies, Licences, Paineis, Patients, Payments, Schedules, Services, Totems, Users]),
 
   ],
-  controllers: [AppController, CompanyController, UserController],
-  providers: [AppService, UsersService, CompanyService],
+  controllers: [AppController, CompanyController, UserController, PanelController],
+  providers: [AppService, UsersService, CompanyService, PanelService],
 })
 export class AppModule { }
