@@ -4,7 +4,6 @@ import { PanelFetchDto } from "./panel.fetch";
 import { PanelService } from "./panel.service";
 
 
-
 @Controller('panel')
 export class PanelController {
     constructor(
