@@ -6,6 +6,7 @@ import { UsersSignUpDto } from './users.signup';
 import { AuthGuard } from '@nestjs/passport';
 import { AuthService } from '../auth/auth.service';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
+import { UsersFetchUUIDDto } from './users.fetch';
 
 @Controller('user')
 export class UserController {
@@ -15,16 +16,22 @@ export class UserController {
         private authService: AuthService
     ) { }
 
+    // @UseGuards(JwtAuthGuard)
+    // @Get()
+    // index(): Promise<Users[]> {
+    //     return this.userService.index();
+    // }
+
     @UseGuards(JwtAuthGuard)
-    @Get()
-    index(): Promise<Users[]> {
-        return this.userService.index();
+    @Post()
+    index(@Body() body: UsersFetchUUIDDto): Promise<Users> {
+        return this.userService.findOneByUUID(body);
     }
 
-    @Post('signup')
-    signup(@Body() body: UsersSignUpDto) {
-        return this.userService.store(body);
-    }
+    // @Post('signup')
+    // signup(@Body() body: UsersSignUpDto) {
+    //     return this.userService.store(body);
+    // }
 
     @UseGuards(AuthGuard('local'))
     @Post('signin')

@@ -11,6 +11,7 @@ export class CreateSchedulesTable1619052653999 implements MigrationInterface {
                         name: 'id_agendamento',
                         type: 'uuid',
                         isPrimary: true,
+                        isGenerated: true,
                         generationStrategy: 'uuid',
                     },
                     {
