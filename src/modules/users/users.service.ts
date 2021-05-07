@@ -3,6 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import * as bcrypt from 'bcrypt';
 import { Users } from 'src/models/users.models';
 import { Repository } from 'typeorm';
+import { UsersFetchUUIDDto } from './users.fetch';
 
 @Injectable()
 export class UsersService {
@@ -34,7 +35,11 @@ export class UsersService {
             });
     }
 
-    async findOne(email: string): Promise<Users | undefined> {
+    async findOneByEmail(email: string): Promise<Users | undefined> {
         return this.userRepository.findOne({ email: email });
+    }
+
+    async findOneByUUID(data: UsersFetchUUIDDto): Promise<Users | undefined> {
+        return this.userRepository.findOne({ id_usuario: data.user_id });
     }
 }

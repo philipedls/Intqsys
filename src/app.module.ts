@@ -17,6 +17,7 @@ import { Totems } from './models/totems.models';
 import { Users } from './models/users.models';
 import { AuthModule } from './modules/auth/auth.module';
 import { CompanyController } from './modules/company/company.controller';
+import { CompanyService } from './modules/company/company.service';
 import { UserController } from './modules/users/users.controller';
 import { UsersService } from './modules/users/users.service';
 
@@ -38,6 +39,6 @@ import { UsersService } from './modules/users/users.service';
 
   ],
   controllers: [AppController, CompanyController, UserController],
-  providers: [AppService, UsersService,],
+  providers: [AppService, UsersService, CompanyService],
 })
 export class AppModule { }

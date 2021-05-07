@@ -1,25 +1,26 @@
-import { Body, Controller, Get, Post } from '@nestjs/common';
-import { InjectRepository } from '@nestjs/typeorm';
-import { Companies } from 'src/models/companies.models';
-import { Repository } from 'typeorm';
+import { Body, Controller, Post, UseGuards } from '@nestjs/common';
+import { JwtAuthGuard } from '../auth/jwt-auth.guard';
+import { CompanyFetch } from './company.fetch';
+import { CompanyService } from './company.service';
 
 @Controller('company')
 export class CompanyController {
-
     constructor(
-        @InjectRepository(Companies)
-        private companyRepository: Repository<Companies>
+        private readonly companyService: CompanyService
     ) { }
 
-    @Get()
-    index() {
-        return this.companyRepository.find();
+
+    @UseGuards(JwtAuthGuard)
+    @Post()
+    index(@Body() body: CompanyFetch) {
+        return this.companyService.findOneByUUID(body);
     }
 
-    @Post()
-    store(@Body() body) {
-        const company = this.companyRepository.create(body);
-        return this.companyRepository.save(company);
-    }
+    // @UseGuards(JwtAuthGuard)
+    // @Post()
+    // store(@Body() body) {
+    //     const company = this.companyRepository.create(body);
+    //     return this.companyRepository.save(company);
+    // }
 
 }
