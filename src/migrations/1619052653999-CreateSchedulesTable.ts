@@ -44,6 +44,11 @@ export class CreateSchedulesTable1619052653999 implements MigrationInterface {
                         type: 'boolean'
                     },
                     {
+                        name: 'data_atendimento',
+                        type: 'timestamp',
+                        isNullable: true
+                    },
+                    {
                         name: 'data_cancelamento',
                         type: 'timestamp',
                         isNullable: true
