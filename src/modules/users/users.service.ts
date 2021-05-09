@@ -1,9 +1,10 @@
-import { Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import * as bcrypt from 'bcrypt';
 import { Users } from 'src/models/users.models';
 import { Repository } from 'typeorm';
-import { UsersFetchUUIDDto } from './users.fetch';
+import { UsersFetchUUIDDto } from './Dto/users.fetch';
+import { UsersSignUpDto } from './users.signup';
 
 @Injectable()
 export class UsersService {
@@ -16,20 +17,46 @@ export class UsersService {
         return this.userRepository.find();
     }
 
-    async store(data) {
-        data.senha = bcrypt.hashSync(data.senha, 8)
+    async store(data: UsersSignUpDto) {
+        const user = await this.userRepository.findOne({ email: data.email });
+
+        if (!user) {
+            data.senha = bcrypt.hashSync(data.senha, 8)
+            return this.userRepository.save(data)
+                .then((result) => {
+                    return {
+                        status: true,
+                        // mensagem: "Usuário cadastrado com sucesso",
+                        result: result
+                    }
+                })
+                .catch((error) => {
+                    return {
+                        status: false,
+                        // mensagem: "Houve um errro ao cadastrar o usuário",
+                        result: error
+                    }
+                });
+        }
+
+        throw new HttpException('User already exists', HttpStatus.BAD_REQUEST);
+
+    }
+
+    async update(data) {
+
         return this.userRepository.save(data)
             .then((result) => {
                 return {
                     status: true,
-                    mensagem: "Usuário cadastrado com sucesso",
+                    // mensagem: "Dados atualizados com sucesso",
                     result: result
                 }
             })
             .catch((error) => {
                 return {
                     status: false,
-                    mensagem: "Houve um errro ao cadastrar o usuário",
+                    // mensagem: "Houve um errro ao atulizar o usuário",
                     result: error
                 }
             });
@@ -41,5 +68,18 @@ export class UsersService {
 
     async findOneByUUID(data: UsersFetchUUIDDto): Promise<Users | undefined> {
         return this.userRepository.findOne({ id_usuario: data.user_id });
+    }
+
+    async findOneByRecoverToken(token: string) {
+        return this.userRepository.findOne({ token_recuperar_senha: token }, { select: ['id'] });
+    }
+
+    async changePassword(id: string, password: string) {
+        const user = await this.userRepository.findOne(id);
+        user.senha = bcrypt.hashSync(password, 8);
+        // user.senha = await bcrypt.genSalt();
+        // user.password = await this.userRepository.hashPassword(password, user.salt);
+        // user.recoverToken = null;
+        return this.userRepository.save(user);
     }
 }

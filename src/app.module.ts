@@ -1,8 +1,10 @@
+import { MailerModule } from '@nestjs-modules/mailer';
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
+import { mailerConfig } from './config/mailer.config';
 import { Avaliations } from './models/avaliations.models';
 import { Charges } from './models/charges.models';
 import { Companies } from './models/companies.models';
@@ -32,6 +34,7 @@ import { UsersService } from './modules/users/users.service';
   imports: [
     AuthModule,
     ConfigModule.forRoot(),
+    // MailerModule.forRoot(mailerConfig),
     TypeOrmModule.forRoot({
       type: process.env.TYPEORM_CONNECTION as any,
       host: process.env.TYPEORM_HOST,

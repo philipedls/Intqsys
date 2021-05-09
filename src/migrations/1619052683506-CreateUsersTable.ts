@@ -58,6 +58,11 @@ export class CreateUsersTable1619052683506 implements MigrationInterface {
                         isNullable: true
                     },
                     {
+                        name: 'token_recuperar_senha',
+                        type: 'varchar',
+                        isNullable: true
+                    },
+                    {
                         name: 'empresas_id_empresa',
                         type: 'uuid',
                         isNullable: true

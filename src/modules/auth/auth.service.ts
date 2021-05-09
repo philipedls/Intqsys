@@ -1,12 +1,19 @@
-import { Injectable } from '@nestjs/common';
-import { UsersService } from '../users/users.service';
-import * as bcrypt from 'bcrypt';
+import { Injectable, NotFoundException, UnprocessableEntityException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
+import * as bcrypt from 'bcrypt';
+import { randomBytes } from 'crypto';
+import * as nodemailer from 'nodemailer';
+import { UsersRecoveryDto } from '../users/Dto/users.recovery';
+import { UsersService } from '../users/users.service';
+import { ChangePasswordDto } from './dto/changes.password.dto';
 
 @Injectable()
 export class AuthService {
 
-    constructor(private usersService: UsersService, private jwtService: JwtService) { }
+    constructor(
+        private usersService: UsersService,
+        private jwtService: JwtService,
+    ) { }
 
     async validateUser(username: string, password: string): Promise<any> {
         const user = await this.usersService.findOneByEmail(username);
@@ -22,5 +29,102 @@ export class AuthService {
         return {
             access_token: this.jwtService.sign(payload),
         };
+    }
+
+    async changePassword(
+        id: string,
+        changePasswordDto: ChangePasswordDto,
+    ): Promise<void> {
+        const { password, passwordConfirmation } = changePasswordDto;
+
+        if (password != passwordConfirmation)
+            throw new UnprocessableEntityException('As senhas não conferem');
+
+        await this.usersService.changePassword(id, password);
+    }
+
+    async resetPassword(
+        recoverToken: string,
+        changePasswordDto: ChangePasswordDto,
+    ): Promise<void> {
+        const user = await this.usersService.findOneByRecoverToken(recoverToken);
+        if (!user) throw new NotFoundException('Token inválido.');
+
+        try {
+            await this.changePassword(user.id.toString(), changePasswordDto);
+        } catch (error) {
+            throw error;
+        }
+    }
+
+    async sendRecoverPasswordEmail(body: UsersRecoveryDto): Promise<void> {
+        const user = await this.usersService.findOneByEmail(body.email);
+
+        if (!user)
+            throw new NotFoundException('Não há usuário cadastrado com esse email.');
+
+        user.token_recuperar_senha = randomBytes(32).toString('hex');
+        await this.usersService.update(user);
+
+        // create reusable transporter object using the default SMTP transport
+        const transporter = nodemailer.createTransport({
+            host: 'mail.gofila.com.br',
+            port: 465,
+            secure: true, // true for 465, false for other ports
+            auth: {
+                user: 'developer@gofila.com.br', // generated ethereal user
+                pass: process.env.NODE_MAILER_EM_PASS, // generated ethereal password
+            },
+        });
+
+        // href="http://localhost:3000/reset-password/?token={{${user.token_recuperar_senha}}"
+
+        return await transporter.sendMail({
+            from: "developer@gofila.com.br", // sender address
+            to: body.email, // list of receivers
+            subject: "GoFila - Redefinição de senha", // Subject line
+            text: `Oi ${user.nome}, tudo bem?`, // plain text body
+            html: `<html>
+            <body>
+              <center>
+                <div style="background-color: #d3d3d3; max-width: 840px; margin: 0; padding: 30px;">
+                  <h2 style="color: #292536; text-align: center">Solicitação de alteração de senha</h2>
+                  <p>Olá, ${user.nome}</p>
+                  <p>Você solicitou para redefinir sua senha de acesso ao GoFila. Para isso basta clicar no link abaixo para que você efetue essa alteração.</p>
+                  <div style="margin: 20px auto; width: 120px; padding: 10px 20px; background-color: #442d52; border-radius: 5px">
+                    <a target="_blank" rel="noopener noreferrer" style="text-decoration: none; color: #fcfcfc; font-size: 18px; margin: 0 auto;">Alterar Senha</a>
+                  </div>
+                  <p>Caso não foi você quem solicitou esta operação, pedimos que desconsidere este email.</p>
+                </div>
+              </center>
+            </body>
+          </html>`, // html body
+        });
+
+        // const mail: ISendMailOptions = {
+        //     to: user.email,
+        //     from: 'philipe@sparkmobile.com.br',
+        //     subject: 'Recupere a sua senha',
+        //     // template: 'recover-password',
+        //     context: {
+        //         token: user.token_recuperar_senha,
+        //     },
+        //     text: `Oi ${user.nome}, tudo bem?`,
+        //     html: `<html>
+        //         <body>
+        //           <center>
+        //             <div style="background-color: #d3d3d3; max-width: 840px; margin: 0; padding: 30px;">
+        //               <h2 style="color: #292536; text-align: center">Solicitação de alteração de senha</h2>
+        //               <p>Para alterar sua senha clique no botão abaixo, ou acesse o seguinte link: </p>
+        //               <div style="margin: 20px auto; width: 120px; padding: 10px 20px; background-color: #442d52; border-radius: 5px">
+        //                 <a href="http://url-do-front/reset-password/?token={{token}}" target="_blank" rel="noopener noreferrer" style="text-decoration: none; color: #fcfcfc; font-size: 18px; margin: 0 auto;">Alterar Senha</a>
+        //               </div>
+        //             </div>
+        //           </center>
+        //         </body>
+        //       </html>`
+        // };
+
+        // await this.mailerService.sendMail(mail).catch((err) => console.log(err));
     }
 }
