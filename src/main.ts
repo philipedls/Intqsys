@@ -8,7 +8,7 @@ async function bootstrap() {
   const config = new DocumentBuilder()
     .setTitle('GoFila API - Documentation')
     .setDescription('The Gofila API description <Interim>')
-    .setVersion('1.0')
+    .setVersion('2.0')
     .addTag('gofila')
     .build();
   const document = SwaggerModule.createDocument(app, config);

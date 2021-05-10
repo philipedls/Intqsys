@@ -1,6 +1,6 @@
 export interface UsersSignUpDto {
-    name: string;
+    nome: string;
     login: string;
-    password: string;
+    senha: string;
     email: string;
 }

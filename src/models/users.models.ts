@@ -36,6 +36,9 @@ export class Users {
     @Column()
     token: number
 
+    @Column()
+    token_recuperar_senha: string
+
     @Column('uuid')
     empresas_id_empresa: string
 
