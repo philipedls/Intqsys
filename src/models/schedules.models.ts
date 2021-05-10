@@ -35,7 +35,7 @@ export class Schedules {
     horarios_id_horario: string
 
     @Column('uuid')
-    servicos_id_servicos: string
+    servicos_id_servico: string
 
     @Column('uuid')
     pacientes_id_paciente: string
