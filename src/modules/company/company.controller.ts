@@ -16,11 +16,11 @@ export class CompanyController {
         return this.companyService.findOneByUUID(body);
     }
 
-    // @UseGuards(JwtAuthGuard)
-    // @Post()
-    // store(@Body() body) {
-    //     const company = this.companyRepository.create(body);
-    //     return this.companyRepository.save(company);
-    // }
+    @UseGuards(JwtAuthGuard)
+    @Post()
+    store(@Body() body) {
+       
+        return this.companyService.store(body);
+    }
 
 }

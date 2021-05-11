@@ -16,4 +16,9 @@ export class CompanyService {
     async findOneByUUID(data: CompanyFetch): Promise<Companies | undefined> {
         return this.companyRepository.findOne({ id_empresa: data.id_empresa });
     }
+
+    store(data) {
+        const company = this.companyRepository.create(data);
+        return this.companyRepository.save(company);
+    }
 }

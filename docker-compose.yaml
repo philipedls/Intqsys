@@ -7,7 +7,7 @@ services:
     entrypoint: ./.docker/entrypoint.sh
     container_name: gofila-api
     ports:
-      - 3000:3000
+      - 3333:3333
     volumes:
       - .:/home/node/app
   
