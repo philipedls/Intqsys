@@ -24,7 +24,7 @@ export class UserController {
     //     return this.userService.index();
     // }
 
-    @UseGuards(JwtAuthGuard)
+    // @UseGuards(JwtAuthGuard)
     @Post()
     index(@Body() body: UsersFetchUUIDDto): Promise<Users> {
         return this.userService.findOneByUUID(body);
@@ -35,7 +35,7 @@ export class UserController {
         return this.userService.store(body);
     }
 
-    @UseGuards(AuthGuard('local'))
+    // @UseGuards(AuthGuard('local'))
     @Post('signin')
     async signin(@Request() req) {
         return this.authService.authSignIn(req.user);

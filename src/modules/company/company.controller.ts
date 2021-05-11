@@ -10,13 +10,13 @@ export class CompanyController {
     ) { }
 
 
-    @UseGuards(JwtAuthGuard)
+    // @UseGuards(JwtAuthGuard)
     @Post()
     index(@Body() body: CompanyFetch) {
         return this.companyService.findOneByUUID(body);
     }
 
-    @UseGuards(JwtAuthGuard)
+    // @UseGuards(JwtAuthGuard)
     @Post()
     store(@Body() body) {
        

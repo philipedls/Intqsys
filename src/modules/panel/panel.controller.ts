@@ -11,7 +11,7 @@ export class PanelController {
     ) { }
 
 
-    @UseGuards(JwtAuthGuard)
+    // @UseGuards(JwtAuthGuard)
     @Post()
     index(@Body() body: PanelFetchDto) {
         return this.panelService.findOneByUUID(body);
