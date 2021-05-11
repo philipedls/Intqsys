@@ -4,7 +4,17 @@ import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
-  // app.enableCors();
+
+  const options = {
+    "origin": true,  // attempted "origin":["http://localhost"]
+    "methods": "GET,HEAD,PUT,PATCH,POST,DELETE",
+    "preflightContinue": false,
+    "optionsSuccessStatus": 200,
+    "credentials": true,
+    "allowedHeaders": "Content-Type, Accept,Authorization",
+
+  }
+  app.enableCors(options);
 
   const config = new DocumentBuilder()
     .setTitle('GoFila API - Documentation')
