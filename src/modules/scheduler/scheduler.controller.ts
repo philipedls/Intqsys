@@ -41,6 +41,12 @@ export class SchedulerController {
     }
 
     // @UseGuards(JwtAuthGuard)
+    @Get('canceled/amount')
+    indexByCanceledAmount() {
+        return this.schedulerService.findSheduleCanceledAmount();
+    }
+
+    // @UseGuards(JwtAuthGuard)
     @Post('add')
     store(@Body() body: SchedulerReciveDto) {
         return this.schedulerService.store(body);
