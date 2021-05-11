@@ -28,6 +28,9 @@ import { TotemController } from './modules/totem/totem.controller';
 import { TotemService } from './modules/totem/totem.service';
 import { UserController } from './modules/users/users.controller';
 import { UsersService } from './modules/users/users.service';
+import { PatientModule } from './modules/patient/patient.module';
+import { PatientController } from './modules/patient/patient.controller';
+import { PatientService } from './modules/patient/patient.service';
 
 
 @Module({
@@ -47,7 +50,7 @@ import { UsersService } from './modules/users/users.service';
     TypeOrmModule.forFeature([Avaliations, Charges, Companies, Hourlies, Licences, Paineis, Patients, Payments, Schedules, Services, Totems, Users]),
 
   ],
-  controllers: [AppController, CompanyController, UserController, PanelController, TotemController, SchedulerController],
-  providers: [AppService, UsersService, CompanyService, PanelService, TotemService, SchedulerService],
+  controllers: [AppController, UserController, CompanyController, PanelController, TotemController, SchedulerController, PatientController],
+  providers: [AppService, UsersService, CompanyService, PanelService, TotemService, SchedulerService, PatientService],
 })
 export class AppModule { }
