@@ -10,7 +10,7 @@ export class TotemController {
     ) { }
 
 
-    @UseGuards(JwtAuthGuard)
+    // @UseGuards(JwtAuthGuard)
     @Post()
     index(@Body() body: TotemFetchDto) {
         return this.totemService.findOneByUUID(body);
