@@ -39,6 +39,24 @@ export class SchedulerService {
         return schedules;
     }
 
+    async findSheduleTodayAmount(): Promise<any | undefined> {
+        let schedules = new Array<Schedules>();
+
+        let currentData = new Date();
+        const list = await this.schedulerRepository.find({ status: true });
+
+        list.forEach((scheduler) => {
+            const date = scheduler.data_atendimento.getDate().toFixed();
+            const date2 = currentData.getDate().toFixed();
+            if (date == date) {
+                schedules.push(scheduler);
+            }
+        });
+        console.log(schedules.length);
+
+        return { size: schedules.length };
+    }
+
     async findSheduleMonth(): Promise<any> {
         let schedules01 = new Array<Schedules>();
         let schedules02 = new Array<Schedules>();

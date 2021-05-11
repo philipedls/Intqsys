@@ -23,6 +23,11 @@ export class SchedulerController {
         return this.schedulerService.findSheduleToday();
     }
 
+    @Get('today/amount')
+    indexByTodayAmount() {
+        return this.schedulerService.findSheduleTodayAmount();
+    }
+
     // @UseGuards(JwtAuthGuard)
     @Get('month')
     indexByMonth() {
