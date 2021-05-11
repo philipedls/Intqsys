@@ -30,6 +30,12 @@ export class SchedulerController {
     }
 
     // @UseGuards(JwtAuthGuard)
+    @Get('canceled')
+    indexByCanceled() {
+        return this.schedulerService.findSheduleCanceled();
+    }
+
+    // @UseGuards(JwtAuthGuard)
     @Post('add')
     store(@Body() body: SchedulerReciveDto) {
         return this.schedulerService.store(body);

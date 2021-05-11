@@ -39,21 +39,106 @@ export class SchedulerService {
         return schedules;
     }
 
-    async findSheduleMonth(): Promise<Schedules[] | undefined> {
-        let schedules = new Array<Schedules>();
+    async findSheduleMonth(): Promise<any> {
+        let schedules01 = new Array<Schedules>();
+        let schedules02 = new Array<Schedules>();
+        let schedules03 = new Array<Schedules>();
+        let schedules04 = new Array<Schedules>();
+        let schedules05 = new Array<Schedules>();
+        let schedules06 = new Array<Schedules>();
+        let schedules07 = new Array<Schedules>();
+        let schedules08 = new Array<Schedules>();
+        let schedules09 = new Array<Schedules>();
+        let schedules10 = new Array<Schedules>();
+        let schedules11 = new Array<Schedules>();
+        let schedules12 = new Array<Schedules>();
 
         let currentData = new Date();
-        const list = await this.schedulerRepository.find({ where: { status: true } });
+        const list = await this.schedulerRepository.find({ status: true, cancelado: false });
+        // console.log(currentData);
+
+        // console.log(currentData.getDate());
 
         list.forEach((scheduler) => {
-            if (scheduler.data_atendimento.getMonth = currentData.getMonth) {
-                schedules.push(scheduler);
+            const mes = scheduler.data_atendimento.getMonth();
+            console.log(mes)
+            // if (date == mes) {
+            // schedules01.push(scheduler);
+            // }
+            switch (mes) {
+                case 1:
+                    schedules01.push(scheduler);
+                    break;
+
+                case 2:
+                    schedules02.push(scheduler);
+                    break;
+
+                case 3:
+                    schedules03.push(scheduler);
+                    break;
+
+                case 4:
+                    schedules04.push(scheduler);
+                    break;
+
+                case 5:
+                    schedules05.push(scheduler);
+                    break;
+
+                case 6:
+                    schedules06.push(scheduler);
+                    break;
+
+                case 7:
+                    schedules07.push(scheduler);
+                    break;
+
+                case 8:
+                    schedules08.push(scheduler);
+                    break;
+
+                case 9:
+                    schedules09.push(scheduler);
+                    break;
+
+                case 10:
+                    schedules10.push(scheduler);
+                    break;
+
+                case 11:
+                    schedules11.push(scheduler);
+                    break;
+
+                case 12:
+                    schedules12.push(scheduler);
+                    break;
+
+                default:
+                    break;
             }
         });
+        // console.log(schedules);
 
-        console.log(schedules);
+        return {
+            Ja: schedules01,
+            Fe: schedules02,
+            Ma: schedules03,
+            Ap: schedules04,
+            Mai: schedules05,
+            Ju: schedules06,
+            Jul: schedules07,
+            Au: schedules08,
+            Se: schedules09,
+            Oc: schedules10,
+            No: schedules11,
+            De: schedules12
+        };
+    }
 
-        return schedules;
+    async findSheduleCanceled(): Promise<Schedules[] | undefined> {
+
+        return await this.schedulerRepository.find({ cancelado: true });
     }
 
     store(body: SchedulerReciveDto): Promise<Schedules> {
