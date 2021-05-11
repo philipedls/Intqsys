@@ -11,7 +11,7 @@ export class CompanyController {
 
 
     // @UseGuards(JwtAuthGuard)
-    @Post()
+    @Post('fetch')
     index(@Body() body: CompanyFetch) {
         return this.companyService.findOneByUUID(body);
     }
@@ -19,7 +19,6 @@ export class CompanyController {
     // @UseGuards(JwtAuthGuard)
     @Post()
     store(@Body() body) {
-       
         return this.companyService.store(body);
     }
 
