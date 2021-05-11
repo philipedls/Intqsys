@@ -35,7 +35,7 @@ export class UserController {
         return this.userService.store(body);
     }
 
-    // @UseGuards(AuthGuard('local'))
+    @UseGuards(AuthGuard('local'))
     @Post('signin')
     async signin(@Request() req) {
         return this.authService.authSignIn(req.user);
