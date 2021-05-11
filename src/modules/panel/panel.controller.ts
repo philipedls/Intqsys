@@ -1,6 +1,8 @@
-import { Body, Controller, Post, UseGuards } from "@nestjs/common";
+import { Body, Controller, Get, Post, UseGuards } from "@nestjs/common";
+import { Paineis } from "src/models/panels.models";
 import { JwtAuthGuard } from "../auth/jwt-auth.guard";
-import { PanelFetchDto } from "./panel.fetch";
+import { PanelDto } from "./Dto/panel.dto";
+import { PanelFetchDto } from "./Dto/panel.fetch.dto";
 import { PanelService } from "./panel.service";
 
 
@@ -10,18 +12,23 @@ export class PanelController {
         private readonly panelService: PanelService
     ) { }
 
+    // @UseGuards(JwtAuthGuard)
+    @Get()
+    index(): Promise<Paineis[]> {
+        return this.panelService.index();
+    }
+
 
     // @UseGuards(JwtAuthGuard)
     @Post()
-    index(@Body() body: PanelFetchDto) {
+    indexByUUID(@Body() body: PanelFetchDto): Promise<Paineis> {
         return this.panelService.findOneByUUID(body);
     }
 
     // @UseGuards(JwtAuthGuard)
-    // @Post()
-    // store(@Body() body) {
-    //     const company = this.companyRepository.create(body);
-    //     return this.companyRepository.save(company);
-    // }
+    @Post('add')
+    store(@Body() body: PanelDto) {
+        return this.panelService.store(body);
+    }
 
 }

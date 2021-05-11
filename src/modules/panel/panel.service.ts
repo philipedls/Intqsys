@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Paineis } from 'src/models/panels.models';
 import { Repository } from 'typeorm';
-import { PanelFetchDto } from './panel.fetch';
+import { PanelFetchDto } from './Dto/panel.fetch.dto';
 
 @Injectable()
 export class PanelService {
@@ -12,8 +12,16 @@ export class PanelService {
         private panelRepository: Repository<Paineis>
     ) { }
 
+    index(): Promise<Paineis[] | undefined> {
+        return this.panelRepository.find();
+    }
 
-    async findOneByUUID(data: PanelFetchDto): Promise<Paineis | undefined> {
+    store(data): Promise<Paineis[]> {
+        const panel = this.panelRepository.create(data);
+        return this.panelRepository.save(panel);
+    }
+
+    findOneByUUID(data: PanelFetchDto): Promise<Paineis | undefined> {
         return this.panelRepository.findOne({ id_painel: data.id_painel });
     }
 }
