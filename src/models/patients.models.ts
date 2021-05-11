@@ -5,7 +5,7 @@ import { Schedules } from "./schedules.models";
 export class Patients {
 
     @PrimaryGeneratedColumn('uuid')
-    id_patient: string
+    id_paciente: string
 
     @Column()
     @Generated('increment')
