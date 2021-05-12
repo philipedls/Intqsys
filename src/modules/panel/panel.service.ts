@@ -12,8 +12,20 @@ export class PanelService {
         private panelRepository: Repository<Paineis>
     ) { }
 
-    index(): Promise<Paineis[] | undefined> {
-        return this.panelRepository.find();
+    async index(): Promise<any[]> {
+        const totems = Array();
+        const totemsResult = await this.panelRepository.find();
+
+        for (let index = 0; index < totemsResult.length; index++) {
+            const { id_painel, titulo, status } = totemsResult[index];
+            totems.push({
+                id_painel: id_painel,
+                titulo: titulo,
+                status: status
+            });
+        }
+
+        return totems;
     }
 
     store(data): Promise<Paineis[]> {

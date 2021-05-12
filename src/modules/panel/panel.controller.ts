@@ -14,7 +14,7 @@ export class PanelController {
 
     // @UseGuards(JwtAuthGuard)
     @Get()
-    index(): Promise<Paineis[]> {
+    index(): Promise<any[]> {
         return this.panelService.index();
     }
 

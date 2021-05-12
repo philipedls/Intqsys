@@ -25,6 +25,9 @@ export class Totems {
     totem_col: string
 
     @Column()
+    status: boolean
+
+    @Column()
     data_cancelado: Date
 
     @Column()
