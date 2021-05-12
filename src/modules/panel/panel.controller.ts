@@ -31,4 +31,15 @@ export class PanelController {
         return this.panelService.store(body);
     }
 
+    @Get('amount')
+    indexAmount() {
+        return this.panelService.findePanelAmount();
+    }
+
+    @Get('amount/activated')
+    indexAmountActivated() {
+        return this.panelService.findePanelActivatedAmount();
+    }
+
+
 }

@@ -42,7 +42,7 @@ export class CreatePanelsTable1619052615539 implements MigrationInterface {
                     },
                     {
                         name: 'cancelado',
-                        type: 'varchar',
+                        type: 'boolean',
                         isNullable: true
                     },
                     {

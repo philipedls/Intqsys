@@ -24,4 +24,16 @@ export class PanelService {
     findOneByUUID(data: PanelFetchDto): Promise<Paineis | undefined> {
         return this.panelRepository.findOne({ id_painel: data.id_painel });
     }
+
+    async findePanelAmount(): Promise<any | undefined> {
+        const totems = await this.panelRepository.find();
+
+        return { size: totems.length };
+    }
+
+    async findePanelActivatedAmount(): Promise<any | undefined> {
+        const totems = await this.panelRepository.find({ cancelado: false });
+
+        return { size: totems.length };
+    }
 }
