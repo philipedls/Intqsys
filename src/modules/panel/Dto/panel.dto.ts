@@ -3,4 +3,5 @@ export class PanelDto {
     status: boolean;
     cancelado: boolean;
     empresas_id_empresa: string;
+    codigo: string;ƒ
 }

@@ -18,7 +18,6 @@ export class PanelController {
         return this.panelService.index();
     }
 
-
     // @UseGuards(JwtAuthGuard)
     @Post()
     indexByUUID(@Body() body: PanelFetchDto): Promise<Paineis> {
@@ -31,11 +30,13 @@ export class PanelController {
         return this.panelService.store(body);
     }
 
+    // @UseGuards(JwtAuthGuard)
     @Get('amount')
     indexAmount() {
         return this.panelService.findePanelAmount();
     }
 
+    // @UseGuards(JwtAuthGuard)
     @Get('amount/activated')
     indexAmountActivated() {
         return this.panelService.findePanelActivatedAmount();

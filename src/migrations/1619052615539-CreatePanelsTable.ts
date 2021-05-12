@@ -46,6 +46,11 @@ export class CreatePanelsTable1619052615539 implements MigrationInterface {
                         isNullable: true
                     },
                     {
+                        name: 'codigo',
+                        type: 'varchar',
+                        isNullable: true
+                    },
+                    {
                         name: 'data_cancelamento',
                         type: 'timestamp',
                         isNullable: true
