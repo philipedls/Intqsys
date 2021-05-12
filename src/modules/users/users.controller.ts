@@ -56,12 +56,17 @@ export class UserController {
     async resetPassword(
         @Param('token') token: string,
         @Body(ValidationPipe) changePasswordDto: ChangePasswordDto,
-    ): Promise<{ message: string }> {
+    ) {
         await this.authService.resetPassword(token, changePasswordDto);
 
         return {
             message: 'Senha alterada com sucesso',
         };
+    }
+
+    @Get(':id')
+    get(@Param('id') id: string) {
+        return id;
     }
 }
 

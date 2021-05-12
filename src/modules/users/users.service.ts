@@ -23,7 +23,8 @@ export class UsersService {
         if (!user) {
             data.senha = bcrypt.hashSync(data.senha, 8)
             return this.userRepository.save(data)
-                .then((result) => {
+                .then((res) => {
+                    const { senha, ...result } = res;
                     return {
                         status: true,
                         // mensagem: "Usuário cadastrado com sucesso",
@@ -71,15 +72,12 @@ export class UsersService {
     }
 
     async findOneByRecoverToken(token: string) {
-        return this.userRepository.findOne({ token_recuperar_senha: token }, { select: ['id'] });
+        return this.userRepository.findOne({ token_recuperar_senha: token });
     }
 
-    async changePassword(id: string, password: string) {
-        const user = await this.userRepository.findOne(id);
+    async changePassword(user: Users, password: string) {
+        // const user = await this.userRepository.findOne({ id_usuario: id }); 
         user.senha = bcrypt.hashSync(password, 8);
-        // user.senha = await bcrypt.genSalt();
-        // user.password = await this.userRepository.hashPassword(password, user.salt);
-        // user.recoverToken = null;
         return this.userRepository.save(user);
     }
 }
