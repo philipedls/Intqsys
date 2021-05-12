@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Paineis } from 'src/models/panels.models';
 import { Repository } from 'typeorm';
+import { PanelDto } from './Dto/panel.dto';
 import { PanelFetchDto } from './Dto/panel.fetch.dto';
 
 @Injectable()
@@ -17,9 +18,9 @@ export class PanelService {
         const totemsResult = await this.panelRepository.find();
 
         for (let index = 0; index < totemsResult.length; index++) {
-            const { id_painel, titulo, status } = totemsResult[index];
+            const { codigo, titulo, status } = totemsResult[index];
             totems.push({
-                id_painel: id_painel,
+                codigo: codigo,
                 titulo: titulo,
                 status: status
             });
@@ -28,7 +29,17 @@ export class PanelService {
         return totems;
     }
 
-    store(data): Promise<Paineis[]> {
+    store(data: PanelDto): Promise<Paineis> {
+        data.codigo = Math.floor(9).toString()
+            + Math.floor(Math.random() * (10 + 1)).toString()
+            + Math.floor(Math.random() * (10 + 1)).toString()
+            + Math.floor(Math.random() * (10 + 1)).toString()
+            + Math.floor(Math.random() * (10 + 1)).toString()
+            + Math.floor(Math.random() * (10 + 1)).toString()
+            + Math.floor(Math.random() * (10 + 1)).toString()
+            + Math.floor(Math.random() * (10 + 1)).toString()
+            + Math.floor(Math.random() * (10 + 1)).toString();
+
         const panel = this.panelRepository.create(data);
         return this.panelRepository.save(panel);
     }
@@ -44,7 +55,7 @@ export class PanelService {
     }
 
     async findePanelActivatedAmount(): Promise<any | undefined> {
-        const totems = await this.panelRepository.find({ cancelado: false });
+        const totems = await this.panelRepository.find({ status: false });
 
         return { size: totems.length };
     }

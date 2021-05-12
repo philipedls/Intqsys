@@ -28,6 +28,9 @@ export class Paineis {
     cancelado: boolean
 
     @Column()
+    codigo: string
+
+    @Column()
     data_cancelamento: Date
 
     @Column('uuid')
