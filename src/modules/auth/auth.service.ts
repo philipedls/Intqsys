@@ -3,6 +3,8 @@ import { JwtService } from '@nestjs/jwt';
 import * as bcrypt from 'bcrypt';
 import { randomBytes } from 'crypto';
 import * as nodemailer from 'nodemailer';
+import { use } from 'passport';
+import { Users } from 'src/models/users.models';
 import { UsersRecoveryDto } from '../users/Dto/users.recovery';
 import { UsersService } from '../users/users.service';
 import { ChangePasswordDto } from './dto/changes.password.dto';
@@ -32,7 +34,7 @@ export class AuthService {
     }
 
     async changePassword(
-        id: string,
+        user: Users,
         changePasswordDto: ChangePasswordDto,
     ): Promise<void> {
         const { password, passwordConfirmation } = changePasswordDto;
@@ -40,7 +42,7 @@ export class AuthService {
         if (password != passwordConfirmation)
             throw new UnprocessableEntityException('As senhas não conferem');
 
-        await this.usersService.changePassword(id, password);
+        await this.usersService.changePassword(user, password);
     }
 
     async resetPassword(
@@ -51,7 +53,7 @@ export class AuthService {
         if (!user) throw new NotFoundException('Token inválido.');
 
         try {
-            await this.changePassword(user.id.toString(), changePasswordDto);
+            await this.changePassword(user, changePasswordDto);
         } catch (error) {
             throw error;
         }
@@ -65,6 +67,8 @@ export class AuthService {
 
         user.token_recuperar_senha = randomBytes(32).toString('hex');
         await this.usersService.update(user);
+
+        console.log(user.token_recuperar_senha);
 
         // create reusable transporter object using the default SMTP transport
         const transporter = nodemailer.createTransport({
