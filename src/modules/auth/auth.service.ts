@@ -96,7 +96,7 @@ export class AuthService {
                   <p>Olá, ${user.nome}</p>
                   <p>Você solicitou para redefinir sua senha de acesso ao GoFila. Para isso basta clicar no link abaixo para que você efetue essa alteração.</p>
                   <div style="margin: 20px auto; width: 120px; padding: 10px 20px; background-color: #442d52; border-radius: 5px">
-                    <a href="http://deployed.gofila.com.br/redefsenha/?token={{${user.token_recuperar_senha}}" target="_blank" rel="noopener noreferrer" style="text-decoration: none; color: #fcfcfc; font-size: 18px; margin: 0 auto;">Alterar Senha</a>
+                    <a href="http://localhost:3090/redefsenha/?token={{${user.token_recuperar_senha}}" target="_blank" rel="noopener noreferrer" style="text-decoration: none; color: #fcfcfc; font-size: 18px; margin: 0 auto;">Alterar Senha</a>
                   </div>
                   <p>Caso não foi você quem solicitou esta operação, pedimos que desconsidere este email.</p>
                 </div>
