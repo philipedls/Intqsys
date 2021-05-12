@@ -49,7 +49,7 @@ export class CreateTotemsTable1619052676138 implements MigrationInterface {
                         isNullable: true
                     },
                     {
-                        name: 'dat_cancelado',
+                        name: 'data_cancelado',
                         type: 'timestamp',
                         isNullable: true
                     },

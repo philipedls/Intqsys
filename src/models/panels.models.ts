@@ -25,7 +25,7 @@ export class Paineis {
     status: boolean
 
     @Column()
-    cancelado: string
+    cancelado: boolean
 
     @Column()
     data_cancelamento: Date
