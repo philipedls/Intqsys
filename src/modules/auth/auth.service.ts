@@ -35,19 +35,19 @@ export class AuthService {
 
     async changePassword(
         user: Users,
-        changePasswordDto,
+        changePasswordDto: ChangePasswordDto,
     ): Promise<void> {
-        // const { password, passwordConfirmation } = changePasswordDto;
+        const { password, passwordConfirmation } = changePasswordDto;
 
-        if (changePasswordDto.password != changePasswordDto.passwordConfirmation)
+        if (password != passwordConfirmation)
             throw new UnprocessableEntityException('As senhas não conferem');
 
-        await this.usersService.changePassword(user, changePasswordDto.password);
+        await this.usersService.changePassword(user, password);
     }
 
     async resetPassword(
         recoverToken: string,
-        changePasswordDto,
+        changePasswordDto: ChangePasswordDto,
     ): Promise<void> {
         const user = await this.usersService.findOneByRecoverToken(recoverToken);
         if (!user) throw new NotFoundException('Token inválido.');

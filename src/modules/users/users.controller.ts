@@ -57,10 +57,14 @@ export class UserController {
         @Param('token') token: string,
         @Body() changePasswordDto,
     ) {
-        await this.authService.resetPassword(token, changePasswordDto);
+        const fragmentsTokenOne = token.split('{');
+        const fragmentsTokenTwo = fragmentsTokenOne[fragmentsTokenOne.length - 1].split('}')
+        const refreshToken = fragmentsTokenTwo[0];
+
+        await this.authService.resetPassword(refreshToken, changePasswordDto);
 
         return {
-            message: 'Senha alterada com sucesso',
+            message: 'Senha alterada'
         };
     }
 
