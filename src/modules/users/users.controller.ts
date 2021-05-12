@@ -55,7 +55,7 @@ export class UserController {
     @Patch('/reset-password/:token')
     async resetPassword(
         @Param('token') token: string,
-        @Body(ValidationPipe) changePasswordDto: ChangePasswordDto,
+        @Body() changePasswordDto,
     ) {
         await this.authService.resetPassword(token, changePasswordDto);
 
