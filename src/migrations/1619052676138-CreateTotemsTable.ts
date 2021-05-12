@@ -32,8 +32,14 @@ export class CreateTotemsTable1619052676138 implements MigrationInterface {
                         default: 'now()'
                     },
                     {
+                        name: 'status',
+                        type: 'boolean',
+                        isNullable: true
+                    },
+                    {
                         name: 'cancelado',
-                        type: 'boolean'
+                        type: 'boolean',
+                        isNullable: true
                     },
                     {
                         name: 'titulo',
@@ -41,7 +47,8 @@ export class CreateTotemsTable1619052676138 implements MigrationInterface {
                     },
                     {
                         name: 'codigo',
-                        type: 'varchar'
+                        type: 'varchar',
+                        isNullable: true
                     },
                     {
                         name: 'totem_col',

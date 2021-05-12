@@ -1,5 +1,6 @@
 import { Body, Controller, Get, Post, UseGuards } from '@nestjs/common';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
+import { TotemDto } from './Dto/totem.dto';
 import { TotemFetchDto } from './Dto/totem.fetch.dto';
 import { TotemService } from './totem.service';
 
@@ -9,6 +10,11 @@ export class TotemController {
         private readonly totemService: TotemService
     ) { }
 
+    // @UseGuards(JwtAuthGuard)
+    @Get()
+    index() {
+        return this.totemService.index();
+    }
 
     // @UseGuards(JwtAuthGuard)
     @Post()
@@ -18,7 +24,7 @@ export class TotemController {
 
     // @UseGuards(JwtAuthGuard)
     @Get('amount')
-    index() {
+    indexAmount() {
         return this.totemService.findeTotemAmount()
     }
 
@@ -27,4 +33,11 @@ export class TotemController {
     indexActivated() {
         return this.totemService.findeTotemActivatedAmount()
     }
+
+    // @UseGuards(JwtAuthGuard)
+    @Post('add')
+    store(@Body() body: TotemDto) {
+        return this.totemService.store(body);
+    }
+
 }
