@@ -78,6 +78,7 @@ export class UsersService {
     async changePassword(user: Users, password: string) {
         // const user = await this.userRepository.findOne({ id_usuario: id }); 
         user.senha = bcrypt.hashSync(password, 8);
+        user.token_recuperar_senha = null;
         return this.userRepository.save(user);
     }
 }
