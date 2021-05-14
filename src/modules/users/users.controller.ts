@@ -56,21 +56,12 @@ export class UserController {
     async resetPassword(
         @Param('token') token: string,
         @Body() changePasswordDto,
-    ) {
-        const fragmentsTokenOne = token.split('{');
-        const fragmentsTokenTwo = fragmentsTokenOne[fragmentsTokenOne.length - 1].split('}')
-        const refreshToken = fragmentsTokenTwo[0];
-
-        await this.authService.resetPassword(refreshToken, changePasswordDto);
+    ): Promise<{ message: string }> {
+        await this.authService.resetPassword(token, changePasswordDto);
 
         return {
             message: 'Senha alterada'
         };
-    }
-
-    @Get(':id')
-    get(@Param('id') id: string) {
-        return id;
     }
 }
 
