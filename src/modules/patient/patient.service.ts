@@ -31,7 +31,13 @@ export class PatientService {
     }
 
     async store(data: PatientsDto): Promise<Patients> {
-        const patient = await this.patientRepository.create(data);
-        return this.patientRepository.save(patient);
+        const value = await this.patientRepository.findOne({ paciente_email: data.paciente_email });
+
+        if (value == null) {
+            const patient = await this.patientRepository.create(data);
+            return this.patientRepository.save(patient);
+        }
+
+        return value;
     }
 }
