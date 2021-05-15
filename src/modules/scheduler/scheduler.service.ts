@@ -2,8 +2,9 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Schedules } from 'src/models/schedules.models';
 import { Repository } from 'typeorm';
-import { SchedulerReciveDto } from './dto/scheduler.recive.dto';
-import { ScheduleFetchDto } from './schedule.fetch';
+import { SchedulerReciveDto } from './Dto/scheduler.recive.dto';
+import { ScheduleFetchDto } from './Dto/schedule.fetch';
+import { SchedulerDto } from './Dto/scheduler.dto';
 
 @Injectable()
 export class SchedulerService {
@@ -30,7 +31,7 @@ export class SchedulerService {
         list.forEach((scheduler) => {
             const date = scheduler.data_atendimento.getDate().toFixed();
             const date2 = currentData.getDate().toFixed();
-            if (date == date) {
+            if (date == date2) {
                 schedules.push(scheduler);
             }
         });
@@ -48,7 +49,7 @@ export class SchedulerService {
         list.forEach((scheduler) => {
             const date = scheduler.data_atendimento.getDate().toFixed();
             const date2 = currentData.getDate().toFixed();
-            if (date == date) {
+            if (date == date2) {
                 schedules.push(scheduler);
             }
         });
@@ -66,7 +67,7 @@ export class SchedulerService {
         list.forEach((scheduler) => {
             const date = scheduler.data_atendimento.getDate().toFixed();
             const date2 = currentData.getDate().toFixed();
-            if (date == date) {
+            if (date == date2) {
                 schedules.push(scheduler);
             }
         });
@@ -97,10 +98,7 @@ export class SchedulerService {
 
         list.forEach((scheduler) => {
             const mes = scheduler.data_atendimento.getMonth();
-            console.log(mes)
-            // if (date == mes) {
-            // schedules01.push(scheduler);
-            // }
+
             switch (mes) {
                 case 1:
                     schedules01.push(scheduler);
@@ -177,21 +175,26 @@ export class SchedulerService {
         return await this.schedulerRepository.find({ cancelado: true });
     }
 
-    store(body: SchedulerReciveDto): Promise<Schedules> {
+    store(data: SchedulerDto): Promise<Schedules> {
         let schedulerDate = new Date();
-        const list = body.data.split('/');
+        const list = data.data.split('/');
         schedulerDate.setDate(Number(list[0]));
         schedulerDate.setMonth(Number(list[1]));
         schedulerDate.setFullYear(Number(list[2]));
-        // schedulerDate.setMonth = body;
+        data.data_atendimento = schedulerDate;
 
-        let schedulerObj = {
-            codigo: body.codigo,
-            data_atendimento: schedulerDate,
-            status: body.status,
-            cancelado: body.cancelado
-        };
-        const scheduler = this.schedulerRepository.create(schedulerObj);
+        data.codigo = Math.floor(9).toString()
+            + Math.floor(Math.random() * (10 + 1)).toString()
+            + Math.floor(Math.random() * (10 + 1)).toString()
+            + Math.floor(Math.random() * (10 + 1)).toString()
+            + Math.floor(Math.random() * (10 + 1)).toString()
+            + Math.floor(Math.random() * (10 + 1)).toString()
+            + Math.floor(Math.random() * (10 + 1)).toString()
+            + Math.floor(Math.random() * (10 + 1)).toString()
+            + Math.floor(Math.random() * (10 + 1)).toString();
+
+
+        const scheduler = this.schedulerRepository.create(data);
         return this.schedulerRepository.save(scheduler);
     }
 }

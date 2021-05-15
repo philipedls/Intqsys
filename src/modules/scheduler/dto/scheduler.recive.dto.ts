@@ -1,7 +1,10 @@
 export class SchedulerReciveDto {
-    codigo: string;
+    paciente_nome: string;
+    paciente_telefone: string;
+    paciente_cpf: string;
+    paciente_email: string;
+    id_servico: string;
+    empresas_id_empresa: string;
     data: string;
-    id_agendamento: string;
-    status: boolean;
-    cancelado: boolean
+    hora: string;t
 }

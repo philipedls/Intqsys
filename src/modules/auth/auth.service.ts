@@ -3,7 +3,6 @@ import { JwtService } from '@nestjs/jwt';
 import * as bcrypt from 'bcrypt';
 import { randomBytes } from 'crypto';
 import * as nodemailer from 'nodemailer';
-import { use } from 'passport';
 import { Users } from 'src/models/users.models';
 import { UsersRecoveryDto } from '../users/Dto/users.recovery';
 import { UsersService } from '../users/users.service';
@@ -63,14 +62,13 @@ export class AuthService {
         const user = await this.usersService.findOneByEmail(body.email);
 
         if (!user)
-            throw new NotFoundException('Não há usuário cadastrado com esse email.');
+            throw new NotFoundException('There is no user registered with this email');
 
         user.token_recuperar_senha = randomBytes(32).toString('hex');
         await this.usersService.update(user);
 
         console.log(user.token_recuperar_senha);
 
-        // create reusable transporter object using the default SMTP transport
         const transporter = nodemailer.createTransport({
             host: 'mail.gofila.com.br',
             port: 465,
@@ -80,8 +78,6 @@ export class AuthService {
                 pass: process.env.NODE_MAILER_EM_PASS, // generated ethereal password
             },
         });
-
-        // href="http://localhost:3000/reset-password/?token={{${user.token_recuperar_senha}}"
 
         const tokenRecoverPassword = user.token_recuperar_senha
 
@@ -106,31 +102,5 @@ export class AuthService {
             </body>
           </html>`, // html body
         });
-
-        // const mail: ISendMailOptions = {
-        //     to: user.email,
-        //     from: 'philipe@sparkmobile.com.br',
-        //     subject: 'Recupere a sua senha',
-        //     // template: 'recover-password',
-        //     context: {
-        //         token: user.token_recuperar_senha,
-        //     },
-        //     text: `Oi ${user.nome}, tudo bem?`,
-        //     html: `<html>
-        //         <body>
-        //           <center>
-        //             <div style="background-color: #d3d3d3; max-width: 840px; margin: 0; padding: 30px;">
-        //               <h2 style="color: #292536; text-align: center">Solicitação de alteração de senha</h2>
-        //               <p>Para alterar sua senha clique no botão abaixo, ou acesse o seguinte link: </p>
-        //               <div style="margin: 20px auto; width: 120px; padding: 10px 20px; background-color: #442d52; border-radius: 5px">
-        //                 <a href="http://url-do-front/reset-password/?token={{token}}" target="_blank" rel="noopener noreferrer" style="text-decoration: none; color: #fcfcfc; font-size: 18px; margin: 0 auto;">Alterar Senha</a>
-        //               </div>
-        //             </div>
-        //           </center>
-        //         </body>
-        //       </html>`
-        // };
-
-        // await this.mailerService.sendMail(mail).catch((err) => console.log(err));
     }
 }
