@@ -90,9 +90,8 @@ export class SchedulerService {
         let schedules11 = new Array<Schedules>();
         let schedules12 = new Array<Schedules>();
 
-        let currentData = new Date();
         const list = await this.schedulerRepository.find({ status: true, cancelado: false });
-        // console.log(currentData);
+
 
         // console.log(currentData.getDate());
 
@@ -175,23 +174,27 @@ export class SchedulerService {
         return await this.schedulerRepository.find({ cancelado: true });
     }
 
-    store(data: SchedulerDto): Promise<Schedules> {
+    async findOndeByDate(date: Date): Promise<Schedules[]> {
+        const list = await this.schedulerRepository.find();
+        const schedulers = Array<Schedules>();
+
+        for (let index = 0; index < list.length; index++) {
+            if (date.getDate() == list[index].data_atendimento.getDate() && date.getMonth() == list[index].data_atendimento.getMonth()) {
+                schedulers.push(list[index]);
+            }
+        }
+
+        return schedulers;
+    }
+
+    store(data: SchedulerDto, hours: number, min: number): Promise<Schedules> {
         let schedulerDate = new Date();
         const list = data.data.split('/');
         schedulerDate.setDate(Number(list[0]));
-        schedulerDate.setMonth(Number(list[1]));
+        schedulerDate.setMonth(Number(list[1]) - 1);
         schedulerDate.setFullYear(Number(list[2]));
+        schedulerDate.setHours(hours, min)
         data.data_atendimento = schedulerDate;
-
-        data.codigo = Math.floor(9).toString()
-            + Math.floor(Math.random() * (10 + 1)).toString()
-            + Math.floor(Math.random() * (10 + 1)).toString()
-            + Math.floor(Math.random() * (10 + 1)).toString()
-            + Math.floor(Math.random() * (10 + 1)).toString()
-            + Math.floor(Math.random() * (10 + 1)).toString()
-            + Math.floor(Math.random() * (10 + 1)).toString()
-            + Math.floor(Math.random() * (10 + 1)).toString()
-            + Math.floor(Math.random() * (10 + 1)).toString();
 
 
         const scheduler = this.schedulerRepository.create(data);
