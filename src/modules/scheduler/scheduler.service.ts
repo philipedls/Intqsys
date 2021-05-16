@@ -4,6 +4,7 @@ import { Schedules } from 'src/models/schedules.models';
 import { Repository } from 'typeorm';
 import { SchedulerEntentyDto } from './dto/scheduler.ententy.dto';
 import { SchedulerFetchDataDto } from './dto/scheduler.fetch.data.dto';
+import * as nodemailer from 'nodemailer';
 
 @Injectable()
 export class SchedulerService {
@@ -184,6 +185,52 @@ export class SchedulerService {
         }
 
         return schedulers;
+    }
+
+    private genNumAndLetter(cont: number) {
+        let randomNum = Math.round(Math.random() * cont);
+        return randomNum
+    }
+
+    async notifyScheduler(code: string, email: string, name: string): Promise<any> {
+
+        var letra_num = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'H', 'I', 'J', 'K', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'];
+
+        let a = letra_num[this.genNumAndLetter(letra_num.length)];
+        let b = letra_num[this.genNumAndLetter(letra_num.length)];
+        let c = letra_num[this.genNumAndLetter(letra_num.length)];
+        let d = letra_num[this.genNumAndLetter(letra_num.length)];
+        let e = letra_num[this.genNumAndLetter(letra_num.length)];
+
+        const confirmationCode = a.concat(b, c, d, e);
+
+        const transporter = nodemailer.createTransport({
+            host: 'mail.gofila.com.br',
+            port: 465,
+            secure: true, // true for 465, false for other ports
+            auth: {
+                user: 'developer@gofila.com.br', // generated ethereal user
+                pass: process.env.NODE_MAILER_EM_PASS, // generated ethereal password
+            },
+        });
+
+        return await transporter.sendMail({
+            from: "developer@gofila.com.br", // sender address
+            to: email, // list of receivers
+            subject: "GoFila - Redefinição de senha", // Subject line
+            text: `${name},?
+            
+            Código de confirmação: ${confirmationCode}
+
+            Dados necessários:
+            *
+            *
+            
+            Não há necessidade de fazer check-in ou retirar ficha. Ao chegar, basta sentar e esperar a sua vez. Os últimos quatro dígitos do seu número (${code.substring(code.length - 4, code.length)}) serão utilizados como sua ficha de atendimento.
+            Quando a sua vez chegar, você verá o seu número no monitor, além de receber uma notificação no celular;
+            `, // plain text body
+            // html body
+        });
     }
 
     store(data: SchedulerEntentyDto, hours: number, min: number): Promise<Schedules> {
