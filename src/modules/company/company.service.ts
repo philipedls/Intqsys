@@ -12,6 +12,10 @@ export class CompanyService {
         private companyRepository: Repository<Companies>
     ) { }
 
+    index(): Promise<Companies[] | undefined> {
+        return this.companyRepository.find();
+    }
+
 
     async findOneByUUID(data: CompanyFetch): Promise<Companies | undefined> {
         return this.companyRepository.findOne({ id_empresa: data.id_empresa });
