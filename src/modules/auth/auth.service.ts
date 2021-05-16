@@ -27,9 +27,11 @@ export class AuthService {
 
     async authSignIn(user: any) {
         const payload = { username: user.username, sub: user.userId };
-        return {
-            access_token: this.jwtService.sign(payload),
-        };
+
+        return this.jwtService.sign(payload);
+        // return {
+        //     access_token: this.jwtService.sign(payload),
+        // };
     }
 
     async changePassword(
