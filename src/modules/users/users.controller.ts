@@ -9,6 +9,7 @@ import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { UsersFetchUUIDDto } from './Dto/users.fetch';
 import { UsersRecoveryDto } from './Dto/users.recovery';
 import { ChangePasswordDto } from '../auth/dto/changes.password.dto';
+import { use } from 'passport';
 
 @Controller('user')
 export class UserController {
@@ -38,7 +39,14 @@ export class UserController {
     @UseGuards(AuthGuard('local'))
     @Post('signin')
     async signin(@Request() req) {
-        return this.authService.authSignIn(req.user);
+        const access_token = await this.authService.authSignIn(req.user);
+
+        const { token, token_recuperar_senha, ...result } = req.user
+
+        return {
+            access_token: access_token,
+            data: result
+        }
     }
 
     // @UseGuards(AuthGuard('local'))
