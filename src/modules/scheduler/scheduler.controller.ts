@@ -116,6 +116,9 @@ export class SchedulerController {
             cancelado: false,
             data_atendimento: null
         }
-        return this.schedulerService.store(schedulerData, Number(listHours[0]), Number(listHours[1]));
+        const result = await this.schedulerService.store(schedulerData, Number(listHours[0]), Number(listHours[1]));
+        const nofifyResponse = await this.schedulerService.notifyScheduler(result.codigo, patient.paciente_email, patient.paciente_nome);
+
+        return { result: result, notify: nofifyResponse }
     }
 }
