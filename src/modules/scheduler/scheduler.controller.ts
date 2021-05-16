@@ -1,12 +1,11 @@
-import { Body, Controller, Get, HttpException, HttpStatus, Post, UseGuards } from '@nestjs/common';
-import { JwtAuthGuard } from '../auth/jwt-auth.guard';
+import { Body, Controller, Get, HttpException, HttpStatus, Post } from '@nestjs/common';
 import { HourlyDto } from '../hourly/Dto/hourly.dto';
 import { HourlyService } from '../hourly/hourly.service';
 import { PatientsDto } from '../patient/Dto/patients.dto';
 import { PatientService } from '../patient/patient.service';
-import { ScheduleFetchDto } from './Dto/schedule.fetch';
-import { SchedulerDto } from './Dto/scheduler.dto';
-import { SchedulerReciveDto } from './Dto/scheduler.recive.dto';
+import { SchedulerEntentyDto } from './dto/scheduler.ententy.dto';
+import { SchedulerFetchDataDto } from './dto/scheduler.fetch.data.dto';
+import { SchedulerReciverDto } from './dto/scheduler.reciver.dto';
 import { SchedulerService } from './scheduler.service';
 
 @Controller('scheduler')
@@ -19,7 +18,7 @@ export class SchedulerController {
 
     // @UseGuards(JwtAuthGuard)
     @Post()
-    index(@Body() body: ScheduleFetchDto) {
+    index(@Body() body: SchedulerFetchDataDto) {
         return this.schedulerService.findOneByUUID(body);
     }
 
@@ -54,7 +53,7 @@ export class SchedulerController {
 
     // @UseGuards(JwtAuthGuard)
     @Post('add')
-    async store(@Body() body: SchedulerReciveDto) {
+    async store(@Body() body: SchedulerReciverDto) {
 
         const listHours = body.hora.split(':');
 
@@ -106,7 +105,7 @@ export class SchedulerController {
             + Math.floor(Math.random() * (10 + 1)).toString()
             + Math.floor(Math.random() * (10 + 1)).toString();
 
-        const schedulerData: SchedulerDto = {
+        const schedulerData: SchedulerEntentyDto = {
             codigo: code,
             data: body.data,
             horarios_id_horario: hourly.id_horario,

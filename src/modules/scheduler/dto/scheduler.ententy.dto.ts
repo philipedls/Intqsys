@@ -1,4 +1,4 @@
-export class SchedulerDto {
+export class SchedulerEntentyDto {
     codigo: string;
     data: string;
     status: boolean;

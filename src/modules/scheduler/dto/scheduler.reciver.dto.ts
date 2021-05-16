@@ -1,4 +1,4 @@
-export class SchedulerReciveDto {
+export class SchedulerReciverDto {
     paciente_nome: string;
     paciente_telefone: string;
     paciente_cpf: string;

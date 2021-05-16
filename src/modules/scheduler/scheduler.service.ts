@@ -2,9 +2,8 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Schedules } from 'src/models/schedules.models';
 import { Repository } from 'typeorm';
-import { SchedulerReciveDto } from './Dto/scheduler.recive.dto';
-import { ScheduleFetchDto } from './Dto/schedule.fetch';
-import { SchedulerDto } from './Dto/scheduler.dto';
+import { SchedulerEntentyDto } from './dto/scheduler.ententy.dto';
+import { SchedulerFetchDataDto } from './dto/scheduler.fetch.data.dto';
 
 @Injectable()
 export class SchedulerService {
@@ -15,7 +14,7 @@ export class SchedulerService {
     ) { }
 
 
-    async findOneByUUID(data: ScheduleFetchDto): Promise<Schedules | undefined> {
+    async findOneByUUID(data: SchedulerFetchDataDto): Promise<Schedules | undefined> {
         return this.schedulerRepository.findOne({ id_agendamento: data.id_agendamento });
     }
 
@@ -187,7 +186,7 @@ export class SchedulerService {
         return schedulers;
     }
 
-    store(data: SchedulerDto, hours: number, min: number): Promise<Schedules> {
+    store(data: SchedulerEntentyDto, hours: number, min: number): Promise<Schedules> {
         let schedulerDate = new Date();
         const list = data.data.split('/');
         schedulerDate.setDate(Number(list[0]));
