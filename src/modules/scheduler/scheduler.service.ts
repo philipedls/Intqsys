@@ -217,17 +217,17 @@ export class SchedulerService {
         return await transporter.sendMail({
             from: "developer@gofila.com.br", // sender address
             to: email, // list of receivers
-            subject: "GoFila - Redefinição de senha", // Subject line
-            text: `${name},?
-            
-            Código de confirmação: ${confirmationCode}
+            subject: "GoFila - Agendamento", // Subject line
+            text: `${name},
+    
+Código de confirmação: ${confirmationCode}
 
-            Dados necessários:
-            *
-            *
-            
-            Não há necessidade de fazer check-in ou retirar ficha. Ao chegar, basta sentar e esperar a sua vez. Os últimos quatro dígitos do seu número (${code.substring(code.length - 4, code.length)}) serão utilizados como sua ficha de atendimento.
-            Quando a sua vez chegar, você verá o seu número no monitor, além de receber uma notificação no celular;
+Dados necessários:
+*
+*
+
+Não há necessidade de fazer check-in ou retirar ficha. Ao chegar, basta sentar e esperar a sua vez. Os últimos quatro dígitos do seu número (${code.substring(code.length - 4, code.length)}) serão utilizados como sua ficha de atendimento.
+Quando a sua vez chegar, você verá o seu número no monitor, além de receber uma notificação no celular.
             `, // plain text body
             // html body
         });
