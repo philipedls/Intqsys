@@ -249,6 +249,12 @@ Quando a sua vez chegar, você verá o seu número no monitor, além de receber 
         const scheduler = this.schedulerRepository.create(data);
         return this.schedulerRepository.save(scheduler);
     }
+
+    storeWithoutHours(data: SchedulerEntentyDto, date: Date): Promise<Schedules> {
+        data.data_atendimento = date;
+        const scheduler = this.schedulerRepository.create(data);
+        return this.schedulerRepository.save(scheduler);
+    }
     async findSheduleTodayDate(date: string): Promise<Schedules[] | undefined> {
         const schedules = new Array<Schedules>();
         const dataList = date.split('-');
