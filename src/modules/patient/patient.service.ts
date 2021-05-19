@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Patients } from 'src/models/patients.models';
+import { Schedules } from 'src/models/schedules.models';
 import { Repository } from 'typeorm';
 import { PatientFechDto } from './Dto/patient.fetch.dto';
 import { PatientFetchListDto } from './Dto/patient.fetch.list.dto';
@@ -39,5 +40,20 @@ export class PatientService {
         }
 
         return value;
+    }
+
+    async finQueuePatients(list: Schedules[]): Promise<any> {
+        const patientsQueue = Array();
+
+        for (let index = 0; index < list.length; index++) {
+            const patient = await this.patientRepository.findOne({ id_paciente: list[index].pacientes_id_paciente });
+
+            patientsQueue.push({
+                dados_paciente: patient,
+                codigo_fila: list[index].codigo
+            });
+        }
+
+        return patientsQueue;
     }
 }
