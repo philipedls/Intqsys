@@ -56,13 +56,22 @@ export class SchedulerController {
     async store(@Body() body: SchedulerReciverDto) {
 
         const listHours = body.hora.split(':');
+        const list = body.data.split('-');
+        // console.log(list);
 
-        const schedulerDate = new Date();
-        const list = body.data.split('/');
-        schedulerDate.setDate(Number(list[0]));
-        schedulerDate.setMonth(Number(list[1]) - 1);
-        schedulerDate.setFullYear(Number(list[2]));
-        schedulerDate.setHours(Number(listHours[0]), Number(listHours[1]));
+        const day: number = Number(list[2]);
+        const month: number = Number(list[1]);
+        const year: number = Number(list[0]);
+
+        // let dataConcat = `${day}/${month}/${year}`;
+        // console.log(dataConcat);
+
+
+        const schedulerDate = new Date(year, month, day, Number(listHours[0]), Number(listHours[0]));
+
+        let data = `${schedulerDate.getDate()}/${schedulerDate.getMonth()}/${schedulerDate.getFullYear()}`;
+        console.log(schedulerDate);
+
 
         const schedulers = await this.schedulerService.findOndeByDate(schedulerDate);
 
@@ -116,7 +125,7 @@ export class SchedulerController {
             cancelado: false,
             data_atendimento: null
         }
-        const result = await this.schedulerService.store(schedulerData, Number(listHours[0]), Number(listHours[1]));
+        const result = await this.schedulerService.storeWithoutHours(schedulerData, schedulerDate);
         const nofifyResponse = await this.schedulerService.notifyScheduler(result.codigo, patient.paciente_email, patient.paciente_nome);
 
         return { result: result, notify: nofifyResponse }
