@@ -67,7 +67,10 @@ export class SchedulerService {
         list.forEach((scheduler) => {
             const date = scheduler.data_atendimento.getDate().toFixed();
             const date2 = currentData.getDate().toFixed();
-            if (date == date2) {
+
+            const month = scheduler.data_atendimento.getMonth().toFixed();
+            const month2 = currentData.getMonth().toFixed();
+            if (date == date2 && month == month2) {
                 schedules.push(scheduler);
             }
         });
@@ -245,5 +248,36 @@ Quando a sua vez chegar, você verá o seu número no monitor, além de receber 
 
         const scheduler = this.schedulerRepository.create(data);
         return this.schedulerRepository.save(scheduler);
+    }
+    async findSheduleTodayDate(date: string): Promise<Schedules[] | undefined> {
+        const schedules = new Array<Schedules>();
+        const dataList = date.split('-');
+
+        const day = dataList[0];
+        const monthParam = parseInt(dataList[1]).toFixed();
+        // console.log(`${day}/${month}`);
+
+        const currentData = new Date();
+
+        const list = await this.schedulerRepository.find();
+
+        list.forEach((scheduler) => {
+            // const schedulerDay = scheduler.data_atendimento.getDate().toFixed();
+            // const schedulerMonth = scheduler.data_atendimento.getMonth().toFixed();
+            // console.log(`${schedulerDay}/${schedulerMonth}`);
+
+            const date = scheduler.data_atendimento.getDate().toFixed();
+            const date2 = currentData.getDate().toFixed();
+
+            const month = (scheduler.data_atendimento.getMonth() + 1).toFixed();
+            const month2 = currentData.getMonth().toFixed();
+
+            console.log(`Currente Data: ${month} | Data Param: ${monthParam}`);
+            if (date == day && month == monthParam) {
+                schedules.push(scheduler);
+            }
+        });
+
+        return schedules;
     }
 }

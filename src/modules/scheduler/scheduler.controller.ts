@@ -1,4 +1,4 @@
-import { Body, Controller, Get, HttpException, HttpStatus, Post } from '@nestjs/common';
+import { Body, Controller, Get, HttpException, HttpStatus, Param, Post } from '@nestjs/common';
 import { HourlyDto } from '../hourly/Dto/hourly.dto';
 import { HourlyService } from '../hourly/hourly.service';
 import { PatientsDto } from '../patient/Dto/patients.dto';
@@ -121,4 +121,18 @@ export class SchedulerController {
 
         return { result: result, notify: nofifyResponse }
     }
+
+    // @UseGuards(JwtAuthGuard)
+    @Get('queue/:date')
+    async indexQueue(@Param() param) {
+        const schedulers = await this.schedulerService.findSheduleTodayDate(param.date);
+        // return this.schedulerService.findSheduleToday();
+
+        return this.patientSerivce.finQueuePatients(schedulers);
+    }
+    // @UseGuards(JwtAuthGuard)
+    // @Post()
+    // storeQueue(@Body() body) {
+    //     return this.queueService.store(body);
+    // }
 }

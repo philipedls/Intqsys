@@ -24,7 +24,6 @@ import { HourlyService } from './modules/hourly/hourly.service';
 import { PanelController } from './modules/panel/panel.controller';
 import { PanelService } from './modules/panel/panel.service';
 import { PatientController } from './modules/patient/patient.controller';
-import { PatientModule } from './modules/patient/patient.module';
 import { PatientService } from './modules/patient/patient.service';
 import { SchedulerController } from './modules/scheduler/scheduler.controller';
 import { SchedulerService } from './modules/scheduler/scheduler.service';
@@ -48,7 +47,6 @@ import { UsersService } from './modules/users/users.service';
       entities: [Avaliations, Charges, Companies, Hourlies, Licences, Paineis, Patients, Payments, Schedules, Services, Totems, Users]
     }),
     TypeOrmModule.forFeature([Avaliations, Charges, Companies, Hourlies, Licences, Paineis, Patients, Payments, Schedules, Services, Totems, Users]),
-    // PatientModule
 
   ],
   controllers: [AppController, UserController, CompanyController, PanelController, TotemController, SchedulerController, CraftController, PatientController],
