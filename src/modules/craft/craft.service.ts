@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import { Schedules } from 'src/models/schedules.models';
 import { Services } from 'src/models/services.models';
 import { Repository } from 'typeorm';
 import { ServicesDto } from './Dto/serivices.dto';
@@ -11,6 +12,21 @@ export class CraftService {
         @InjectRepository(Services)
         private craftRepository: Repository<Services>
     ) { }
+
+    findByUUID(id_service: string) {
+        return this.craftRepository.findOne({ id_servico: id_service });
+    }
+
+    async findBySchedulerList(list: Schedules[]) {
+        const services = Array<Services>();
+
+        for (let index = 0; index < list.length; index++) {
+            const service = await this.craftRepository.findOne({ id_servico: list[index].servicos_id_servico });
+            services.push(service);
+        }
+
+        return services;
+    }
 
     findByCompanyUUID(data: ServiceFetchDto): Promise<Services[] | undefined> {
         return this.craftRepository.find({ empresas_id_empresa: data.id_empresa });

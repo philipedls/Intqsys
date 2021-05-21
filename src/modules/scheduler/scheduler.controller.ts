@@ -1,4 +1,5 @@
 import { Body, Controller, Get, HttpException, HttpStatus, Param, Post } from '@nestjs/common';
+import { CraftService } from '../craft/craft.service';
 import { HourlyDto } from '../hourly/Dto/hourly.dto';
 import { HourlyService } from '../hourly/hourly.service';
 import { PatientsDto } from '../patient/Dto/patients.dto';
@@ -7,6 +8,7 @@ import { SchedulerEntentyDto } from './dto/scheduler.ententy.dto';
 import { SchedulerFetchDataDto } from './dto/scheduler.fetch.data.dto';
 import { SchedulerReciverDto } from './dto/scheduler.reciver.dto';
 import { SchedulerService } from './scheduler.service';
+import { PagesDto } from './dto/scheduler.queue.pages.dto'
 
 @Controller('scheduler')
 export class SchedulerController {
@@ -14,6 +16,7 @@ export class SchedulerController {
         private readonly schedulerService: SchedulerService,
         private patientSerivce: PatientService,
         private hourlyService: HourlyService,
+        private craftService: CraftService
     ) { }
 
     // @UseGuards(JwtAuthGuard)
@@ -66,12 +69,7 @@ export class SchedulerController {
         // let dataConcat = `${day}/${month}/${year}`;
         // console.log(dataConcat);
 
-
-        const schedulerDate = new Date(year, month, day, Number(listHours[0]), Number(listHours[0]));
-
-        let data = `${schedulerDate.getDate()}/${schedulerDate.getMonth()}/${schedulerDate.getFullYear()}`;
-        console.log(schedulerDate);
-
+        const schedulerDate = new Date(year, month - 1, day, Number(listHours[0]), Number(listHours[0]));
 
         const schedulers = await this.schedulerService.findOndeByDate(schedulerDate);
 
@@ -133,11 +131,12 @@ export class SchedulerController {
 
     // @UseGuards(JwtAuthGuard)
     @Get('queue/:date')
-    async indexQueue(@Param() param) {
+    async indexQueue(@Param() param, @Body() body: PagesDto) {
         const schedulers = await this.schedulerService.findSheduleTodayDate(param.date);
-        // return this.schedulerService.findSheduleToday();
+        const services = await this.craftService.findBySchedulerList(schedulers);
+        return  this.patientSerivce.finQueuePatients(schedulers, services);
 
-        return this.patientSerivce.finQueuePatients(schedulers);
+        // return this.patientSerivce.fetchPagesQueue(queue, body.page, body.amount);
     }
     // @UseGuards(JwtAuthGuard)
     // @Post()
