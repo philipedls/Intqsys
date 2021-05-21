@@ -30,8 +30,8 @@ export class Users {
     @Column()
     email: string
 
-    @Column()
-    role: string
+    // @Column()
+    // role: string
 
     @Column()
     status: boolean
