@@ -31,6 +31,9 @@ export class Users {
     email: string
 
     @Column()
+    role: string
+
+    @Column()
     status: boolean
 
     @Column()
@@ -41,8 +44,5 @@ export class Users {
 
     @Column('uuid')
     empresas_id_empresa: string
-
-    // @ManyToOne(type => Companies, empresa => empresa.avaliacoes)
-    // empresa: Companies
 
 }
