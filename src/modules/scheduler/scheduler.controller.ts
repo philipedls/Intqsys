@@ -59,12 +59,12 @@ export class SchedulerController {
     async store(@Body() body: SchedulerReciverDto) {
 
         const listHours = body.hora.split(':');
-        const list = body.data.split('-');
+        const list = body.data.split('/');
         // console.log(list);
 
-        const day: number = Number(list[2]);
+        const day: number = Number(list[0]);
         const month: number = Number(list[1]);
-        const year: number = Number(list[0]);
+        const year: number = Number(list[2]);
 
         // let dataConcat = `${day}/${month}/${year}`;
         // console.log(dataConcat);
