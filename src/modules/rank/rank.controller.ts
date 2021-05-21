@@ -17,33 +17,12 @@ export class RankController {
     async store(@Body() body: RankRegisterDto) {
         const list = body.data.split('/');
 
-        const day: number = Number(list[2]);
+        const day: number = Number(list[0]);
         const month: number = Number(list[1]);
-        const year: number = Number(list[0]);
+        const year: number = Number(list[1]);
 
 
         const schedulerDate = new Date(year, month - 1, day);
-
-        // const schedulers = await this.rankService.findOndeByDate(schedulerDate);
-
-        // if (schedulers != null) {
-        //     for (let index = 0; index < schedulers.length; index++) {
-        //         let valueHours = await this.hourlyService.findByUUID(schedulers[index].horarios_id_horario);
-
-        //         if (valueHours.hora == body.hora) {
-        //             throw new HttpException('Scheduler already exists', HttpStatus.CONFLICT);
-        //         }
-        //     }
-
-        // }
-
-        // const hourlyData: HourlyDto = {
-        //     hora: body.hora,
-        //     status: true,
-        //     token: null
-        // };
-
-        // const hourly = await this.hourlyService.store(hourlyData);
 
         const patienteData: PatientsDto = {
             paciente_nome: '',
