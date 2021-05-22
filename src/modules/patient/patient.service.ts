@@ -65,6 +65,28 @@ export class PatientService {
         return patientsQueue;
     }
 
+    async finSchedulerToPatients(schedulers: Schedules[], services: Services[]): Promise<any> {
+        const patientsQueue = Array();
+
+        for (let index = 0; index < schedulers.length; index++) {
+            const patient = await this.patientRepository.findOne({ id_paciente: schedulers[index].pacientes_id_paciente });
+
+            patientsQueue.push({
+                dados_paciente: patient,
+                codigo_fila: schedulers[index].codigo,
+                linha: services[index].titulo,
+                fila: index + 1,
+                status: 'Em tempo'
+            });
+        }
+
+        patientsQueue.sort(function (a, b) {
+            return (a.dados_paciente.paciente_nome > b.dados_paciente.paciente_nome) ? 1 : ((b.dados_paciente.paciente_nome > a.dados_paciente.paciente_nome) ? -1 : 0);
+        });
+
+        return patientsQueue;
+    }
+
     fetchPagesQueue(list: any[], pages: number, amount: number) {
         const pageList = Array();
 
