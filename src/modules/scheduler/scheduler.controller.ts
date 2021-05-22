@@ -134,7 +134,17 @@ export class SchedulerController {
     async indexQueue(@Param() param, @Body() body: PagesDto) {
         const schedulers = await this.schedulerService.findSheduleTodayDate(param.date);
         const services = await this.craftService.findBySchedulerList(schedulers);
-        return  this.patientSerivce.finQueuePatients(schedulers, services);
+        return this.patientSerivce.finQueuePatients(schedulers, services);
+
+        // return this.patientSerivce.fetchPagesQueue(queue, body.page, body.amount);
+    }
+
+    // @UseGuards(JwtAuthGuard)
+    @Get(':date')
+    async indexScheduler(@Param() param, @Body() body: PagesDto) {
+        const schedulers = await this.schedulerService.findSheduleTodayDate(param.date);
+        const services = await this.craftService.findBySchedulerList(schedulers);
+        return this.patientSerivce.finSchedulerToPatients(schedulers, services);
 
         // return this.patientSerivce.fetchPagesQueue(queue, body.page, body.amount);
     }
