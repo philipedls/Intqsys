@@ -48,6 +48,7 @@ export class RankController {
         const patient = await this.patientService.store(patienteData);
 
         body.pacientes_id_paciente = patient.id_paciente;
+        body.tipo = 'Fila';
 
         body.codigo = Math.floor(9).toString()
             + Math.floor(Math.random() * (10 + 1)).toString()
