@@ -138,9 +138,10 @@ export class SchedulerController {
             paciente_telefone: '',
             cancelado: false,
             data: body.data,
+            id_servico: null,
             servicos_id_servico: body.id_servico,
             status: true,
-            tipo: 'Agendado'
+            tipo: 'Agendado',
         };
 
         await this.queueService.store(queueElement, schedulerDate);
