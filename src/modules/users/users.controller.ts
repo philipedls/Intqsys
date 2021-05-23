@@ -1,8 +1,8 @@
-import { UseGuards, Request, Patch, Param, ValidationPipe } from '@nestjs/common';
+import { UseGuards, Request, Patch, Param, ValidationPipe, UnauthorizedException } from '@nestjs/common';
 import { Body, Controller, Get, Post } from '@nestjs/common';
 import { Users } from 'src/models/users.models';
 import { UsersService } from './users.service';
-import { UsersSignUpDto } from './users.signup';
+import { UsersSignUpDto } from './Dto/users.signup';
 import { AuthGuard } from '@nestjs/passport';
 import { AuthService } from '../auth/auth.service';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
@@ -10,13 +10,14 @@ import { UsersFetchUUIDDto } from './Dto/users.fetch';
 import { UsersRecoveryDto } from './Dto/users.recovery';
 import { ChangePasswordDto } from '../auth/dto/changes.password.dto';
 import { use } from 'passport';
+import { UserRole } from './user-roles.enum';
 
 @Controller('user')
 export class UserController {
 
     constructor(
         private readonly userService: UsersService,
-        private authService: AuthService
+        private authService: AuthService,
     ) { }
 
     // @UseGuards(JwtAuthGuard)
@@ -32,7 +33,8 @@ export class UserController {
     }
 
     @Post('signup')
-    signup(@Body() body: UsersSignUpDto) {
+    signup(@Body(ValidationPipe) body: UsersSignUpDto) {
+        body.role = UserRole.USER;
         return this.userService.store(body);
     }
 
@@ -70,6 +72,29 @@ export class UserController {
         return {
             message: 'Senha alterada'
         };
+    }
+
+    // ADMIN ROUTERS
+
+    // @UseGuards(AuthGuard('admin'))
+    @Post('admin/signup')
+    adminSignup(@Body(ValidationPipe) body: UsersSignUpDto) {
+        body.role = UserRole.ADMIN;
+        return this.userService.store(body);
+    }
+
+    @UseGuards(AuthGuard('local'))
+    @Post('admin/signin')
+    async adminSignin(@Request() req) {
+        const { token, token_recuperar_senha, role, ...result } = req.user
+
+        if (role == UserRole.USER) throw new UnauthorizedException('User is not admin');
+
+        const access_token = await this.authService.authSignIn(req.user);
+        return {
+            access_token: access_token,
+            data: result
+        }
     }
 }
 

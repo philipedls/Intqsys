@@ -1,10 +1,11 @@
 import { Injectable, NotFoundException, UnprocessableEntityException } from '@nestjs/common';
-import { JwtService } from '@nestjs/jwt';
+import { JwtService, JwtSignOptions } from '@nestjs/jwt';
 import * as bcrypt from 'bcrypt';
 import { randomBytes } from 'crypto';
 import * as nodemailer from 'nodemailer';
 import { Users } from 'src/models/users.models';
 import { UsersRecoveryDto } from '../users/Dto/users.recovery';
+import { UserRole } from '../users/user-roles.enum';
 import { UsersService } from '../users/users.service';
 import { ChangePasswordDto } from './dto/changes.password.dto';
 
@@ -25,13 +26,29 @@ export class AuthService {
         return null;
     }
 
+    // async validateAdmin(username: string, password: string): Promise<any> {
+    //     const user = await this.usersService.findOneByEmail(username);
+    //     console.log(user.role);
+    //     if (user && bcrypt.compareSync(password, user.senha) && user.role == UserRole.ADMIN) {
+    //         const { senha, ...result } = user;
+    //         return result;
+    //     }
+    //     return null;
+    // }
+
     async authSignIn(user: any) {
-        const payload = { username: user.username, sub: user.userId };
+        const payload = { username: user.username, sub: user.userId, admin: false };
 
         return this.jwtService.sign(payload);
         // return {
         //     access_token: this.jwtService.sign(payload),
         // };
+    }
+
+    async adminSignIn(user: any) {
+        const payload = { username: user.username, sub: user.userId, admin: true };
+
+        return this.jwtService.sign(payload);
     }
 
     async changePassword(
