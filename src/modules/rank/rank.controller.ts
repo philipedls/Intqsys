@@ -1,4 +1,5 @@
-import { Body, Controller, Get, Param, Post } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post, UseGuards } from '@nestjs/common';
+import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { CraftService } from '../craft/craft.service';
 import { HourlyService } from '../hourly/hourly.service';
 import { PatientsDto } from '../patient/Dto/patients.dto';
@@ -17,6 +18,7 @@ export class RankController {
         private hourlyService: HourlyService
     ) { }
 
+    @UseGuards(JwtAuthGuard)
     @Get(':date')
     async indexScheduler(@Param() param) {
         console.log(param.date);
@@ -26,7 +28,7 @@ export class RankController {
         return { length: queuedPatients.length, data: queuedPatients };
     }
 
-    // @UseGuards(JwtAuthGuard)
+    @UseGuards(JwtAuthGuard)
     @Post('add')
     async store(@Body() body: RankRegisterDto) {
         const list = body.data.split('/');
