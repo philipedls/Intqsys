@@ -4,7 +4,7 @@ import * as bcrypt from 'bcrypt';
 import { Users } from 'src/models/users.models';
 import { Repository } from 'typeorm';
 import { UsersFetchUUIDDto } from './Dto/users.fetch';
-import { UsersSignUpDto } from './users.signup';
+import { UsersSignUpDto } from './Dto/users.signup';
 
 @Injectable()
 export class UsersService {

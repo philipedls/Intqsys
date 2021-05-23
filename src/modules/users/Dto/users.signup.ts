@@ -3,4 +3,5 @@ export interface UsersSignUpDto {
     login: string;
     senha: string;
     email: string;
+    role: string;
 }

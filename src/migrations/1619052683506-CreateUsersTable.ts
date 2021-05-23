@@ -48,6 +48,10 @@ export class CreateUsersTable1619052683506 implements MigrationInterface {
                         type: 'varchar'
                     },
                     {
+                        name: 'role',
+                        type: 'varchar'
+                    },
+                    {
                         name: 'status',
                         type: 'boolean',
                         isNullable: true
