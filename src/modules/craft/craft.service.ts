@@ -44,8 +44,6 @@ export class CraftService {
                 + Math.floor(Math.random() * (10 + 1)).toString()
                 + Math.floor(Math.random() * (10 + 1)).toString()
                 + Math.floor(Math.random() * (10 + 1)).toString()
-                + Math.floor(Math.random() * (10 + 1)).toString()
-                + Math.floor(Math.random() * (10 + 1)).toString()
             );
             const value = await this.craftRepository.findOne({ token: data.token });
 

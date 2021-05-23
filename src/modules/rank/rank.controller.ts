@@ -1,7 +1,10 @@
-import { Body, Controller, Post } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post } from '@nestjs/common';
+import { CraftService } from '../craft/craft.service';
+import { HourlyService } from '../hourly/hourly.service';
 import { PatientsDto } from '../patient/Dto/patients.dto';
 import { PatientService } from '../patient/patient.service';
 import { RankRegisterDto } from './Dto/rank.register.dto';
+import { RankServiceDto } from './Dto/rank.service.dto';
 import { RankService } from './rank.service';
 
 @Controller('queue')
@@ -9,8 +12,19 @@ export class RankController {
 
     constructor(
         private readonly rankService: RankService,
-        private patientService: PatientService
+        private patientService: PatientService,
+        private craftServive: CraftService,
+        private hourlyService: HourlyService
     ) { }
+
+    @Get(':date')
+    async indexScheduler(@Param() param) {
+        console.log(param.date);
+        const queues = await this.rankService.findByDate(param.date);
+        const queuedPatients = await this.patientService.fetchQueueToPatients(queues, this.craftServive, this.hourlyService);
+
+        return { length: queuedPatients.length, data: queuedPatients };
+    }
 
     // @UseGuards(JwtAuthGuard)
     @Post('add')
@@ -20,7 +34,6 @@ export class RankController {
         const day: number = Number(list[0]);
         const month: number = Number(list[1]);
         const year: number = Number(list[1]);
-
 
         const schedulerDate = new Date(year, month - 1, day);
 

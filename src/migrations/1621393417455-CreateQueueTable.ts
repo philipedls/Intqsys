@@ -44,6 +44,10 @@ export class CreateQueueTable1621393417455 implements MigrationInterface {
                         type: 'varchar'
                     },
                     {
+                        name: 'tipo',
+                        type: 'varchar'
+                    },
+                    {
                         name: 'cancelado',
                         type: 'boolean'
                     },
@@ -54,6 +58,11 @@ export class CreateQueueTable1621393417455 implements MigrationInterface {
                     {
                         name: 'data_cancelamento',
                         type: 'timestamp',
+                        isNullable: true
+                    },
+                    {
+                        name: 'horarios_id_horario',
+                        type: 'uuid',
                         isNullable: true
                     },
                     {
