@@ -1,9 +1,13 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Patients } from 'src/models/patients.models';
+import { Queues } from 'src/models/queue.models';
 import { Schedules } from 'src/models/schedules.models';
 import { Services } from 'src/models/services.models';
 import { Repository } from 'typeorm';
+import { CraftService } from '../craft/craft.service';
+import { HourlyService } from '../hourly/hourly.service';
+import { SchedulerService } from '../scheduler/scheduler.service';
 import { PatientFechDto } from './Dto/patient.fetch.dto';
 import { PatientFetchListDto } from './Dto/patient.fetch.list.dto';
 import { PatientsDto } from './Dto/patients.dto';
@@ -82,6 +86,32 @@ export class PatientService {
 
         patientsQueue.sort(function (a, b) {
             return (a.dados_paciente.paciente_nome > b.dados_paciente.paciente_nome) ? 1 : ((b.dados_paciente.paciente_nome > a.dados_paciente.paciente_nome) ? -1 : 0);
+        });
+
+        return patientsQueue;
+    }
+
+    async fetchQueueToPatients(queues: Queues[], services: CraftService, hourlyService: HourlyService,): Promise<any[]> {
+        const patientsQueue = Array();
+
+        for (let index = 0; index < queues.length; index++) {
+            const patient = await this.patientRepository.findOne({ id_paciente: queues[index].pacientes_id_paciente });
+            const hour = await hourlyService.findByUUID(queues[index].horarios_id_horario);
+            const service = await services.findByUUID(queues[index].servicos_id_servico);
+
+            patientsQueue.push({
+                patient: patient,
+                code: queues[index].codigo,
+                position: queues[index].posicao,
+                scheduler: hour?.hora ?? '',
+                service: service.titulo,
+                process: queues[index].tipo
+
+            });
+        }
+
+        patientsQueue.sort(function (a, b) {
+            return (a.position > b.position) ? 1 : ((b.position > a.position) ? -1 : 0);
         });
 
         return patientsQueue;

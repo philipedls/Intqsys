@@ -19,6 +19,13 @@ export class RelationQueuePatientAndServices1621393679900 implements MigrationIn
                         referencedTableName: 'pacientes',
                         referencedColumnNames: ['id_paciente']
                     }
+                ),
+                new TableForeignKey(
+                    {
+                        columnNames: ['horarios_id_horario'],
+                        referencedTableName: 'horarios',
+                        referencedColumnNames: ['id_horario']
+                    }
                 )
             ]
         );

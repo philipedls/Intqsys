@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Queues } from 'src/models/queue.models';
 import { Repository } from 'typeorm';
+import { CraftService } from '../craft/craft.service';
 import { RankRegisterDto } from './Dto/rank.register.dto';
 
 @Injectable()
@@ -11,10 +12,39 @@ export class RankService {
         private queuesRepository: Repository<Queues>
     ) { }
 
-    async store(data: RankRegisterDto, date: Date) {
+    async findByDate(date: string): Promise<any[]> {
+        const list = date.split('-');
+        const day = list[0];
+        const month = Number(list[1]) - 1;
+        // const currentDate = new Date(Number(list[0]), Number(list[1]) - 1, Number(list[2]));
+        // console.log(currentDate);
+        const queueList = Array<Queues>();
+        const queueReponse = await this.queuesRepository.find();
+
+        queueReponse.forEach((queue: Queues) => {
+            console.log(queue.data_atendimento.getMonth().toFixed());
+            console.log(month.toFixed());
+            if (
+                queue.data_atendimento.getDate().toFixed() == day &&
+                queue.data_atendimento.getMonth().toFixed() == month.toFixed()
+            ) {
+                queueList.push(queue);
+            }
+        });
+
+        return queueList;
+    }
+    async store(data: RankRegisterDto, date: Date): Promise<Queues> {
         data.data_atendimento = date;
         data.status = true;
         data.cancelado = false;
+        data.codigo = Math.floor(9).toString()
+            + Math.floor(Math.random() * (10 + 1)).toString()
+            + Math.floor(Math.random() * (10 + 1)).toString()
+            + Math.floor(Math.random() * (10 + 1)).toString()
+            + Math.floor(Math.random() * (10 + 1)).toString()
+            + Math.floor(Math.random() * (10 + 1)).toString()
+            + Math.floor(Math.random() * (10 + 1)).toString();
         const rankList = Array<Queues>();
 
         const ranks = await this.queuesRepository.find();

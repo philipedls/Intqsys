@@ -8,4 +8,5 @@ export class RankRegisterDto {
     data: string;
     status: boolean;
     cancelado: boolean;
+    tipo: string;
 }

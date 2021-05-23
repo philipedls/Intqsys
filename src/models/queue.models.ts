@@ -23,10 +23,16 @@ export class Queues {
     codigo: string
 
     @Column()
+    tipo: string
+
+    @Column()
     cancelado: boolean
 
     @Column()
     data_cancelamento: Date
+
+    @Column('uuid')
+    horarios_id_horario: string
 
     @Column('uuid')
     servicos_id_servico: string
