@@ -4,11 +4,13 @@ import { HourlyDto } from '../hourly/Dto/hourly.dto';
 import { HourlyService } from '../hourly/hourly.service';
 import { PatientsDto } from '../patient/Dto/patients.dto';
 import { PatientService } from '../patient/patient.service';
+import { RankRegisterDto } from '../rank/Dto/rank.register.dto';
+import { RankService } from '../rank/rank.service';
 import { SchedulerEntentyDto } from './dto/scheduler.ententy.dto';
 import { SchedulerFetchDataDto } from './dto/scheduler.fetch.data.dto';
+import { PagesDto } from './dto/scheduler.queue.pages.dto';
 import { SchedulerReciverDto } from './dto/scheduler.reciver.dto';
 import { SchedulerService } from './scheduler.service';
-import { PagesDto } from './dto/scheduler.queue.pages.dto'
 
 @Controller('scheduler')
 export class SchedulerController {
@@ -16,7 +18,8 @@ export class SchedulerController {
         private readonly schedulerService: SchedulerService,
         private patientSerivce: PatientService,
         private hourlyService: HourlyService,
-        private craftService: CraftService
+        private craftService: CraftService,
+        private queueService: RankService
     ) { }
 
     // @UseGuards(JwtAuthGuard)
@@ -123,8 +126,24 @@ export class SchedulerController {
             cancelado: false,
             data_atendimento: null
         }
+
         const result = await this.schedulerService.storeWithoutHours(schedulerData, schedulerDate);
         const nofifyResponse = await this.schedulerService.notifyScheduler(result.codigo, patient.paciente_email, patient.paciente_nome);
+
+        const queueElement: RankRegisterDto = {
+            codigo: null,
+            posicao: null,
+            data_atendimento: result.data_atendimento,
+            pacientes_id_paciente: result.pacientes_id_paciente,
+            paciente_telefone: '',
+            cancelado: false,
+            data: body.data,
+            servicos_id_servico: body.id_servico,
+            status: true,
+            tipo: 'Agendado'
+        };
+
+        await this.queueService.store(queueElement, schedulerDate);
 
         return { result: result, notify: nofifyResponse }
     }
