@@ -103,7 +103,7 @@ export class PatientService {
                 patient: patient,
                 code: queues[index].codigo,
                 position: queues[index].posicao,
-                scheduler: hour?.hora ?? '',
+                scheduler: hour?.hora == null ? '' : hour.hora,
                 service: service.titulo,
                 process: queues[index].tipo
 

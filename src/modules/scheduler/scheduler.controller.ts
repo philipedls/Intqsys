@@ -142,6 +142,7 @@ export class SchedulerController {
             servicos_id_servico: body.id_servico,
             status: true,
             tipo: 'Agendado',
+            horarios_id_horario: hourly.id_horario
         };
 
         await this.queueService.store(queueElement, schedulerDate);
