@@ -208,17 +208,17 @@ export class SchedulerService {
         const confirmationCode = a.concat(b, c, d, e);
 
         const transporter = nodemailer.createTransport({
-            host: 'mail.gofila.com.br',
+            host: process.env.MAILER_SMTP_HOST,
             port: 465,
             secure: true, // true for 465, false for other ports
             auth: {
-                user: 'developer@gofila.com.br', // generated ethereal user
-                pass: process.env.NODE_MAILER_EM_PASS, // generated ethereal password
+                user: process.env.SCHEDULER_EMAIL_ADDRES, // generated ethereal user
+                pass: process.env.NODE_MAILER_SCHEDULER_PASS, // generated ethereal password
             },
         });
 
         return await transporter.sendMail({
-            from: "developer@gofila.com.br", // sender address
+            from: process.env.SCHEDULER_EMAIL_ADDRES, // sender address
             to: email, // list of receivers
             subject: "GoFila - Agendamento", // Subject line
             text: `${name},

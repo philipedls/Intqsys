@@ -1,11 +1,10 @@
 import { Injectable, NotFoundException, UnprocessableEntityException } from '@nestjs/common';
-import { JwtService, JwtSignOptions } from '@nestjs/jwt';
+import { JwtService } from '@nestjs/jwt';
 import * as bcrypt from 'bcrypt';
 import { randomBytes } from 'crypto';
 import * as nodemailer from 'nodemailer';
 import { Users } from 'src/models/users.models';
 import { UsersRecoveryDto } from '../users/Dto/users.recovery';
-import { UserRole } from '../users/user-roles.enum';
 import { UsersService } from '../users/users.service';
 import { ChangePasswordDto } from './dto/changes.password.dto';
 
@@ -58,7 +57,7 @@ export class AuthService {
         const { password, passwordConfirmation } = changePasswordDto;
 
         if (password != passwordConfirmation)
-            throw new UnprocessableEntityException('As senhas não conferem');
+            throw new UnprocessableEntityException('Passwords do not match');
 
         await this.usersService.changePassword(user, password);
     }
@@ -68,7 +67,7 @@ export class AuthService {
         changePasswordDto: ChangePasswordDto,
     ): Promise<void> {
         const user = await this.usersService.findOneByRecoverToken(recoverToken);
-        if (!user) throw new NotFoundException('Token inválido.');
+        if (!user) throw new NotFoundException('Invalid token!');
 
         try {
             await this.changePassword(user, changePasswordDto);
@@ -89,11 +88,11 @@ export class AuthService {
         console.log(user.token_recuperar_senha);
 
         const transporter = nodemailer.createTransport({
-            host: 'mail.gofila.com.br',
+            host: process.env.MAILER_SMTP_HOST,
             port: 465,
             secure: true, // true for 465, false for other ports
             auth: {
-                user: 'developer@gofila.com.br', // generated ethereal user
+                user: process.env.CONTACT_EMAIL_ADDRES, // generated ethereal user
                 pass: process.env.NODE_MAILER_EM_PASS, // generated ethereal password
             },
         });
@@ -101,7 +100,7 @@ export class AuthService {
         const tokenRecoverPassword = user.token_recuperar_senha
 
         return await transporter.sendMail({
-            from: "developer@gofila.com.br", // sender address
+            from: process.env.CONTACT_EMAIL_ADDRES, // sender address
             to: body.email, // list of receivers
             subject: "GoFila - Redefinição de senha", // Subject line
             text: `Oi ${user.nome}, tudo bem?`, // plain text body
