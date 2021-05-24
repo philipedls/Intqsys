@@ -25,7 +25,7 @@ export class RankController {
         const queues = await this.rankService.findByDate(param.date);
         const queuedPatients = await this.patientService.fetchQueueToPatients(queues, this.craftServive, this.hourlyService);
 
-        return { length: queuedPatients.length, data: queuedPatients };
+        return { length: queuedPatients.length, list: queuedPatients };
     }
 
     // @UseGuards(JwtAuthGuard)
