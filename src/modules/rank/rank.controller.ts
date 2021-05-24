@@ -18,7 +18,7 @@ export class RankController {
         private hourlyService: HourlyService
     ) { }
 
-    @UseGuards(JwtAuthGuard)
+    // @UseGuards(JwtAuthGuard)
     @Get(':date')
     async indexScheduler(@Param() param) {
         console.log(param.date);
@@ -28,7 +28,7 @@ export class RankController {
         return { length: queuedPatients.length, data: queuedPatients };
     }
 
-    @UseGuards(JwtAuthGuard)
+    // @UseGuards(JwtAuthGuard)
     @Post('add')
     async store(@Body() body: RankRegisterDto) {
         const list = body.data.split('/');
