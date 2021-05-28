@@ -121,6 +121,9 @@ export class SchedulerController {
         const schedulerData: SchedulerEntentyDto = {
             codigo: code,
             data: body.data,
+            horarios_id_horario: hourly.id_horario,
+            servicos_id_servico: service.id_servico,
+            pacientes_id_paciente: patient.id_paciente,
             horario: hourly.hora,
             servico: service.titulo,
             paciente: patient.paciente_nome,
@@ -137,6 +140,9 @@ export class SchedulerController {
         const queueElement: RankRegisterDto = {
             codigo: null,
             posicao: null,
+            horarios_id_horario: hourly.id_horario,
+            servicos_id_servico: serive.id_servico,
+            pacientes_id_paciente: patient.id_paciente,
             data_atendimento: result.data_atendimento,
             paciente: patient.paciente_nome,
             paciente_telefone: '',
