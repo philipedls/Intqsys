@@ -5,7 +5,6 @@ import { HourlyService } from '../hourly/hourly.service';
 import { PatientsDto } from '../patient/Dto/patients.dto';
 import { PatientService } from '../patient/patient.service';
 import { RankRegisterDto } from './Dto/rank.register.dto';
-import { RankServiceDto } from './Dto/rank.service.dto';
 import { RankService } from './rank.service';
 
 @Controller('queue')
@@ -49,12 +48,17 @@ export class RankController {
 
         const patient = await this.patientService.store(patienteData);
         const service = await this.craftServive.findByUUID(body.id_servico);
-
-        body.paciente = patient.paciente_nome;
-        body.servico = service.titulo
+        console.log(service.titulo);
+        body.servicos_id_servico = service.id_servico;
+        body.servico = service.titulo;
         body.tipo = 'Fila';
-
-        body.codigo = Math.floor(9).toString()
+        body.paciente = patient.paciente_nome;
+        body.pacientes_id_paciente = patient.id_paciente;
+        body.data_atendimento = schedulerDate;
+        body.status = true;
+        body.cancelado = false;
+        body.horario = '',
+            body.codigo = Math.floor(9).toString()
             + Math.floor(Math.random() * (10 + 1)).toString()
             + Math.floor(Math.random() * (10 + 1)).toString()
             + Math.floor(Math.random() * (10 + 1)).toString()
@@ -64,7 +68,7 @@ export class RankController {
             + Math.floor(Math.random() * (10 + 1)).toString()
             + Math.floor(Math.random() * (10 + 1)).toString();
 
-
+        // return body;
         return this.rankService.store(body, schedulerDate);
 
     }

@@ -133,23 +133,22 @@ export class SchedulerController {
             data_atendimento: null
         }
 
-        const serive = await this.craftService.findByUUID(body.id_servico);
         const result = await this.schedulerService.storeWithoutHours(schedulerData, schedulerDate);
         const nofifyResponse = await this.schedulerService.notifyScheduler(result.codigo, patient.paciente_email, patient.paciente_nome);
 
         const queueElement: RankRegisterDto = {
             codigo: null,
             posicao: null,
-            horarios_id_horario: hourly.id_horario,
-            servicos_id_servico: serive.id_servico,
-            pacientes_id_paciente: patient.id_paciente,
+            horarios_id_horario: hourly.id_horario ?? '',
+            servicos_id_servico: service.id_servico ?? '',
+            pacientes_id_paciente: patient.id_paciente ?? '',
             data_atendimento: result.data_atendimento,
-            paciente: patient.paciente_nome,
+            paciente: patient.paciente_nome ?? '',
             paciente_telefone: '',
             cancelado: false,
             data: body.data,
             id_servico: null,
-            servico: serive.titulo,
+            servico: service.titulo,
             status: true,
             tipo: 'Agendado',
             horario: hourly.hora
