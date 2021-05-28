@@ -55,9 +55,9 @@ export class TotemService {
         return { size: totems.length };
     }
 
-    async findeTotemActivatedAmount(): Promise<any | undefined> {
-        const totems = await this.totemRepository.find({ cancelado: false });
+    findeTotemActivatedAmount(): Promise<any | undefined> {
+        return this.totemRepository.find({ status: true });
 
-        return { size: totems.length };
+        // return { size: totems.length };
     }
 }

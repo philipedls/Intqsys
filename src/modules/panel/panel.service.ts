@@ -54,9 +54,7 @@ export class PanelService {
         return { size: totems.length };
     }
 
-    async findePanelActivatedAmount(): Promise<any | undefined> {
-        const totems = await this.panelRepository.find({ status: false });
-
-        return { size: totems.length };
+    findePanelActivated(): Promise<any | undefined> {
+        return this.panelRepository.find({ status: true, cancelado: false });
     }
 }

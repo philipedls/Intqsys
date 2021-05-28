@@ -18,7 +18,7 @@ export class RankController {
         private hourlyService: HourlyService
     ) { }
 
-    // @UseGuards(JwtAuthGuard)
+    @UseGuards(JwtAuthGuard)
     @Get(':date')
     async indexScheduler(@Param() param) {
         console.log(param.date);
@@ -35,9 +35,9 @@ export class RankController {
 
         const day: number = Number(list[0]);
         const month: number = Number(list[1]);
-        const year: number = Number(list[1]);
+        const year: number = Number(list[2]);
 
-        const schedulerDate = new Date(year, month - 1, day);
+        const schedulerDate = new Date(year, month, day);
 
         const patienteData: PatientsDto = {
             paciente_nome: '',
@@ -48,9 +48,10 @@ export class RankController {
         }
 
         const patient = await this.patientService.store(patienteData);
+        const service = await this.craftServive.findByUUID(body.id_servico);
 
-        body.pacientes_id_paciente = patient.id_paciente;
-        body.servicos_id_servico = body.id_servico;
+        body.paciente = patient.paciente_nome;
+        body.servico = service.titulo
         body.tipo = 'Fila';
 
         body.codigo = Math.floor(9).toString()

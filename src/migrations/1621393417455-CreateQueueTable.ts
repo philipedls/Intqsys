@@ -61,18 +61,18 @@ export class CreateQueueTable1621393417455 implements MigrationInterface {
                         isNullable: true
                     },
                     {
-                        name: 'horarios_id_horario',
-                        type: 'uuid',
+                        name: 'horario',
+                        type: 'varchar',
                         isNullable: true
                     },
                     {
-                        name: 'servicos_id_servico',
-                        type: 'uuid',
+                        name: 'servico',
+                        type: 'varchar',
                         isNullable: true
                     },
                     {
-                        name: 'pacientes_id_paciente',
-                        type: 'uuid',
+                        name: 'paciente',
+                        type: 'vachar',
                         isNullable: true
                     }
                 ]

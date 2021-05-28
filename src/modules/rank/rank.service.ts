@@ -15,7 +15,7 @@ export class RankService {
     async findByDate(date: string): Promise<any[]> {
         const list = date.split('-');
         const day = list[0];
-        const month = Number(list[1]) - 1;
+        const month = Number(list[1]);
         // const currentDate = new Date(Number(list[0]), Number(list[1]) - 1, Number(list[2]));
         // console.log(currentDate);
         const queueList = Array<Queues>();
