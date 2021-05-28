@@ -137,7 +137,15 @@ export class SchedulerController {
         const nofifyResponse = await this.schedulerService.notifyScheduler(result.codigo, patient.paciente_email, patient.paciente_nome);
 
         const queueElement: RankRegisterDto = {
-            codigo: null,
+            codigo: Math.floor(9).toString()
+                + Math.floor(Math.random() * (10 + 1)).toString()
+                + Math.floor(Math.random() * (10 + 1)).toString()
+                + Math.floor(Math.random() * (10 + 1)).toString()
+                + Math.floor(Math.random() * (10 + 1)).toString()
+                + Math.floor(Math.random() * (10 + 1)).toString()
+                + Math.floor(Math.random() * (10 + 1)).toString()
+                + Math.floor(Math.random() * (10 + 1)).toString()
+                + Math.floor(Math.random() * (10 + 1)).toString(),
             posicao: null,
             horarios_id_horario: hourly.id_horario ?? '',
             servicos_id_servico: service.id_servico ?? '',
