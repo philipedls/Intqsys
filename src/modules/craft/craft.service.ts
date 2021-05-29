@@ -4,7 +4,6 @@ import { Schedules } from 'src/models/schedules.models';
 import { Services } from 'src/models/services.models';
 import { Repository } from 'typeorm';
 import { ServicesDto } from './Dto/serivices.dto';
-import { ServiceFetchDto } from './Dto/services.fetch.dto';
 
 @Injectable()
 export class CraftService {
@@ -12,7 +11,7 @@ export class CraftService {
         @InjectRepository(Services)
         private craftRepository: Repository<Services>
     ) { }
-
+ƒ
     findByUUID(id_service: string) {
         return this.craftRepository.findOne({ id_servico: id_service });
     }
@@ -38,7 +37,6 @@ export class CraftService {
 
         do {
             data.token = parseInt(Math.floor(9).toString()
-                + Math.floor(Math.random() * (10 + 1)).toString()
                 + Math.floor(Math.random() * (10 + 1)).toString()
                 + Math.floor(Math.random() * (10 + 1)).toString()
                 + Math.floor(Math.random() * (10 + 1)).toString()

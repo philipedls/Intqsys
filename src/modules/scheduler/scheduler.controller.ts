@@ -40,11 +40,17 @@ export class SchedulerController {
     //     return this.schedulerService.findSheduleTodayAmount();
     // }
 
-    //  // @UseGuards(JwtAuthGuard)
-    // @Get('month')
-    // indexByMonth() {
-    //     return this.schedulerService.findSheduleMonth();
-    // }
+    @UseGuards(JwtAuthGuard)
+    @Get('month')
+    indexSeparedtedByMonth(@Param() param) {
+        return this.schedulerService.findSheduleSeparedByMonth();
+    }
+
+    @UseGuards(JwtAuthGuard)
+    @Get('month/:date')
+    indexByMonth(@Param() param) {
+        return this.schedulerService.findSchedulerByMonth(param.date);
+    }
 
     @UseGuards(JwtAuthGuard)
     @Get('canceled/:date')
