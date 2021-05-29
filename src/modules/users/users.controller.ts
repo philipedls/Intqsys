@@ -1,9 +1,9 @@
-import { Body, Controller, Param, Patch, Post, Request, UnauthorizedException, UseGuards, ValidationPipe } from '@nestjs/common';
+import { Body, Controller, Get, Param, Patch, Post, Request, UnauthorizedException, UseGuards, ValidationPipe } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { Users } from 'src/models/users.models';
 import { AuthService } from '../auth/auth.service';
+import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { ReportsDto } from '../reports/Dto/reports.dto';
-import { ReportsService } from '../reports/reports.service';
 import { UsersFetchUUIDDto } from './Dto/users.fetch';
 import { UsersRecoveryDto } from './Dto/users.recovery';
 import { UsersSignUpDto } from './Dto/users.signup';
@@ -18,19 +18,19 @@ export class UserController {
         private authService: AuthService,
     ) { }
 
-    // @UseGuards(JwtAuthGuard)
-    // @Get()
-    // index(): Promise<Users[]> {
-    //     return this.userService.index();
-    // }
+    @UseGuards(JwtAuthGuard)
+    @Get(':uid')
+    indexByCompanyID(@Param() param): Promise<Users[]> {
+        return this.userService.indexByCompanyUID(param.uid);
+    }
 
-    // @UseGuards(JwtAuthGuard)
+    @UseGuards(JwtAuthGuard)
     @Post()
     index(@Body() body: UsersFetchUUIDDto): Promise<Users> {
         return this.userService.findOneByUUID(body);
     }
 
-    // @UseGuards(JwtAuthGuard)
+    @UseGuards(JwtAuthGuard)
     @Post('signup')
     async signup(@Body(ValidationPipe) body: UsersSignUpDto) {
         body.role = UserRole.USER;
