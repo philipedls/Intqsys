@@ -13,11 +13,11 @@ export class Hourlies {
     @Generated('increment')
     id: number
 
-    // @CreateDateColumn('timestamp')
-    // data_cadastro: Date
+    @CreateDateColumn()
+    data_cadastro: Date
 
-    // @UpdateDateColumn('timestamo')
-    // data_atualizado: Date
+    @UpdateDateColumn()
+    data_atualizado: Date
 
     @Column()
     hora: string
