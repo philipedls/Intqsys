@@ -1,5 +1,6 @@
-import { Body, Controller, Post } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post, UseGuards } from '@nestjs/common';
 import { Services } from 'src/models/services.models';
+import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { CraftService } from './craft.service';
 import { ServicesDto } from './Dto/serivices.dto';
 import { ServiceFetchDto } from './Dto/services.fetch.dto';
@@ -11,13 +12,13 @@ export class CraftController {
         private readonly craftService: CraftService
     ) { }
 
-    // @UseGuards(JwtAuthGuard)
-    @Post()
-    findByUUID(@Body() body: ServiceFetchDto): Promise<Services[]> {
-        return this.craftService.findByCompanyUUID(body);
+    @UseGuards(JwtAuthGuard)
+    @Get(':uid')
+    findByUUID(@Param() param): Promise<Services[]> {
+        return this.craftService.findByCompanyUUID(param.uid);
     }
 
-    // @UseGuards(JwtAuthGuard)
+    @UseGuards(JwtAuthGuard)
     @Post('add')
     store(@Body() body: ServicesDto): Promise<Services> {
         return this.craftService.store(body);

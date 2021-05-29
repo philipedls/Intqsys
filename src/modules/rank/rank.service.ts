@@ -45,11 +45,11 @@ export class RankService {
             }
         });
 
-        if (rankList.length == 0) {
-            data.posicao = 1;
-            const queue = this.queuesRepository.create(data);
-            return this.queuesRepository.save(queue);
-        }
+        // if (rankList.length == 0) {
+        //     data.posicao = 1;
+        //     const queue = this.queuesRepository.create(data);
+        //     return this.queuesRepository.save(queue);
+        // }
 
         data.posicao = rankList.length + 1
         const queue = this.queuesRepository.create(data);

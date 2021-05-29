@@ -28,8 +28,8 @@ export class CraftService {
         return services;
     }
 
-    findByCompanyUUID(data: ServiceFetchDto): Promise<Services[] | undefined> {
-        return this.craftRepository.find({ empresas_id_empresa: data.id_empresa });
+    findByCompanyUUID(uid: string): Promise<Services[] | undefined> {
+        return this.craftRepository.find({ empresas_id_empresa: uid });
     }
 
     async store(data: ServicesDto): Promise<Services> {
