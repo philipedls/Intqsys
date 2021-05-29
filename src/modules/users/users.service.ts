@@ -22,8 +22,8 @@ export class UsersService {
         return this.reportRepository.save(report);
     }
 
-    async index(): Promise<Users[]> {
-        return this.userRepository.find();
+    async indexByCompanyUID(uid: string): Promise<Users[]> {
+        return this.userRepository.find({ empresas_id_empresa: uid });
     }
 
     async store(data: UsersSignUpDto) {
