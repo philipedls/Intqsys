@@ -67,6 +67,19 @@ export class SchedulerService {
         return { size: schedules.length };
     }
 
+    async findSheduleCanceledsByYear(year: string): Promise<Schedules[] | undefined> {
+        const schedulers = await this.schedulerRepository.find({ cancelado: true });
+        const canceled = Array<Schedules>();
+
+        schedulers.map((scheduler) => {
+            if (year == scheduler.data_atendimento.getFullYear().toFixed()) {
+                canceled.push(scheduler);
+            }
+        });
+
+        return canceled;
+    }
+
     async findSheduleCanceledAmount(): Promise<any | undefined> {
         let schedules = new Array<Schedules>();
 
@@ -87,18 +100,17 @@ export class SchedulerService {
         return { size: schedules.length };
     }
 
-    async findSchedulerByMonth(date: string) {
-
+    async findSchedulerByYear(date: string) {
         const schedulers = Array();
         const list = await this.schedulerRepository.find();
 
         list.forEach((element) => {
-            console.log(element.data_atendimento.getMonth().toFixed());
+            console.log(element.data_atendimento.getFullYear().toFixed());
             if (date == element.data_atendimento.getFullYear().toFixed()) {
                 schedulers.push(element);
             }
         });
-
+        console.log(schedulers.length);
         return schedulers;
     }
 

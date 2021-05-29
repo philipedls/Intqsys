@@ -49,22 +49,23 @@ export class SchedulerController {
     @UseGuards(JwtAuthGuard)
     @Get('year/:year')
     indexByMonth(@Param() param) {
-        return this.schedulerService.findSchedulerByMonth(param.year);
+        console.log(param.year);
+        return this.schedulerService.findSchedulerByYear(param.year);
     }
 
     @UseGuards(JwtAuthGuard)
-    @Get('canceled/:date')
-    indexByCanceled(@Param() param) {
+    @Get('canceled/fetch/:date')
+    indexByCanceled(@Param() param, @Body() body) {
         return this.schedulerService.findSheduleCanceled(param.date);
     }
 
-    // // @UseGuards(JwtAuthGuard)
-    // @Get('canceled/amount')
-    // indexByCanceledAmount() {
-    //     return this.schedulerService.findSheduleCanceledAmount();
-    // }
+    @UseGuards(JwtAuthGuard)
+    @Get('canceled/:year')
+    indexAllCanceled(@Param() param, @Body() body) {
+        return this.schedulerService.findSheduleCanceledsByYear(param.year);
+    }
 
-    // @UseGuards(JwtAuthGuard)
+    @UseGuards(JwtAuthGuard)
     @Post('add')
     async store(@Body() body: SchedulerReciverDto) {
 
@@ -183,7 +184,7 @@ export class SchedulerController {
         // return this.patientSerivce.fetchPagesQueue(queue, body.page, body.amount);
     }
 
-    // @UseGuards(JwtAuthGuard)
+    @UseGuards(JwtAuthGuard)
     @Get(':date')
     async indexScheduler(@Param() param) {
         const schedulers = await this.schedulerService.findSheduleTodayDate(param.date);
