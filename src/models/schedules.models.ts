@@ -1,7 +1,4 @@
-import { Column, CreateDateColumn, Entity, Generated, ManyToOne, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
-import { Hourlies } from "./hourly.models";
-import { Patients } from "./patients.models";
-import { Services } from "./services.models";
+import { Column, CreateDateColumn, Entity, Generated, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
 
 @Entity({ name: 'agendamentos' })
 export class Schedules {
@@ -12,6 +9,12 @@ export class Schedules {
     @Column()
     @Generated('increment')
     id: number
+
+    @CreateDateColumn()
+    data_cadastro: Date
+
+    @UpdateDateColumn()
+    data_atualizado: Date
 
     @Column()
     data_atendimento: Date

@@ -1,11 +1,4 @@
-import { Column, CreateDateColumn, Entity, Generated, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
-import { Avaliations } from "./avaliations.models";
-import { Hourlies } from "./hourly.models";
-import { Licences } from "./licences.models";
-import { Paineis } from "./panels.models";
-import { Services } from "./services.models";
-import { Totems } from "./totems.models";
-import { Users } from "./users.models";
+import { Column, CreateDateColumn, Entity, Generated, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
 
 @Entity({ name: 'empresas' })
 export class Companies {
@@ -17,11 +10,11 @@ export class Companies {
     @Generated('increment')
     id: number
 
-    // @CreateDateColumn('timestamp')
-    // data_cadastro: Date
+    @CreateDateColumn()
+    data_cadastro: Date
 
-    // @UpdateDateColumn('timestamo')
-    // data_atualizado: Date
+    @UpdateDateColumn()
+    data_atualizado: Date
 
     @Column()
     razao_social: string

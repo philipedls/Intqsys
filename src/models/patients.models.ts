@@ -1,5 +1,4 @@
-import { Column, CreateDateColumn, Entity, Generated, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
-import { Schedules } from "./schedules.models";
+import { Column, CreateDateColumn, Entity, Generated, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
 
 @Entity({ name: 'pacientes' })
 export class Patients {
@@ -11,11 +10,11 @@ export class Patients {
     @Generated('increment')
     id: number
 
-    // @CreateDateColumn('timestamp')
-    // data_cadastro: Date
+    @CreateDateColumn()
+    data_cadastro: Date
 
-    // @UpdateDateColumn('timestamo')
-    // data_atualizado: Date
+    @UpdateDateColumn()
+    data_atualizado: Date
 
     @Column()
     status: boolean

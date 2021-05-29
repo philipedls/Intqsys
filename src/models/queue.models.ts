@@ -1,4 +1,4 @@
-import { Column, Entity, Generated, PrimaryGeneratedColumn } from "typeorm";
+import { Column, CreateDateColumn, Entity, Generated, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
 
 @Entity({ name: 'filas' })
 export class Queues {
@@ -9,6 +9,12 @@ export class Queues {
     @Column()
     @Generated('increment')
     id: number
+
+    @CreateDateColumn()
+    data_cadastro: Date
+
+    @UpdateDateColumn()
+    data_atualizado: Date
 
     @Column()
     data_atendimento: Date

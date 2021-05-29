@@ -1,8 +1,4 @@
-import { type } from "node:os";
-import { Column, CreateDateColumn, Entity, Generated, ManyToOne, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
-import { Charges } from "./charges.models";
-import { Companies } from "./companies.models";
-import { Payments } from "./payments.models";
+import { Column, CreateDateColumn, Entity, Generated, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
 
 @Entity({ name: 'licensas' })
 export class Licences {
@@ -14,11 +10,11 @@ export class Licences {
     @Generated('increment')
     id: number
 
-    // @CreateDateColumn('timestamp')
-    // data_cadastro: Date
+    @CreateDateColumn()
+    data_cadastro: Date
 
-    // @UpdateDateColumn('timestamo')
-    // data_atualizado: Date
+    @UpdateDateColumn()
+    data_atualizado: Date
 
     @Column()
     valor: string

@@ -1,4 +1,4 @@
-import { Column, Entity, Generated, PrimaryGeneratedColumn } from "typeorm";
+import { Column, CreateDateColumn, Entity, Generated, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
 
 @Entity({ name: 'formas_pagamento' })
 export class Payments {
@@ -10,11 +10,11 @@ export class Payments {
     @Generated('increment')
     id: number
 
-    // @CreateDateColumn('timestamp')
-    // data_cadastro: Date
+    @CreateDateColumn()
+    data_cadastro: Date
 
-    // @UpdateDateColumn('timestamo')
-    // data_atualizado: Date
+    @UpdateDateColumn()
+    data_atualizado: Date
 
     @Column()
     titulo: string
