@@ -1,5 +1,7 @@
 import { Body, Controller, Get, Post, UseGuards } from '@nestjs/common';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
+import { ReportsDto } from '../reports/Dto/reports.dto';
+import { ReportsService } from '../reports/reports.service';
 import { TotemDto } from './Dto/totem.dto';
 import { TotemFetchDto } from './Dto/totem.fetch.dto';
 import { TotemService } from './totem.service';
@@ -7,7 +9,8 @@ import { TotemService } from './totem.service';
 @Controller('totem')
 export class TotemController {
     constructor(
-        private readonly totemService: TotemService
+        private readonly totemService: TotemService,
+        private reportService: ReportsService
     ) { }
 
     @UseGuards(JwtAuthGuard)
@@ -36,8 +39,32 @@ export class TotemController {
 
     @UseGuards(JwtAuthGuard)
     @Post('add')
-    store(@Body() body: TotemDto) {
-        return this.totemService.store(body);
+    async store(@Body() body: TotemDto) {
+        const totem = await this.totemService.store(body);
+
+        if (totem != null) {
+            const report: ReportsDto = {
+                autor_usuario: totem.empresas_id_empresa,
+                autor_cliente: null,
+                id_cliente: null,
+                codigo_acao: null,
+                categoria: 'TOTEM',
+                operador: null,
+                cancelar: false,
+                cadastrar: true,
+                editar: false,
+                login: false,
+                logout: false,
+                agendamento: false,
+                fila: false,
+                walkin: false,
+                atendimento: false,
+                observacao: null,
+            };
+            this.reportService.store(report);
+        }
+
+        return totem;
     }
 
 }

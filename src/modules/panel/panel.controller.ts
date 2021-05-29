@@ -1,6 +1,8 @@
 import { Body, Controller, Get, Post, UseGuards } from "@nestjs/common";
 import { Paineis } from "src/models/panels.models";
 import { JwtAuthGuard } from "../auth/jwt-auth.guard";
+import { ReportsDto } from "../reports/Dto/reports.dto";
+import { ReportsService } from "../reports/reports.service";
 import { PanelDto } from "./Dto/panel.dto";
 import { PanelFetchDto } from "./Dto/panel.fetch.dto";
 import { PanelService } from "./panel.service";
@@ -9,7 +11,8 @@ import { PanelService } from "./panel.service";
 @Controller('panel')
 export class PanelController {
     constructor(
-        private readonly panelService: PanelService
+        private readonly panelService: PanelService,
+        private reportService: ReportsService
     ) { }
 
     // @UseGuards(JwtAuthGuard)
@@ -26,8 +29,33 @@ export class PanelController {
 
     @UseGuards(JwtAuthGuard)
     @Post('add')
-    store(@Body() body: PanelDto) {
-        return this.panelService.store(body);
+    async store(@Body() body: PanelDto) {
+        const panel = await this.panelService.store(body);
+
+        if (panel != null) {
+            const report: ReportsDto = {
+                autor_usuario: panel.empresas_id_empresa,
+                autor_cliente: null,
+                id_cliente: null,
+                codigo_acao: null,
+                categoria: 'PAINEL',
+                operador: null,
+                cancelar: false,
+                cadastrar: true,
+                editar: false,
+                login: false,
+                logout: false,
+                agendamento: false,
+                fila: false,
+                walkin: false,
+                atendimento: false,
+                observacao: null,
+            };
+
+            this.reportService.store(report);
+        }
+
+        return panel;
     }
 
     @UseGuards(JwtAuthGuard)

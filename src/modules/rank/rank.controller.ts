@@ -4,6 +4,8 @@ import { CraftService } from '../craft/craft.service';
 import { HourlyService } from '../hourly/hourly.service';
 import { PatientsDto } from '../patient/Dto/patients.dto';
 import { PatientService } from '../patient/patient.service';
+import { ReportsDto } from '../reports/Dto/reports.dto';
+import { ReportsService } from '../reports/reports.service';
 import { RankRegisterDto } from './Dto/rank.register.dto';
 import { RankService } from './rank.service';
 
@@ -14,7 +16,8 @@ export class RankController {
         private readonly rankService: RankService,
         private patientService: PatientService,
         private craftServive: CraftService,
-        private hourlyService: HourlyService
+        private hourlyService: HourlyService,
+        private reportService: ReportsService
     ) { }
 
     @UseGuards(JwtAuthGuard)
@@ -68,7 +71,27 @@ export class RankController {
             + Math.floor(Math.random() * (10 + 1)).toString()
             + Math.floor(Math.random() * (10 + 1)).toString();
 
-        // return body;
+        const report: ReportsDto = {
+            autor_usuario: null,
+            autor_cliente: patient.id_paciente,
+            id_cliente: service.empresas_id_empresa,
+            codigo_acao: null,
+            categoria: 'USUÁRIO',
+            operador: 'SERVIÇO',
+            cancelar: false,
+            cadastrar: false,
+            editar: false,
+            login: false,
+            logout: false,
+            agendamento: false,
+            fila: true,
+            walkin: false,
+            atendimento: false,
+            observacao: null,
+        };
+
+        this.reportService.store(report);
+
         return this.rankService.store(body, schedulerDate);
 
     }
