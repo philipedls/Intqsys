@@ -38,9 +38,9 @@ export class UserController {
 
         if (signupObj != null) {
             const report: ReportsDto = {
-                autor_usuario: signupObj.result.empresas_id_empresa,
+                autor_usuario: signupObj.result.id_usuario,
                 autor_cliente: null,
-                id_cliente: signupObj.result.id_usuario,
+                id_cliente: signupObj.result.empresas_id_empresa,
                 codigo_acao: null,
                 categoria: 'USUÁRIO',
                 operador: 'CADASTRO',
