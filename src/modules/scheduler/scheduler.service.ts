@@ -19,6 +19,15 @@ export class SchedulerService {
         return this.schedulerRepository.findOne({ id_agendamento: data.id_agendamento });
     }
 
+    async cancelScheduler(code: string, date: string) {
+        const listParam = date.split('-');
+        const scheduler = await this.schedulerRepository.findOne({ codigo: code });
+        scheduler.cancelado = true;
+        scheduler.data_cancelamento = new Date(Number(listParam[2]), Number(listParam[1]) - 1, Number(listParam[0]));
+
+        return this.schedulerRepository.save(scheduler);
+    }
+
     async findSheduleToday(): Promise<Schedules[] | undefined> {
         let schedules = new Array<Schedules>();
 
@@ -74,7 +83,6 @@ export class SchedulerService {
                 schedules.push(scheduler);
             }
         });
-        console.log(schedules.length);
 
         return { size: schedules.length };
     }
@@ -94,9 +102,6 @@ export class SchedulerService {
         let schedules12 = new Array<Schedules>();
 
         const list = await this.schedulerRepository.find({ status: true, cancelado: false });
-
-
-        // console.log(currentData.getDate());
 
         list.forEach((scheduler) => {
             const mes = scheduler.data_atendimento.getMonth();
@@ -154,7 +159,6 @@ export class SchedulerService {
                     break;
             }
         });
-        // console.log(schedules);
 
         return {
             Ja: schedules01,
@@ -172,9 +176,22 @@ export class SchedulerService {
         };
     }
 
-    async findSheduleCanceled(): Promise<Schedules[] | undefined> {
+    async findSheduleCanceled(date: string): Promise<Schedules[] | undefined> {
+        const day = date.split('-')[0];
+        const month = date.split('-')[1];
+        const year = date.split('-')[2];
+        const paramDate = new Date(Number(year), Number(month), Number(day));
 
-        return await this.schedulerRepository.find({ cancelado: true });
+        const canceledList = Array<Schedules>();
+        const schedulers = await this.schedulerRepository.find({ cancelado: true });
+
+        schedulers.forEach(scheduler => {
+            if (scheduler.data_cancelamento.getDate() == paramDate.getDate() && scheduler.data_cancelamento.getMonth() == paramDate.getMonth()) {
+                canceledList.push(scheduler);
+            }
+        });
+
+        return canceledList;
     }
 
     async findOndeByDate(date: Date): Promise<Schedules[]> {
@@ -240,7 +257,7 @@ Quando a sua vez chegar, você verá o seu número no monitor, além de receber 
         let schedulerDate = new Date();
         const list = data.data.split('/');
         schedulerDate.setDate(Number(list[0]));
-        schedulerDate.setMonth(Number(list[1]) - 1);
+        schedulerDate.setMonth(Number(list[1]));
         schedulerDate.setFullYear(Number(list[2]));
         schedulerDate.setHours(hours, min)
         data.data_atendimento = schedulerDate;
@@ -268,9 +285,6 @@ Quando a sua vez chegar, você verá o seu número no monitor, além de receber 
         const list = await this.schedulerRepository.find();
 
         list.forEach((scheduler) => {
-            // const schedulerDay = scheduler.data_atendimento.getDate().toFixed();
-            // const schedulerMonth = scheduler.data_atendimento.getMonth().toFixed();
-            // console.log(`${schedulerDay}/${schedulerMonth}`);
 
             const date = scheduler.data_atendimento.getDate().toFixed();
             const date2 = currentData.getDate().toFixed();

@@ -10,31 +10,31 @@ export class TotemController {
         private readonly totemService: TotemService
     ) { }
 
-    // @UseGuards(JwtAuthGuard)
+    @UseGuards(JwtAuthGuard)
     @Get()
     index() {
         return this.totemService.index();
     }
 
-    // @UseGuards(JwtAuthGuard)
+    @UseGuards(JwtAuthGuard)
     @Post()
     indexOneTotem(@Body() body: TotemFetchDto) {
         return this.totemService.findOneByUUID(body);
     }
 
-    // @UseGuards(JwtAuthGuard)
+    @UseGuards(JwtAuthGuard)
     @Get('amount')
     indexAmount() {
         return this.totemService.findeTotemAmount()
     }
 
-    // @UseGuards(JwtAuthGuard)
-    @Get('amount/activated')
+    @UseGuards(JwtAuthGuard)
+    @Get('activated')
     indexActivated() {
         return this.totemService.findeTotemActivatedAmount()
     }
 
-    // @UseGuards(JwtAuthGuard)
+    @UseGuards(JwtAuthGuard)
     @Post('add')
     store(@Body() body: TotemDto) {
         return this.totemService.store(body);

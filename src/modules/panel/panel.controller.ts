@@ -13,33 +13,33 @@ export class PanelController {
     ) { }
 
     // @UseGuards(JwtAuthGuard)
-    @Get()
-    index(): Promise<any[]> {
-        return this.panelService.index();
-    }
+    // @Get()
+    // index(): Promise<any[]> {
+    //     return this.panelService.index();
+    // }
 
-    // @UseGuards(JwtAuthGuard)
+    @UseGuards(JwtAuthGuard)
     @Post()
     indexByUUID(@Body() body: PanelFetchDto): Promise<Paineis> {
         return this.panelService.findOneByUUID(body);
     }
 
-    // @UseGuards(JwtAuthGuard)
+    @UseGuards(JwtAuthGuard)
     @Post('add')
     store(@Body() body: PanelDto) {
         return this.panelService.store(body);
     }
 
-    // @UseGuards(JwtAuthGuard)
+    @UseGuards(JwtAuthGuard)
     @Get('amount')
     indexAmount() {
         return this.panelService.findePanelAmount();
     }
 
-    // @UseGuards(JwtAuthGuard)
-    @Get('amount/activated')
+    @UseGuards(JwtAuthGuard)
+    @Get('activated')
     indexAmountActivated() {
-        return this.panelService.findePanelActivatedAmount();
+        return this.panelService.findePanelActivated();
     }
 
 

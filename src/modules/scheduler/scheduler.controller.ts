@@ -1,4 +1,5 @@
-import { Body, Controller, Get, HttpException, HttpStatus, Param, Post } from '@nestjs/common';
+import { Body, Controller, Get, HttpException, HttpStatus, Param, Post, Put, UseGuards } from '@nestjs/common';
+import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { CraftService } from '../craft/craft.service';
 import { HourlyDto } from '../hourly/Dto/hourly.dto';
 import { HourlyService } from '../hourly/hourly.service';
@@ -22,40 +23,40 @@ export class SchedulerController {
         private queueService: RankService
     ) { }
 
-    // @UseGuards(JwtAuthGuard)
-    @Post()
-    index(@Body() body: SchedulerFetchDataDto) {
-        return this.schedulerService.findOneByUUID(body);
+    // // @UseGuards(JwtAuthGuard)
+    // @Post()
+    // index(@Body() body: SchedulerFetchDataDto) {
+    //     return this.schedulerService.findOneByUUID(body);
+    // }
+
+    // // @UseGuards(JwtAuthGuard)
+    // @Get('today')
+    // indexByToday() {
+    //     return this.schedulerService.findSheduleToday();
+    // }
+
+    // @Get('today/amount')
+    // indexByTodayAmount() {
+    //     return this.schedulerService.findSheduleTodayAmount();
+    // }
+
+    //  // @UseGuards(JwtAuthGuard)
+    // @Get('month')
+    // indexByMonth() {
+    //     return this.schedulerService.findSheduleMonth();
+    // }
+
+    @UseGuards(JwtAuthGuard)
+    @Get('canceled/:date')
+    indexByCanceled(@Param() param) {
+        return this.schedulerService.findSheduleCanceled(param.date);
     }
 
-    // @UseGuards(JwtAuthGuard)
-    @Get('today')
-    indexByToday() {
-        return this.schedulerService.findSheduleToday();
-    }
-
-    @Get('today/amount')
-    indexByTodayAmount() {
-        return this.schedulerService.findSheduleTodayAmount();
-    }
-
-    // @UseGuards(JwtAuthGuard)
-    @Get('month')
-    indexByMonth() {
-        return this.schedulerService.findSheduleMonth();
-    }
-
-    // @UseGuards(JwtAuthGuard)
-    @Get('canceled')
-    indexByCanceled() {
-        return this.schedulerService.findSheduleCanceled();
-    }
-
-    // @UseGuards(JwtAuthGuard)
-    @Get('canceled/amount')
-    indexByCanceledAmount() {
-        return this.schedulerService.findSheduleCanceledAmount();
-    }
+    // // @UseGuards(JwtAuthGuard)
+    // @Get('canceled/amount')
+    // indexByCanceledAmount() {
+    //     return this.schedulerService.findSheduleCanceledAmount();
+    // }
 
     // @UseGuards(JwtAuthGuard)
     @Post('add')
@@ -115,12 +116,17 @@ export class SchedulerController {
             + Math.floor(Math.random() * (10 + 1)).toString()
             + Math.floor(Math.random() * (10 + 1)).toString();
 
+        const service = await this.craftService.findByUUID(body.id_servico);
+
         const schedulerData: SchedulerEntentyDto = {
             codigo: code,
             data: body.data,
             horarios_id_horario: hourly.id_horario,
-            servicos_id_servico: body.id_servico,
+            servicos_id_servico: service.id_servico,
             pacientes_id_paciente: patient.id_paciente,
+            horario: hourly.hora,
+            servico: service.titulo,
+            paciente: patient.paciente_nome,
             empresas_id_empresa: body.id_empresa,
             status: true,
             cancelado: false,
@@ -131,18 +137,29 @@ export class SchedulerController {
         const nofifyResponse = await this.schedulerService.notifyScheduler(result.codigo, patient.paciente_email, patient.paciente_nome);
 
         const queueElement: RankRegisterDto = {
-            codigo: null,
+            codigo: Math.floor(9).toString()
+                + Math.floor(Math.random() * (10 + 1)).toString()
+                + Math.floor(Math.random() * (10 + 1)).toString()
+                + Math.floor(Math.random() * (10 + 1)).toString()
+                + Math.floor(Math.random() * (10 + 1)).toString()
+                + Math.floor(Math.random() * (10 + 1)).toString()
+                + Math.floor(Math.random() * (10 + 1)).toString()
+                + Math.floor(Math.random() * (10 + 1)).toString()
+                + Math.floor(Math.random() * (10 + 1)).toString(),
             posicao: null,
+            horarios_id_horario: hourly.id_horario ?? '',
+            servicos_id_servico: service.id_servico ?? '',
+            pacientes_id_paciente: patient.id_paciente ?? '',
             data_atendimento: result.data_atendimento,
-            pacientes_id_paciente: result.pacientes_id_paciente,
+            paciente: patient.paciente_nome ?? '',
             paciente_telefone: '',
             cancelado: false,
             data: body.data,
             id_servico: null,
-            servicos_id_servico: body.id_servico,
+            servico: service.titulo,
             status: true,
             tipo: 'Agendado',
-            horarios_id_horario: hourly.id_horario
+            horario: hourly.hora
         };
 
         await this.queueService.store(queueElement, schedulerDate);
@@ -151,7 +168,7 @@ export class SchedulerController {
     }
 
     // @UseGuards(JwtAuthGuard)
-    @Get('queue/:date')
+    @Get('patients/:date')
     async indexQueue(@Param() param, @Body() body: PagesDto) {
         const schedulers = await this.schedulerService.findSheduleTodayDate(param.date);
         const services = await this.craftService.findBySchedulerList(schedulers);
@@ -162,16 +179,16 @@ export class SchedulerController {
 
     // @UseGuards(JwtAuthGuard)
     @Get(':date')
-    async indexScheduler(@Param() param, @Body() body: PagesDto) {
+    async indexScheduler(@Param() param) {
         const schedulers = await this.schedulerService.findSheduleTodayDate(param.date);
         const services = await this.craftService.findBySchedulerList(schedulers);
         return this.patientSerivce.finSchedulerToPatients(schedulers, services);
 
         // return this.patientSerivce.fetchPagesQueue(queue, body.page, body.amount);
     }
-    // @UseGuards(JwtAuthGuard)
-    // @Post()
-    // storeQueue(@Body() body) {
-    //     return this.queueService.store(body);
-    // }
+    @UseGuards(JwtAuthGuard)
+    @Put('cancel/:code')
+    storeQueue(@Param() param, @Body() body) {
+        return this.schedulerService.cancelScheduler(param.code, body.data);
+    }
 }

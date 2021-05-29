@@ -5,7 +5,6 @@ import { HourlyService } from '../hourly/hourly.service';
 import { PatientsDto } from '../patient/Dto/patients.dto';
 import { PatientService } from '../patient/patient.service';
 import { RankRegisterDto } from './Dto/rank.register.dto';
-import { RankServiceDto } from './Dto/rank.service.dto';
 import { RankService } from './rank.service';
 
 @Controller('queue')
@@ -18,7 +17,7 @@ export class RankController {
         private hourlyService: HourlyService
     ) { }
 
-    // @UseGuards(JwtAuthGuard)
+    @UseGuards(JwtAuthGuard)
     @Get(':date')
     async indexScheduler(@Param() param) {
         console.log(param.date);
@@ -35,9 +34,9 @@ export class RankController {
 
         const day: number = Number(list[0]);
         const month: number = Number(list[1]);
-        const year: number = Number(list[1]);
+        const year: number = Number(list[2]);
 
-        const schedulerDate = new Date(year, month - 1, day);
+        const schedulerDate = new Date(year, month, day);
 
         const patienteData: PatientsDto = {
             paciente_nome: '',
@@ -48,12 +47,18 @@ export class RankController {
         }
 
         const patient = await this.patientService.store(patienteData);
-
-        body.pacientes_id_paciente = patient.id_paciente;
-        body.servicos_id_servico = body.id_servico;
+        const service = await this.craftServive.findByUUID(body.id_servico);
+        console.log(service.titulo);
+        body.servicos_id_servico = service.id_servico;
+        body.servico = service.titulo;
         body.tipo = 'Fila';
-
-        body.codigo = Math.floor(9).toString()
+        body.paciente = patient.paciente_nome;
+        body.pacientes_id_paciente = patient.id_paciente;
+        body.data_atendimento = schedulerDate;
+        body.status = true;
+        body.cancelado = false;
+        body.horario = '',
+            body.codigo = Math.floor(9).toString()
             + Math.floor(Math.random() * (10 + 1)).toString()
             + Math.floor(Math.random() * (10 + 1)).toString()
             + Math.floor(Math.random() * (10 + 1)).toString()
@@ -63,7 +68,7 @@ export class RankController {
             + Math.floor(Math.random() * (10 + 1)).toString()
             + Math.floor(Math.random() * (10 + 1)).toString();
 
-
+        // return body;
         return this.rankService.store(body, schedulerDate);
 
     }

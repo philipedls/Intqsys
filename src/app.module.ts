@@ -42,11 +42,12 @@ import { UsersService } from './modules/users/users.service';
     ConfigModule.forRoot({ isGlobal: true }),
     TypeOrmModule.forRoot({
       type: process.env.TYPEORM_CONNECTION as any,
-      host: process.env.TYPEORM_HOST,
-      port: parseInt(process.env.TYPEORM_PORT),
-      username: process.env.TYPEORM_USERNAME,
-      password: process.env.TYPEORM_PASSWORD,
-      database: process.env.TYPEORM_DATABASE,
+      url: process.env.TYPEORM_URL,
+      // host: process.env.TYPEORM_HOST,
+      // port: parseInt(process.env.TYPEORM_PORT),
+      // username: process.env.TYPEORM_USERNAME,
+      // password: process.env.TYPEORM_PASSWORD,
+      // database: process.env.TYPEORM_DATABASE,
       entities: [Avaliations, Charges, Companies, Hourlies, Licences, Paineis, Patients, Payments, Schedules, Services, Totems, Users, Queues]
     }),
     TypeOrmModule.forFeature([Avaliations, Charges, Companies, Hourlies, Licences, Paineis, Patients, Payments, Schedules, Services, Totems, Users, Queues]),

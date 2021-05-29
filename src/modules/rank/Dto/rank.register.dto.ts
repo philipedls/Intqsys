@@ -4,9 +4,12 @@ export class RankRegisterDto {
     data_atendimento: Date;
     paciente_telefone: string;
     id_servico: string;
+    servico: string;
+    paciente: string;
+    horario: string;
+    horarios_id_horario: string;
     servicos_id_servico: string;
     pacientes_id_paciente: string;
-    horarios_id_horario: string;
     data: string;
     status: boolean;
     cancelado: boolean;

@@ -6,12 +6,12 @@ async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
   const options = {
-    "origin": true,  // attempted "origin":["http://localhost"]
+    "origin": "*",  // attempted "origin":["http://localhost"]
     "methods": "GET,HEAD,PUT,PATCH,POST,DELETE",
     "preflightContinue": false,
     "optionsSuccessStatus": 200,
     "credentials": true,
-    "allowedHeaders": "Content-Type, Accept,Authorization",
+    "allowedHeaders": "Content-Type, Accept, Authorization",
 
   }
   app.enableCors(options);

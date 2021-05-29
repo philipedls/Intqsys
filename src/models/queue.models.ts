@@ -31,6 +31,15 @@ export class Queues {
     @Column()
     data_cancelamento: Date
 
+    @Column()
+    horario: string
+
+    @Column()
+    servico: string
+
+    @Column()
+    paciente: string
+
     @Column('uuid')
     horarios_id_horario: string
 
@@ -39,5 +48,4 @@ export class Queues {
 
     @Column('uuid')
     pacientes_id_paciente: string
-
 }

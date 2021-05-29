@@ -15,7 +15,7 @@ export class RankService {
     async findByDate(date: string): Promise<any[]> {
         const list = date.split('-');
         const day = list[0];
-        const month = Number(list[1]) - 1;
+        const month = Number(list[1]);
         // const currentDate = new Date(Number(list[0]), Number(list[1]) - 1, Number(list[2]));
         // console.log(currentDate);
         const queueList = Array<Queues>();
@@ -34,17 +34,7 @@ export class RankService {
 
         return queueList;
     }
-    async store(data: RankRegisterDto, date: Date): Promise<Queues> {
-        data.data_atendimento = date;
-        data.status = true;
-        data.cancelado = false;
-        data.codigo = Math.floor(9).toString()
-            + Math.floor(Math.random() * (10 + 1)).toString()
-            + Math.floor(Math.random() * (10 + 1)).toString()
-            + Math.floor(Math.random() * (10 + 1)).toString()
-            + Math.floor(Math.random() * (10 + 1)).toString()
-            + Math.floor(Math.random() * (10 + 1)).toString()
-            + Math.floor(Math.random() * (10 + 1)).toString();
+    async store(data, date: Date): Promise<any> {
         const rankList = Array<Queues>();
 
         const ranks = await this.queuesRepository.find();
@@ -57,13 +47,13 @@ export class RankService {
 
         if (rankList.length == 0) {
             data.posicao = 1;
-            const scheduler = this.queuesRepository.create(data);
-            return this.queuesRepository.save(scheduler);
+            const queue = this.queuesRepository.create(data);
+            return this.queuesRepository.save(queue);
         }
 
         data.posicao = rankList.length + 1
-        const scheduler = this.queuesRepository.create(data);
-        return this.queuesRepository.save(scheduler);
+        const queue = this.queuesRepository.create(data);
+        return this.queuesRepository.save(queue);
 
     }
 }
