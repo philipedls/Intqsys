@@ -88,14 +88,13 @@ export class SchedulerService {
     }
 
     async findSchedulerByMonth(date: string) {
-        const month = date.split('-')[0];
-        const year = date.split('-')[1];
 
         const schedulers = Array();
         const list = await this.schedulerRepository.find();
 
         list.forEach((element) => {
-            if (month == element.data_atendimento.getMonth().toFixed() && year == element.data_atendimento.getFullYear().toFixed()) {
+            console.log(element.data_atendimento.getMonth().toFixed());
+            if (date == element.data_atendimento.getFullYear().toFixed()) {
                 schedulers.push(element);
             }
         });

@@ -47,9 +47,9 @@ export class SchedulerController {
     }
 
     @UseGuards(JwtAuthGuard)
-    @Get('month/:date')
+    @Get('year/:year')
     indexByMonth(@Param() param) {
-        return this.schedulerService.findSchedulerByMonth(param.date);
+        return this.schedulerService.findSchedulerByMonth(param.year);
     }
 
     @UseGuards(JwtAuthGuard)
