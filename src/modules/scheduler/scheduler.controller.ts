@@ -7,8 +7,9 @@ import { PatientsDto } from '../patient/Dto/patients.dto';
 import { PatientService } from '../patient/patient.service';
 import { RankRegisterDto } from '../rank/Dto/rank.register.dto';
 import { RankService } from '../rank/rank.service';
+import { ReportsDto } from '../reports/Dto/reports.dto';
+import { ReportsService } from '../reports/reports.service';
 import { SchedulerEntentyDto } from './dto/scheduler.ententy.dto';
-import { SchedulerFetchDataDto } from './dto/scheduler.fetch.data.dto';
 import { PagesDto } from './dto/scheduler.queue.pages.dto';
 import { SchedulerReciverDto } from './dto/scheduler.reciver.dto';
 import { SchedulerService } from './scheduler.service';
@@ -20,7 +21,8 @@ export class SchedulerController {
         private patientSerivce: PatientService,
         private hourlyService: HourlyService,
         private craftService: CraftService,
-        private queueService: RankService
+        private queueService: RankService,
+        private reportService: ReportsService
     ) { }
 
     // // @UseGuards(JwtAuthGuard)
@@ -40,38 +42,41 @@ export class SchedulerController {
     //     return this.schedulerService.findSheduleTodayAmount();
     // }
 
-    //  // @UseGuards(JwtAuthGuard)
-    // @Get('month')
-    // indexByMonth() {
-    //     return this.schedulerService.findSheduleMonth();
-    // }
+    @UseGuards(JwtAuthGuard)
+    @Get('month')
+    indexSeparedtedByMonth(@Param() param) {
+        return this.schedulerService.findSheduleSeparedByMonth();
+    }
 
     @UseGuards(JwtAuthGuard)
-    @Get('canceled/:date')
-    indexByCanceled(@Param() param) {
+    @Get('year/:year')
+    indexByMonth(@Param() param) {
+        console.log(param.year);
+        return this.schedulerService.findSchedulerByYear(param.year);
+    }
+
+    @UseGuards(JwtAuthGuard)
+    @Get('canceled/fetch/:date')
+    indexByCanceled(@Param() param, @Body() body) {
         return this.schedulerService.findSheduleCanceled(param.date);
     }
 
-    // // @UseGuards(JwtAuthGuard)
-    // @Get('canceled/amount')
-    // indexByCanceledAmount() {
-    //     return this.schedulerService.findSheduleCanceledAmount();
-    // }
+    @UseGuards(JwtAuthGuard)
+    @Get('canceled/:year')
+    indexAllCanceled(@Param() param, @Body() body) {
+        return this.schedulerService.findSheduleCanceledsByYear(param.year);
+    }
 
-    // @UseGuards(JwtAuthGuard)
+    @UseGuards(JwtAuthGuard)
     @Post('add')
     async store(@Body() body: SchedulerReciverDto) {
 
         const listHours = body.hora.split(':');
         const list = body.data.split('/');
-        // console.log(list);
 
         const day: number = Number(list[0]);
         const month: number = Number(list[1]);
         const year: number = Number(list[2]);
-
-        // let dataConcat = `${day}/${month}/${year}`;
-        // console.log(dataConcat);
 
         const schedulerDate = new Date(year, month - 1, day, Number(listHours[0]), Number(listHours[0]));
 
@@ -162,6 +167,26 @@ export class SchedulerController {
             horario: hourly.hora
         };
 
+        const report: ReportsDto = {
+            autor_usuario: null,
+            autor_cliente: patient.id_paciente,
+            id_cliente: body.id_empresa,
+            codigo_acao: null,
+            categoria: 'SERVICO',
+            operador: service.titulo.toUpperCase(),
+            cancelar: false,
+            cadastrar: false,
+            editar: false,
+            login: false,
+            logout: false,
+            agendamento: true,
+            fila: false,
+            walkin: false,
+            atendimento: false,
+            observacao: null,
+        };
+
+        this.reportService.store(report);
         await this.queueService.store(queueElement, schedulerDate);
 
         return { result: result, notify: nofifyResponse }
@@ -177,7 +202,7 @@ export class SchedulerController {
         // return this.patientSerivce.fetchPagesQueue(queue, body.page, body.amount);
     }
 
-    // @UseGuards(JwtAuthGuard)
+    @UseGuards(JwtAuthGuard)
     @Get(':date')
     async indexScheduler(@Param() param) {
         const schedulers = await this.schedulerService.findSheduleTodayDate(param.date);

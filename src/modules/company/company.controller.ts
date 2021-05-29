@@ -1,12 +1,15 @@
 import { Body, Controller, Get, Post, UseGuards } from '@nestjs/common';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
+import { ReportsDto } from '../reports/Dto/reports.dto';
+import { ReportsService } from '../reports/reports.service';
 import { CompanyFetch } from './company.fetch';
 import { CompanyService } from './company.service';
 
 @Controller('company')
 export class CompanyController {
     constructor(
-        private readonly companyService: CompanyService
+        private readonly companyService: CompanyService,
+        private reportService: ReportsService
     ) { }
 
 
@@ -24,8 +27,32 @@ export class CompanyController {
 
     // @UseGuards(JwtAuthGuard)
     @Post()
-    store(@Body() body) {
-        return this.companyService.store(body);
+    async store(@Body() body) {
+        const company = await this.companyService.store(body);
+
+        if (company != null) {
+            const report: ReportsDto = {
+                autor_usuario: body.id_empresa,
+                autor_cliente: null,
+                id_cliente: null,
+                codigo_acao: null,
+                categoria: 'USUÁRIO',
+                operador: null,
+                cancelar: false,
+                cadastrar: true,
+                editar: false,
+                login: false,
+                logout: false,
+                agendamento: false,
+                fila: false,
+                walkin: false,
+                atendimento: false,
+                observacao: null,
+            };
+
+            this.reportService.store(report);
+        }
+        return company;
     }
 
 }

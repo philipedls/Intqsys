@@ -67,6 +67,19 @@ export class SchedulerService {
         return { size: schedules.length };
     }
 
+    async findSheduleCanceledsByYear(year: string): Promise<Schedules[] | undefined> {
+        const schedulers = await this.schedulerRepository.find({ cancelado: true });
+        const canceled = Array<Schedules>();
+
+        schedulers.map((scheduler) => {
+            if (year == scheduler.data_atendimento.getFullYear().toFixed()) {
+                canceled.push(scheduler);
+            }
+        });
+
+        return canceled;
+    }
+
     async findSheduleCanceledAmount(): Promise<any | undefined> {
         let schedules = new Array<Schedules>();
 
@@ -87,7 +100,21 @@ export class SchedulerService {
         return { size: schedules.length };
     }
 
-    async findSheduleMonth(): Promise<any> {
+    async findSchedulerByYear(date: string) {
+        const schedulers = Array();
+        const list = await this.schedulerRepository.find();
+
+        list.forEach((element) => {
+            console.log(element.data_atendimento.getFullYear().toFixed());
+            if (date == element.data_atendimento.getFullYear().toFixed()) {
+                schedulers.push(element);
+            }
+        });
+        console.log(schedulers.length);
+        return schedulers;
+    }
+
+    async findSheduleSeparedByMonth(): Promise<any> {
         let schedules01 = new Array<Schedules>();
         let schedules02 = new Array<Schedules>();
         let schedules03 = new Array<Schedules>();
@@ -107,51 +134,51 @@ export class SchedulerService {
             const mes = scheduler.data_atendimento.getMonth();
 
             switch (mes) {
-                case 1:
+                case 0:
                     schedules01.push(scheduler);
                     break;
 
-                case 2:
+                case 1:
                     schedules02.push(scheduler);
                     break;
 
-                case 3:
+                case 2:
                     schedules03.push(scheduler);
                     break;
 
-                case 4:
+                case 3:
                     schedules04.push(scheduler);
                     break;
 
-                case 5:
+                case 4:
                     schedules05.push(scheduler);
                     break;
 
-                case 6:
+                case 5:
                     schedules06.push(scheduler);
                     break;
 
-                case 7:
+                case 6:
                     schedules07.push(scheduler);
                     break;
 
-                case 8:
+                case 7:
                     schedules08.push(scheduler);
                     break;
 
-                case 9:
+                case 8:
                     schedules09.push(scheduler);
                     break;
 
-                case 10:
+                case 9:
                     schedules10.push(scheduler);
                     break;
 
-                case 11:
+                case 10:
                     schedules11.push(scheduler);
                     break;
 
-                case 12:
+                case 11:
                     schedules12.push(scheduler);
                     break;
 

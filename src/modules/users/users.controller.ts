@@ -1,16 +1,14 @@
-import { UseGuards, Request, Patch, Param, ValidationPipe, UnauthorizedException } from '@nestjs/common';
-import { Body, Controller, Get, Post } from '@nestjs/common';
-import { Users } from 'src/models/users.models';
-import { UsersService } from './users.service';
-import { UsersSignUpDto } from './Dto/users.signup';
+import { Body, Controller, Param, Patch, Post, Request, UnauthorizedException, UseGuards, ValidationPipe } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
+import { Users } from 'src/models/users.models';
 import { AuthService } from '../auth/auth.service';
-import { JwtAuthGuard } from '../auth/jwt-auth.guard';
+import { ReportsDto } from '../reports/Dto/reports.dto';
+import { ReportsService } from '../reports/reports.service';
 import { UsersFetchUUIDDto } from './Dto/users.fetch';
 import { UsersRecoveryDto } from './Dto/users.recovery';
-import { ChangePasswordDto } from '../auth/dto/changes.password.dto';
-import { use } from 'passport';
+import { UsersSignUpDto } from './Dto/users.signup';
 import { UserRole } from './user-roles.enum';
+import { UsersService } from './users.service';
 
 @Controller('user')
 export class UserController {
@@ -32,10 +30,36 @@ export class UserController {
         return this.userService.findOneByUUID(body);
     }
 
+    // @UseGuards(JwtAuthGuard)
     @Post('signup')
-    signup(@Body(ValidationPipe) body: UsersSignUpDto) {
+    async signup(@Body(ValidationPipe) body: UsersSignUpDto) {
         body.role = UserRole.USER;
-        return this.userService.store(body);
+        const signupObj = await this.userService.store(body);
+
+        if (signupObj != null) {
+            const report: ReportsDto = {
+                autor_usuario: signupObj.result.empresas_id_empresa,
+                autor_cliente: null,
+                id_cliente: signupObj.result.id_usuario,
+                codigo_acao: null,
+                categoria: 'USUÁRIO',
+                operador: 'CADASTRO',
+                cancelar: false,
+                cadastrar: true,
+                editar: false,
+                login: false,
+                logout: false,
+                agendamento: false,
+                fila: false,
+                walkin: false,
+                atendimento: false,
+                observacao: null,
+            };
+
+            this.userService.storeReport(report);
+        }
+
+        return signupObj;
     }
 
     @UseGuards(AuthGuard('local'))
@@ -44,6 +68,29 @@ export class UserController {
         const access_token = await this.authService.authSignIn(req.user);
 
         const { token, token_recuperar_senha, ...result } = req.user
+
+        if (result) {
+            const { empresas_id_empresa, id_usuario } = result;
+            const report: ReportsDto = {
+                autor_usuario: empresas_id_empresa,
+                autor_cliente: null,
+                id_cliente: id_usuario,
+                codigo_acao: null,
+                categoria: 'USUÁRIO',
+                operador: 'LOGIN',
+                cancelar: false,
+                cadastrar: false,
+                editar: false,
+                login: true,
+                logout: false,
+                agendamento: false,
+                fila: false,
+                walkin: false,
+                atendimento: false,
+                observacao: null,
+            };
+            this.userService.storeReport(report);
+        }
 
         return {
             access_token: access_token,

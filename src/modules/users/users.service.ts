@@ -1,8 +1,10 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import * as bcrypt from 'bcrypt';
+import { Reports } from 'src/models/reports.models';
 import { Users } from 'src/models/users.models';
 import { Repository } from 'typeorm';
+import { ReportsDto } from '../reports/Dto/reports.dto';
 import { UsersFetchUUIDDto } from './Dto/users.fetch';
 import { UsersSignUpDto } from './Dto/users.signup';
 
@@ -11,7 +13,14 @@ export class UsersService {
     constructor(
         @InjectRepository(Users)
         private userRepository: Repository<Users>,
+        @InjectRepository(Reports)
+        private reportRepository: Repository<Reports>,
     ) { }
+
+    async storeReport(data: ReportsDto) {
+        const report = await this.reportRepository.create(data);
+        return this.reportRepository.save(report);
+    }
 
     async index(): Promise<Users[]> {
         return this.userRepository.find();

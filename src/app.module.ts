@@ -12,6 +12,7 @@ import { Paineis } from './models/panels.models';
 import { Patients } from './models/patients.models';
 import { Payments } from './models/payments.models';
 import { Queues } from './models/queue.models';
+import { Reports } from './models/reports.models';
 import { Schedules } from './models/schedules.models';
 import { Services } from './models/services.models';
 import { Totems } from './models/totems.models';
@@ -28,6 +29,9 @@ import { PatientController } from './modules/patient/patient.controller';
 import { PatientService } from './modules/patient/patient.service';
 import { RankController } from './modules/rank/rank.controller';
 import { RankService } from './modules/rank/rank.service';
+import { ReportsController } from './modules/reports/reports.controller';
+import { ReportsModule } from './modules/reports/reports.module';
+import { ReportsService } from './modules/reports/reports.service';
 import { SchedulerController } from './modules/scheduler/scheduler.controller';
 import { SchedulerService } from './modules/scheduler/scheduler.service';
 import { TotemController } from './modules/totem/totem.controller';
@@ -48,12 +52,11 @@ import { UsersService } from './modules/users/users.service';
       // username: process.env.TYPEORM_USERNAME,
       // password: process.env.TYPEORM_PASSWORD,
       // database: process.env.TYPEORM_DATABASE,
-      entities: [Avaliations, Charges, Companies, Hourlies, Licences, Paineis, Patients, Payments, Schedules, Services, Totems, Users, Queues]
+      entities: [Avaliations, Charges, Companies, Hourlies, Licences, Paineis, Patients, Payments, Schedules, Services, Totems, Users, Queues, Reports]
     }),
-    TypeOrmModule.forFeature([Avaliations, Charges, Companies, Hourlies, Licences, Paineis, Patients, Payments, Schedules, Services, Totems, Users, Queues]),
-
+    TypeOrmModule.forFeature([Avaliations, Charges, Companies, Hourlies, Licences, Paineis, Patients, Payments, Schedules, Services, Totems, Users, Queues, Reports]),
   ],
-  controllers: [AppController, UserController, CompanyController, PanelController, TotemController, SchedulerController, CraftController, PatientController, RankController],
-  providers: [AppService, UsersService, CompanyService, PanelService, TotemService, SchedulerService, CraftService, PatientService, HourlyService, RankService],
+  controllers: [AppController, UserController, CompanyController, PanelController, TotemController, SchedulerController, CraftController, PatientController, RankController, ReportsController],
+  providers: [AppService, UsersService, CompanyService, PanelService, TotemService, SchedulerService, CraftService, PatientService, HourlyService, RankService, ReportsService],
 })
 export class AppModule { }
