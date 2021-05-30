@@ -22,12 +22,6 @@ export class PanelController {
     }
 
     @UseGuards(JwtAuthGuard)
-    @Post()
-    indexByUUID(@Body() body: PanelFetchDto): Promise<Paineis> {
-        return this.panelService.findOneByUUID(body);
-    }
-
-    @UseGuards(JwtAuthGuard)
     @Post('add')
     async store(@Body() body: PanelDto) {
         const panel = await this.panelService.store(body);
