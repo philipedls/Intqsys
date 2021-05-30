@@ -30,7 +30,6 @@ export class UserController {
         return this.userService.findOneByUUID(body);
     }
 
-    // @UseGuards(JwtAuthGuard)
     @Post('signup')
     async signup(@Body(ValidationPipe) body: UsersSignUpDto) {
         body.role = UserRole.USER;
