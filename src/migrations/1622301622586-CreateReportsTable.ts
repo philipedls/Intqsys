@@ -52,7 +52,8 @@ export class CreateReportsTable1622301622586 implements MigrationInterface {
                     },
                     {
                         name: 'operador',
-                        type: 'varchar'
+                        type: 'varchar',
+                        isNullable: true
                     },
                     {
                         name: 'cancelar',
@@ -89,6 +90,7 @@ export class CreateReportsTable1622301622586 implements MigrationInterface {
                     {
                         name: 'id_cliente',
                         type: 'uuid',
+                        isNullable: true
                     },
                     {
                         name: 'atendimento',
