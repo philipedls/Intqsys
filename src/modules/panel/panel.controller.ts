@@ -19,13 +19,7 @@ export class PanelController {
     @Get(':uid')
     index(@Param() param): Promise<any[]> {
         return this.panelService.indexByCompanyUID(param.uid);
-    }ƒ
-
-    // @UseGuards(JwtAuthGuard)
-    // @Post()
-    // indexByUUID(@Body() body: PanelFetchDto): Promise<Paineis> {
-    //     return this.panelService.findOneByUUID(body);
-    // }
+    }
 
     @UseGuards(JwtAuthGuard)
     @Post('add')
