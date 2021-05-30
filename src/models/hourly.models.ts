@@ -1,7 +1,4 @@
-import { type } from "node:os";
-import { Column, CreateDateColumn, Entity, Generated, ManyToOne, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
-import { Companies } from "./companies.models";
-import { Schedules } from "./schedules.models";
+import { Column, CreateDateColumn, Entity, Generated, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
 
 @Entity({ name: 'horarios' })
 export class Hourlies {
