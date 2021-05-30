@@ -29,6 +29,22 @@ export class PanelService {
         return totems;
     }
 
+    async indexByCompanyUID(uid: string): Promise<any[]> {
+        const totems = Array();
+        const totemsResult = await this.panelRepository.find({ empresas_id_empresa: uid });
+
+        for (let index = 0; index < totemsResult.length; index++) {
+            const { codigo, titulo, status } = totemsResult[index];
+            totems.push({
+                codigo: codigo,
+                titulo: titulo,
+                status: status
+            });
+        }
+
+        return totems;
+    }
+
     store(data: PanelDto): Promise<Paineis> {
         data.codigo = Math.floor(9).toString()
             + Math.floor(Math.random() * (10 + 1)).toString()
