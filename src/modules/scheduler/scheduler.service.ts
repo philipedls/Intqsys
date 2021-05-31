@@ -316,7 +316,7 @@ Quando a sua vez chegar, você verá o seu número no monitor, além de receber 
             const date = scheduler.data_atendimento.getDate().toFixed();
             const date2 = currentData.getDate().toFixed();
 
-            const month = (scheduler.data_atendimento.getMonth() + 1).toFixed();
+            const month = (scheduler.data_atendimento.getMonth()).toFixed();
             const month2 = currentData.getMonth().toFixed();
 
             console.log(`Currente Data: ${month} | Data Param: ${monthParam}`);

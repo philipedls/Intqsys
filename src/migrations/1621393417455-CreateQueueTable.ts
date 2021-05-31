@@ -90,6 +90,11 @@ export class CreateQueueTable1621393417455 implements MigrationInterface {
                         type: 'uuid',
                         isNullable: true
                     },
+                    {
+                        name: 'situation',
+                        type: 'varchar',
+                        isNullable: true
+                    },
                 ]
             }),
         );

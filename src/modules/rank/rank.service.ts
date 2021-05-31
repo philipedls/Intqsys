@@ -14,10 +14,8 @@ export class RankService {
 
     async findByDate(date: string): Promise<any[]> {
         const list = date.split('-');
-        const day = list[0];
+        const day = Number(list[0]);
         const month = Number(list[1]);
-        // const currentDate = new Date(Number(list[0]), Number(list[1]) - 1, Number(list[2]));
-        // console.log(currentDate);
         const queueList = Array<Queues>();
         const queueReponse = await this.queuesRepository.find();
 
@@ -25,7 +23,7 @@ export class RankService {
             console.log(queue.data_atendimento.getMonth().toFixed());
             console.log(month.toFixed());
             if (
-                queue.data_atendimento.getDate().toFixed() == day &&
+                queue.data_atendimento.getDate().toFixed() == day.toFixed() &&
                 queue.data_atendimento.getMonth().toFixed() == month.toFixed()
             ) {
                 queueList.push(queue);

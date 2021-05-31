@@ -14,4 +14,5 @@ export class RankRegisterDto {
     status: boolean;
     cancelado: boolean;
     tipo: string;
+    situation: string;
 }
