@@ -32,8 +32,8 @@ export class RankController {
 
     @UseGuards(JwtAuthGuard)
     @Post('situation/update/:uid')
-    async updateSituation(@Param() param, @Body() body) {
-        await this.rankService.updateSituation(param.uid, body.situation);
+    updateSituation(@Param() param, @Body() body) {
+        return this.rankService.updateSituation(param.uid, body.situation);
     }
 
     // @UseGuards(JwtAuthGuard)
@@ -57,7 +57,7 @@ export class RankController {
 
         const patient = await this.patientService.store(patienteData);
         const service = await this.craftServive.findByUUID(body.id_servico);
-        console.log(service.titulo);
+        // console.log(service.titulo);
         body.servicos_id_servico = service.id_servico;
         body.servico = service.titulo;
         body.tipo = 'Fila';
