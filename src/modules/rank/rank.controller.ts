@@ -57,7 +57,7 @@ export class RankController {
 
         const patient = await this.patientService.store(patienteData);
         const service = await this.craftServive.findByUUID(body.id_servico);
-        console.log(service.titulo);
+        // console.log(service.titulo);
         body.servicos_id_servico = service.id_servico;
         body.servico = service.titulo;
         body.tipo = 'Fila';

@@ -39,7 +39,8 @@ export class RankService {
 
         return queueList;
     }
-    async store(data, date: Date): Promise<any> {
+    async store(data: RankRegisterDto, date: Date): Promise<any> {
+        data.situation = 'WAITING'
         const rankList = Array<Queues>();
 
         const ranks = await this.queuesRepository.find();
