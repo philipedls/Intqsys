@@ -135,7 +135,8 @@ export class SchedulerController {
             empresas_id_empresa: body.id_empresa,
             status: true,
             cancelado: false,
-            data_atendimento: null
+            data_atendimento: null,
+            situation: 'WAITING'
         }
 
         const result = await this.schedulerService.storeWithoutHours(schedulerData, schedulerDate);
@@ -164,7 +165,8 @@ export class SchedulerController {
             servico: service.titulo,
             status: true,
             tipo: 'Agendado',
-            horario: hourly.hora
+            horario: hourly.hora,
+            situation: 'WAITING'
         };
 
         const report: ReportsDto = {
