@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Param, Post, UseGuards } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post, Put, UseGuards } from '@nestjs/common';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { CraftService } from '../craft/craft.service';
 import { HourlyService } from '../hourly/hourly.service';
@@ -28,6 +28,12 @@ export class RankController {
         const queuedPatients = await this.patientService.fetchQueueToPatients(queues, this.craftServive, this.hourlyService);
 
         return { length: queuedPatients.length, list: queuedPatients };
+    }
+
+    @UseGuards(JwtAuthGuard)
+    @Put('situation/update/:uid')
+    updateSituation(@Param() param, @Body() body) {
+        return this.rankService.updateSituation(param.uid, body.situation);
     }
 
     // @UseGuards(JwtAuthGuard)
