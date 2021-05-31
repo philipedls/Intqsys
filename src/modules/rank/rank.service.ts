@@ -12,6 +12,13 @@ export class RankService {
         private queuesRepository: Repository<Queues>
     ) { }
 
+    async updateSituation(uid, situation) {
+        const queueElement = await this.queuesRepository.findOne({ id_fila: uid });
+        queueElement.situation = situation
+
+        return this.queuesRepository.save(queueElement);
+    }
+
     async findByDate(date: string): Promise<any[]> {
         const list = date.split('-');
         const day = Number(list[0]);
