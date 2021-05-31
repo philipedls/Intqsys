@@ -32,8 +32,8 @@ export class RankController {
 
     @UseGuards(JwtAuthGuard)
     @Post('situation/update/:uid')
-    async updateSituation(@Param() param, @Body() body) {
-        await this.rankService.updateSituation(param.uid, body.situation);
+    updateSituation(@Param() param, @Body() body) {
+        return this.rankService.updateSituation(param.uid, body.situation);
     }
 
     // @UseGuards(JwtAuthGuard)
