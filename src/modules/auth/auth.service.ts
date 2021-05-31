@@ -66,12 +66,15 @@ export class AuthService {
         recoverToken: string,
         changePasswordDto: ChangePasswordDto,
     ): Promise<void> {
+        console.log(recoverToken);
+        console.log(changePasswordDto);
         const user = await this.usersService.findOneByRecoverToken(recoverToken);
         if (!user) throw new NotFoundException('Invalid token!');
 
         try {
             await this.changePassword(user, changePasswordDto);
         } catch (error) {
+            console.log(error);
             throw error;
         }
     }
