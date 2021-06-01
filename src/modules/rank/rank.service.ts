@@ -2,14 +2,13 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Queues } from 'src/models/queue.models';
 import { Repository } from 'typeorm';
-import { CraftService } from '../craft/craft.service';
 import { RankRegisterDto } from './Dto/rank.register.dto';
 
 @Injectable()
 export class RankService {
     constructor(
         @InjectRepository(Queues)
-        private queuesRepository: Repository<Queues>
+        private queuesRepository: Repository<Queues>,
     ) { }
 
     async updateSituation(uid, situation) {
@@ -27,8 +26,6 @@ export class RankService {
         const queueReponse = await this.queuesRepository.find();
 
         queueReponse.forEach((queue: Queues) => {
-            console.log(queue.data_atendimento.getMonth().toFixed());
-            console.log(month.toFixed());
             if (
                 queue.data_atendimento.getDate().toFixed() == day.toFixed() &&
                 queue.data_atendimento.getMonth().toFixed() == month.toFixed()
@@ -42,7 +39,6 @@ export class RankService {
     async store(data: RankRegisterDto, date: Date): Promise<any> {
         data.situation = 'WAITING'
         const rankList = Array<Queues>();
-
         const ranks = await this.queuesRepository.find();
 
         ranks.forEach((queue) => {
@@ -51,14 +47,15 @@ export class RankService {
             }
         });
 
-        // if (rankList.length == 0) {
-        //     data.posicao = 1;
-        //     const queue = this.queuesRepository.create(data);
-        //     return this.queuesRepository.save(queue);
-        // }
+        if (rankList.length == 0) {
+            data.posicao = 1;
+            const queue = this.queuesRepository.create(data);
+            return this.queuesRepository.save(queue);
+        }
 
         data.posicao = rankList.length + 1
         const queue = this.queuesRepository.create(data);
+
         return this.queuesRepository.save(queue);
 
     }

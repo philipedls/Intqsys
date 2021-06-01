@@ -22,6 +22,7 @@ import { CompanyController } from './modules/company/company.controller';
 import { CompanyService } from './modules/company/company.service';
 import { CraftController } from './modules/craft/craft.controller';
 import { CraftService } from './modules/craft/craft.service';
+import { HourlyController } from './modules/hourly/hourly.controller';
 import { HourlyService } from './modules/hourly/hourly.service';
 import { PanelController } from './modules/panel/panel.controller';
 import { PanelService } from './modules/panel/panel.service';
@@ -56,7 +57,7 @@ import { UsersService } from './modules/users/users.service';
     }),
     TypeOrmModule.forFeature([Avaliations, Charges, Companies, Hourlies, Licences, Paineis, Patients, Payments, Schedules, Services, Totems, Users, Queues, Reports]),
   ],
-  controllers: [AppController, UserController, CompanyController, PanelController, TotemController, SchedulerController, CraftController, PatientController, RankController, ReportsController],
+  controllers: [AppController, UserController, CompanyController, PanelController, TotemController, SchedulerController, CraftController, PatientController, HourlyController, RankController, ReportsController],
   providers: [AppService, UsersService, CompanyService, PanelService, TotemService, SchedulerService, CraftService, PatientService, HourlyService, RankService, ReportsService],
 })
 export class AppModule { }
