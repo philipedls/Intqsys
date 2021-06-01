@@ -27,10 +27,4 @@ export class Hourlies {
 
     @Column('uuid')
     empresas_id_empresa: string
-
-    // @ManyToOne(type => Companies, empresa => empresa.avaliacoes)
-    // empresa: Companies
-
-    // @OneToMany(type => Schedules, agendamento => agendamento.horario)
-    // agendamentos: Schedules[]
 }
