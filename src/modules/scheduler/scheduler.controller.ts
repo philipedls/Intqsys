@@ -67,7 +67,7 @@ export class SchedulerController {
         return this.schedulerService.findSheduleCanceledsByYear(param.year);
     }
 
-    @UseGuards(JwtAuthGuard)
+    // @UseGuards(JwtAuthGuard)
     @Post('add')
     async store(@Body() body: SchedulerReciverDto) {
 
