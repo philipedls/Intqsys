@@ -15,7 +15,7 @@ export class CraftController {
         private reportService: ReportsService
     ) { }
 
-    @UseGuards(JwtAuthGuard)
+    // @UseGuards(JwtAuthGuard)
     @Get(':uid')
     findByUUID(@Param() param): Promise<Services[]> {
         return this.craftService.findByCompanyUUID(param.uid);
