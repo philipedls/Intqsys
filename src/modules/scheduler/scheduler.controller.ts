@@ -78,7 +78,7 @@ export class SchedulerController {
         const month: number = Number(list[1]);
         const year: number = Number(list[2]);
 
-        const schedulerDate = new Date(year, month - 1, day, Number(listHours[0]), Number(listHours[0]));
+        const schedulerDate = new Date(year, month, day, Number(listHours[0]), Number(listHours[0]));
 
         const schedulers = await this.schedulerService.findOndeByDate(schedulerDate);
 

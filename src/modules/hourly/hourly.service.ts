@@ -30,17 +30,23 @@ export class HourlyService {
         return this.hourlyRepository.findOne({ hora: hora });
     }
 
-    async storeCompanyHours(data: HourlyCompanyDto): Promise<Hourlies | undefined> {
-        data.status = true;
-        data.token = parseInt(Math.floor(9).toString()
-            + Math.floor(Math.random() * (10 + 1)).toString()
-            + Math.floor(Math.random() * (10 + 1)).toString()
-            + Math.floor(Math.random() * (10 + 1)).toString()
-            + Math.floor(Math.random() * (10 + 1)).toString()
-            + Math.floor(Math.random() * (10 + 1)).toString()
-        );
-        const hourly = await this.hourlyRepository.create(data);
-        return this.hourlyRepository.save(hourly);
+    async storeCompanyHours(dataList: HourlyCompanyDto[], uid: string): Promise<Hourlies[] | undefined> {
+        for (let index = 0; index < dataList.length; index++) {
+            dataList[index].status = true;
+            dataList[index].empresas_id_empresa = uid;
+            dataList[index].token = parseInt(Math.floor(9).toString()
+                + Math.floor(Math.random() * (10 + 1)).toString()
+                + Math.floor(Math.random() * (10 + 1)).toString()
+                + Math.floor(Math.random() * (10 + 1)).toString()
+                + Math.floor(Math.random() * (10 + 1)).toString()
+                + Math.floor(Math.random() * (10 + 1)).toString()
+            );
+            const hourly = await this.hourlyRepository.create(dataList);
+            console.log(hourly);
+            this.hourlyRepository.save(hourly)
+        }
+
+        return this.hourlyRepository.find({ empresas_id_empresa: uid })
     }
 
     async store(data: HourlyDto) {
