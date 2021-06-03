@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Param, Patch, Post, Request, UnauthorizedException, UseGuards, ValidationPipe } from '@nestjs/common';
+import { Body, Controller, Get, Param, Patch, Post, Put, Request, UnauthorizedException, UseGuards, ValidationPipe } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { Users } from 'src/models/users.models';
 import { AuthService } from '../auth/auth.service';
@@ -28,6 +28,30 @@ export class UserController {
     @Post()
     index(@Body() body: UsersFetchUUIDDto): Promise<Users> {
         return this.userService.findOneByUUID(body);
+    }
+
+    @Put(':uid')
+    signout(@Param() param) {
+        const report: ReportsDto = {
+            autor_usuario: param.uid,
+            autor_cliente: null,
+            id_cliente: null,
+            codigo_acao: null,
+            categoria: 'USUÁRIO',
+            operador: 'CADASTRO',
+            cancelar: false,
+            cadastrar: false,
+            editar: false,
+            login: false,
+            logout: true,
+            agendamento: false,
+            fila: false,
+            walkin: false,
+            atendimento: false,
+            observacao: null,
+        };
+
+        return this.userService.signOut(report);
     }
 
     @Post('signup')
@@ -71,9 +95,9 @@ export class UserController {
         if (result) {
             const { empresas_id_empresa, id_usuario } = result;
             const report: ReportsDto = {
-                autor_usuario: empresas_id_empresa,
+                autor_usuario: id_usuario,
                 autor_cliente: null,
-                id_cliente: id_usuario,
+                id_cliente: empresas_id_empresa,
                 codigo_acao: null,
                 categoria: 'USUÁRIO',
                 operador: 'LOGIN',

@@ -10,8 +10,14 @@ export class ReportsController {
 
     @UseGuards(JwtAuthGuard)
     @Get(':uid')
-    index(@Param() param) {
+    indexByCompanyUID(@Param() param) {
         return this.reportsService.findByCompanyUUID(param.uid);
+    }
+
+    @UseGuards(JwtAuthGuard)
+    @Get('user/:uid')
+    indexUserByUID(@Param() param) {
+        return this.reportsService.findByUserUUID(param.uid);
     }
 
 }
