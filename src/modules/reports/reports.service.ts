@@ -19,4 +19,8 @@ export class ReportsService {
     findByCompanyUUID(uid: string) {
         return this.reportsService.find({ id_cliente: uid });
     }
+
+    findByUserUUID(uid: string) {
+        return this.reportsService.find({ autor_usuario: uid });
+    }
 }

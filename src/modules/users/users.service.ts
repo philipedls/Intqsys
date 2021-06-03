@@ -14,7 +14,7 @@ export class UsersService {
         @InjectRepository(Users)
         private userRepository: Repository<Users>,
         @InjectRepository(Reports)
-        private reportRepository: Repository<Reports>,
+        private reportRepository: Repository<Reports>
     ) { }
 
     async storeReport(data: ReportsDto) {
@@ -26,7 +26,13 @@ export class UsersService {
         return this.userRepository.find({ empresas_id_empresa: uid });
     }
 
+    async signOut(data: ReportsDto) {
+        const report = await this.reportRepository.create(data);
+        return this.reportRepository.save(report);
+    }
+
     async store(data: UsersSignUpDto) {
+        data.status = true;
         const user = await this.userRepository.findOne({ email: data.email });
 
         if (!user) {
