@@ -48,16 +48,16 @@ export class RankController {
         const schedulerDate = new Date(year, month, day);
 
         const patienteData: PatientsDto = {
-            paciente_nome: '',
-            paciente_cpf: '',
+            paciente_nome: body.paciente,
+            paciente_cpf: body.paciente_cpf,
             paciente_telefone: body.paciente_telefone,
-            paciente_email: '',
+            paciente_email: body.paciente_email,
             cancelado: false
         }
 
         const patient = await this.patientService.store(patienteData);
         const service = await this.craftServive.findByUUID(body.id_servico);
-        // console.log(service.titulo);
+
         body.servicos_id_servico = service.id_servico;
         body.servico = service.titulo;
         body.tipo = 'Fila';
@@ -66,8 +66,8 @@ export class RankController {
         body.data_atendimento = schedulerDate;
         body.status = true;
         body.cancelado = false;
-        body.horario = '',
-            body.codigo = Math.floor(9).toString()
+        // body.horario = '',
+        body.codigo = Math.floor(9).toString()
             + Math.floor(Math.random() * (10 + 1)).toString()
             + Math.floor(Math.random() * (10 + 1)).toString()
             + Math.floor(Math.random() * (10 + 1)).toString()
@@ -82,8 +82,8 @@ export class RankController {
             autor_cliente: patient.id_paciente,
             id_cliente: service.empresas_id_empresa,
             codigo_acao: null,
-            categoria: 'USUÁRIO',
-            operador: 'SERVIÇO',
+            categoria: 'SERVIÇO',
+            operador: null,
             cancelar: false,
             cadastrar: false,
             editar: false,
@@ -97,8 +97,9 @@ export class RankController {
         };
 
         this.reportService.store(report);
+        const queueElement = await this.rankService.store(body, schedulerDate);
+        await this.rankService.notifyQueue(queueElement.codigo, patient.paciente_email, patient.paciente_nome);
 
-        return this.rankService.store(body, schedulerDate);
-
+        return queueElement;
     }
 }

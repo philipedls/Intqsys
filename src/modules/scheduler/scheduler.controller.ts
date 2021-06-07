@@ -156,6 +156,8 @@ export class SchedulerController {
             horarios_id_horario: hourly.id_horario ?? '',
             servicos_id_servico: service.id_servico ?? '',
             pacientes_id_paciente: patient.id_paciente ?? '',
+            paciente_email: patient.paciente_email ?? '',
+            paciente_cpf: patient.paciente_cpf ?? '',
             data_atendimento: result.data_atendimento,
             paciente: patient.paciente_nome ?? '',
             paciente_telefone: '',
@@ -166,7 +168,7 @@ export class SchedulerController {
             status: true,
             tipo: 'Agendado',
             horario: hourly.hora,
-            situation: 'WAITING'
+            situation: 'WAITING',
         };
 
         const report: ReportsDto = {

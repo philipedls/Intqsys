@@ -3,6 +3,8 @@ export class RankRegisterDto {
     posicao: number;
     data_atendimento: Date;
     paciente_telefone: string;
+    paciente_email: string;
+    paciente_cpf: string;
     id_servico: string;
     servico: string;
     paciente: string;

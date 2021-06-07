@@ -3,6 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Queues } from 'src/models/queue.models';
 import { Repository } from 'typeorm';
 import { RankRegisterDto } from './Dto/rank.register.dto';
+import * as nodemailer from 'nodemailer';
 
 @Injectable()
 export class RankService {
@@ -36,6 +37,43 @@ export class RankService {
 
         return queueList;
     }
+
+    private genNumAndLetter(cont: number) {
+        let randomNum = Math.round(Math.random() * cont);
+        return randomNum
+    }
+
+    async notifyQueue(code: string, email: string, name: string): Promise<any> {
+
+        const transporter = nodemailer.createTransport({
+            host: process.env.MAILER_SMTP_HOST,
+            port: 465,
+            secure: true, // true for 465, false for other ports
+            auth: {
+                user: process.env.SCHEDULER_EMAIL_ADDRES, // generated ethereal user
+                pass: process.env.NODE_MAILER_SCHEDULER_PASS, // generated ethereal password
+            },
+        });
+
+        return await transporter.sendMail({
+            from: process.env.SCHEDULER_EMAIL_ADDRES, // sender address
+            to: email, // list of receivers
+            subject: "GoFila - Fila", // Subject line
+            text: `${name},
+    
+Código de confirmação: ${code}
+
+Dados necessários:
+*
+*
+
+Não há necessidade de fazer check-in ou retirar ficha. Ao chegar, basta sentar e esperar a sua vez. Os últimos quatro dígitos do seu número (${code.substring(code.length - 4, code.length)}) serão utilizados como sua ficha de atendimento.
+Quando a sua vez chegar, você verá o seu número no monitor, além de receber uma notificação no celular.
+            `, // plain text body
+            // html body
+        });
+    }
+
     async store(data: RankRegisterDto, date: Date): Promise<any> {
         data.situation = 'WAITING'
         const rankList = Array<Queues>();

@@ -241,16 +241,6 @@ export class SchedulerService {
 
     async notifyScheduler(code: string, email: string, name: string): Promise<any> {
 
-        var letra_num = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'H', 'I', 'J', 'K', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'];
-
-        let a = letra_num[this.genNumAndLetter(letra_num.length)];
-        let b = letra_num[this.genNumAndLetter(letra_num.length)];
-        let c = letra_num[this.genNumAndLetter(letra_num.length)];
-        let d = letra_num[this.genNumAndLetter(letra_num.length)];
-        let e = letra_num[this.genNumAndLetter(letra_num.length)];
-
-        const confirmationCode = a.concat(b, c, d, e);
-
         const transporter = nodemailer.createTransport({
             host: process.env.MAILER_SMTP_HOST,
             port: 465,
@@ -267,7 +257,7 @@ export class SchedulerService {
             subject: "GoFila - Agendamento", // Subject line
             text: `${name},
     
-Código de confirmação: ${confirmationCode}
+Código de confirmação: ${code}
 
 Dados necessários:
 *
