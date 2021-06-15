@@ -43,6 +43,9 @@ export class Schedules {
     @Column('uuid')
     pacientes_id_paciente: string
 
+    @Column('uuid')
+    atendimentos_id_atendimento: string
+
     // @ManyToOne(type => Hourlies, horario => horario.agendamentos)
     // horario: Hourlies
 

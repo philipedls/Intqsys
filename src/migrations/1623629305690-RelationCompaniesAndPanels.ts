@@ -1,10 +1,10 @@
 import { MigrationInterface, QueryRunner, TableForeignKey } from "typeorm";
 
-export class RelationCompaniesHourlies1619306339291 implements MigrationInterface {
+export class RelationCompaniesPanels1623629305690 implements MigrationInterface {
 
     public async up(queryRunner: QueryRunner): Promise<void> {
         await queryRunner.createForeignKey(
-            'horarios', new TableForeignKey(
+            'paineis', new TableForeignKey(
                 {
                     columnNames: ['empresas_id_empresa'],
                     referencedTableName: 'empresas',

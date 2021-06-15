@@ -71,6 +71,11 @@ export class CreateSchedulesTable1619052653999 implements MigrationInterface {
                         name: 'pacientes_id_paciente',
                         type: 'uuid',
                         isNullable: true
+                    },
+                    {
+                        name: 'atendimentos_id_atendimento',
+                        type: 'uuid',
+                        isNullable: true
                     }
                 ]
             }));
