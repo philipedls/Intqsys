@@ -1,4 +1,7 @@
 import { Body, Controller, Get, HttpException, HttpStatus, Param, Post, Put, UseGuards } from '@nestjs/common';
+import { Atttendances } from 'src/models/ attendances.models';
+import { AttendanceService } from '../attendance/attendance.service';
+import { AttendanceDto } from '../attendance/Dto/attendance.dto';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { CraftService } from '../craft/craft.service';
 import { HourlyDto } from '../hourly/Dto/hourly.dto';
@@ -22,14 +25,15 @@ export class SchedulerController {
         private hourlyService: HourlyService,
         private craftService: CraftService,
         private queueService: RankService,
-        private reportService: ReportsService
+        private reportService: ReportsService,
+        private attendanceService: AttendanceService
     ) { }
 
-    // // @UseGuards(JwtAuthGuard)
-    // @Post()
-    // index(@Body() body: SchedulerFetchDataDto) {
-    //     return this.schedulerService.findOneByUUID(body);
-    // }
+    @UseGuards(JwtAuthGuard)
+    @Get('fetch/:uid')
+    index(@Param() param) {
+        return this.schedulerService.findOneByServiceUUID(param.uid);
+    }
 
     // // @UseGuards(JwtAuthGuard)
     // @Get('today')
@@ -123,6 +127,14 @@ export class SchedulerController {
 
         const service = await this.craftService.findByUUID(body.id_servico);
 
+        const attendanceData: AttendanceDto = {
+            inicio_atendimenot: hourly.hora,
+            fim_atendimento: null,
+            status: true
+        };
+
+        const attendance = await this.attendanceService.store(attendanceData);
+
         const schedulerData: SchedulerEntentyDto = {
             codigo: code,
             data: body.data,
@@ -136,7 +148,8 @@ export class SchedulerController {
             status: true,
             cancelado: false,
             data_atendimento: null,
-            situation: 'WAITING'
+            situation: 'WAITING',
+            atendimentos_id_atendimento: attendance.id_atendimento
         }
 
         const result = await this.schedulerService.storeWithoutHours(schedulerData, schedulerDate);
@@ -219,5 +232,22 @@ export class SchedulerController {
     @Put('cancel/:code')
     storeQueue(@Param() param, @Body() body) {
         return this.schedulerService.cancelScheduler(param.code, body.data);
+    }
+
+    @UseGuards(JwtAuthGuard)
+    @Get('attendance/:uid') // Service UID to fetch
+    async indexAttendanceByService(@Param() param) {
+        const attendances = new Array<Atttendances>();
+        const schedulers = await this.schedulerService.findOneByServiceUUID(param.uid);
+
+        console.log(schedulers);
+        for (const scheduler of schedulers) {
+            const attendance = await this.attendanceService.indexByUID(scheduler.atendimentos_id_atendimento);
+            if (attendance) {
+                attendances.push(attendance);
+            }
+        }
+
+        return attendances;
     }
 }
