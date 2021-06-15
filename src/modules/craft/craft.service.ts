@@ -11,7 +11,7 @@ export class CraftService {
         @InjectRepository(Services)
         private craftRepository: Repository<Services>
     ) { }
-ƒ
+    ƒ
     findByUUID(id_service: string) {
         return this.craftRepository.findOne({ id_servico: id_service });
     }
@@ -54,6 +54,18 @@ export class CraftService {
 
         const service = await this.craftRepository.create(data);
         return this.craftRepository.save(service);
+    }
+
+    async disable(uid: string): Promise<Services> {
+        const totem = await this.craftRepository.findOne({ id_servico: uid });
+        totem.status = false;
+        return this.craftRepository.save(totem);
+    }
+
+    async activate(uid: string): Promise<Services> {
+        const totem = await this.craftRepository.findOne({ id_servico: uid });
+        totem.status = true;
+        return this.craftRepository.save(totem);
     }
 
 }

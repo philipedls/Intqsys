@@ -29,13 +29,26 @@ export class PanelService {
         return totems;
     }
 
+    async disable(uid: string): Promise<Paineis> {
+        const totem = await this.panelRepository.findOne({ id_painel: uid });
+        totem.status = false;
+        return this.panelRepository.save(totem);
+    }
+
+    async activate(uid: string): Promise<Paineis> {
+        const totem = await this.panelRepository.findOne({ id_painel: uid });
+        totem.status = true;
+        return this.panelRepository.save(totem);
+    }
+
     async indexByCompanyUID(uid: string): Promise<any[]> {
         const totems = Array();
         const totemsResult = await this.panelRepository.find({ empresas_id_empresa: uid });
 
         for (let index = 0; index < totemsResult.length; index++) {
-            const { codigo, titulo, status } = totemsResult[index];
+            const { id_painel, codigo, titulo, status } = totemsResult[index];
             totems.push({
+                id_painel: id_painel,
                 codigo: codigo,
                 titulo: titulo,
                 status: status

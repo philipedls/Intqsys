@@ -18,8 +18,9 @@ export class TotemService {
         const totemsResult = await this.totemRepository.find();
 
         for (let index = 0; index < totemsResult.length; index++) {
-            const { codigo, titulo, status } = totemsResult[index];
+            const { id_totem, codigo, titulo, status } = totemsResult[index];
             totems.push({
+                id_totem: id_totem,
                 codigo: codigo,
                 titulo: titulo,
                 status: status
@@ -44,6 +45,17 @@ export class TotemService {
         return this.totemRepository.save(totem);
     }
 
+    async disable(uid: string): Promise<Totems> {
+        const totem = await this.totemRepository.findOne({ id_totem: uid });
+        totem.status = false;
+        return this.totemRepository.save(totem);
+    }
+
+    async activate(uid: string): Promise<Totems> {
+        const totem = await this.totemRepository.findOne({ id_totem: uid });
+        totem.status = true;
+        return this.totemRepository.save(totem);
+    }
 
     async findOneByUUID(data: TotemFetchDto): Promise<Totems | undefined> {
         return this.totemRepository.findOne({ id_totem: data.id_totem });

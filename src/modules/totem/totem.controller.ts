@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Post, UseGuards } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post, Put, UseGuards } from '@nestjs/common';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { ReportsDto } from '../reports/Dto/reports.dto';
 import { ReportsService } from '../reports/reports.service';
@@ -23,6 +23,18 @@ export class TotemController {
     @Post()
     indexOneTotem(@Body() body: TotemFetchDto) {
         return this.totemService.findOneByUUID(body);
+    }
+
+    // @UseGuards(JwtAuthGuard)
+    @Put('disable/:uid')
+    deactivationTotem(@Param() param) {
+        return this.totemService.disable(param.uid);
+    }
+
+    // @UseGuards(JwtAuthGuard)
+    @Put('activate/:uid')
+    activationTotem(@Param() param) {
+        return this.totemService.activate(param.uid);
     }
 
     @UseGuards(JwtAuthGuard)
