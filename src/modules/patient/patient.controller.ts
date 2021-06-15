@@ -1,4 +1,4 @@
-import { Body, Controller, Post } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post } from '@nestjs/common';
 import { ReportsDto } from '../reports/Dto/reports.dto';
 import { ReportsService } from '../reports/reports.service';
 import { PatientFechDto } from './Dto/patient.fetch.dto';
@@ -14,9 +14,9 @@ export class PatientController {
     ) { }
 
     // @UseGuards(JwtAuthGuard)
-    @Post()
-    index(@Body() body: PatientFechDto) {
-        return this.patientService.index(body)
+    @Get(':uid')
+    index(@Param() param) {
+        return this.patientService.index(param.uid)
     }
 
     // @UseGuards(JwtAuthGuard)

@@ -3,6 +3,7 @@ import { ConfigModule } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
+import { Atttendances } from './models/ attendances.models';
 import { Avaliations } from './models/avaliations.models';
 import { Charges } from './models/charges.models';
 import { Companies } from './models/companies.models';
@@ -17,6 +18,7 @@ import { Schedules } from './models/schedules.models';
 import { Services } from './models/services.models';
 import { Totems } from './models/totems.models';
 import { Users } from './models/users.models';
+import { AttendanceService } from './modules/attendance/attendance.service';
 import { AuthModule } from './modules/auth/auth.module';
 import { CompanyController } from './modules/company/company.controller';
 import { CompanyService } from './modules/company/company.service';
@@ -31,7 +33,6 @@ import { PatientService } from './modules/patient/patient.service';
 import { RankController } from './modules/rank/rank.controller';
 import { RankService } from './modules/rank/rank.service';
 import { ReportsController } from './modules/reports/reports.controller';
-import { ReportsModule } from './modules/reports/reports.module';
 import { ReportsService } from './modules/reports/reports.service';
 import { SchedulerController } from './modules/scheduler/scheduler.controller';
 import { SchedulerService } from './modules/scheduler/scheduler.service';
@@ -53,11 +54,28 @@ import { UsersService } from './modules/users/users.service';
       // username: process.env.TYPEORM_USERNAME,
       // password: process.env.TYPEORM_PASSWORD,
       // database: process.env.TYPEORM_DATABASE,
-      entities: [Avaliations, Charges, Companies, Hourlies, Licences, Paineis, Patients, Payments, Schedules, Services, Totems, Users, Queues, Reports]
+      entities:
+        [
+          Avaliations,
+          Charges,
+          Companies,
+          Hourlies,
+          Licences,
+          Paineis,
+          Patients,
+          Payments,
+          Schedules,
+          Services,
+          Totems,
+          Users,
+          Queues,
+          Reports,
+          Atttendances
+        ]
     }),
-    TypeOrmModule.forFeature([Avaliations, Charges, Companies, Hourlies, Licences, Paineis, Patients, Payments, Schedules, Services, Totems, Users, Queues, Reports]),
+    TypeOrmModule.forFeature([Avaliations, Charges, Companies, Hourlies, Licences, Paineis, Patients, Payments, Schedules, Services, Totems, Users, Queues, Reports, Atttendances]),
   ],
   controllers: [AppController, UserController, CompanyController, PanelController, TotemController, SchedulerController, CraftController, PatientController, HourlyController, RankController, ReportsController],
-  providers: [AppService, UsersService, CompanyService, PanelService, TotemService, SchedulerService, CraftService, PatientService, HourlyService, RankService, ReportsService],
+  providers: [AppService, UsersService, CompanyService, PanelService, TotemService, SchedulerService, CraftService, PatientService, HourlyService, RankService, ReportsService, AttendanceService],
 })
 export class AppModule { }

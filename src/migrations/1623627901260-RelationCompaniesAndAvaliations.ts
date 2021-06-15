@@ -1,10 +1,10 @@
 import { MigrationInterface, QueryRunner, TableForeignKey } from "typeorm";
 
-export class RelationCompaniesTotems1619295731088 implements MigrationInterface {
+export class RelationCompaniesAvaliations1623627901260 implements MigrationInterface {
 
     public async up(queryRunner: QueryRunner): Promise<void> {
         await queryRunner.createForeignKey(
-            'totems', new TableForeignKey(
+            'avaliacoes', new TableForeignKey(
                 {
                     columnNames: ['empresas_id_empresa'],
                     referencedTableName: 'empresas',

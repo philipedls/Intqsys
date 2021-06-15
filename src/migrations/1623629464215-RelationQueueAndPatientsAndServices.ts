@@ -1,10 +1,10 @@
 import { MigrationInterface, QueryRunner, TableForeignKey } from "typeorm";
 
-export class RelationCompaniesSchedules1619306634892 implements MigrationInterface {
+export class RelationQueuePatientAndServices1623629464215 implements MigrationInterface {
 
     public async up(queryRunner: QueryRunner): Promise<void> {
         await queryRunner.createForeignKeys(
-            'agendamentos',
+            'filas',
             [
                 new TableForeignKey(
                     {
@@ -15,16 +15,16 @@ export class RelationCompaniesSchedules1619306634892 implements MigrationInterfa
                 ),
                 new TableForeignKey(
                     {
-                        columnNames: ['horarios_id_horario'],
-                        referencedTableName: 'horarios',
-                        referencedColumnNames: ['id_horario']
+                        columnNames: ['pacientes_id_paciente'],
+                        referencedTableName: 'pacientes',
+                        referencedColumnNames: ['id_paciente']
                     }
                 ),
                 new TableForeignKey(
                     {
-                        columnNames: ['pacientes_id_paciente'],
-                        referencedTableName: 'pacientes',
-                        referencedColumnNames: ['id_paciente']
+                        columnNames: ['horarios_id_horario'],
+                        referencedTableName: 'horarios',
+                        referencedColumnNames: ['id_horario']
                     }
                 )
             ]

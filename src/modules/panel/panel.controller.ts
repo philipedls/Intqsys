@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Param, Post, UseGuards } from "@nestjs/common";
+import { Body, Controller, Get, Param, Post, Put, UseGuards } from "@nestjs/common";
 import { Paineis } from "src/models/panels.models";
 import { JwtAuthGuard } from "../auth/jwt-auth.guard";
 import { ReportsDto } from "../reports/Dto/reports.dto";
@@ -20,6 +20,19 @@ export class PanelController {
     index(@Param() param): Promise<any[]> {
         return this.panelService.indexByCompanyUID(param.uid);
     }
+
+    // @UseGuards(JwtAuthGuard)
+    @Put('disable/:uid')
+    deactivationTotem(@Param() param) {
+        return this.panelService.disable(param.uid);
+    }
+
+    // @UseGuards(JwtAuthGuard)
+    @Put('activate/:uid')
+    activationTotem(@Param() param) {
+        return this.panelService.activate(param.uid);
+    }
+
 
     @UseGuards(JwtAuthGuard)
     @Post('add')

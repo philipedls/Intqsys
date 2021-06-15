@@ -107,7 +107,7 @@ export class CreateReportsTable1622301622586 implements MigrationInterface {
     }
 
     public async down(queryRunner: QueryRunner): Promise<void> {
-        await queryRunner.dropTable('relatoriosƒ');
+        await queryRunner.dropTable('relatorios');
     }
 
 }

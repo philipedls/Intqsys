@@ -20,8 +20,8 @@ export class PatientService {
         private patientRepository: Repository<Patients>
     ) { }
 
-    index(data: PatientFechDto): Promise<Patients> {
-        return this.patientRepository.findOne({ id_paciente: data.id_paciente });
+    index(uid: string): Promise<Patients> {
+        return this.patientRepository.findOne({ id_paciente: uid });
     }
 
     async indexByUUIDList(data: PatientFetchListDto): Promise<Patients[]> {

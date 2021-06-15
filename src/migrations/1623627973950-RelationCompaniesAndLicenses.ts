@@ -1,6 +1,6 @@
 import { MigrationInterface, QueryRunner, TableForeignKey } from "typeorm";
 
-export class RelationCompaniesLicenses1619306399333 implements MigrationInterface {
+export class RelationCompaniesLicenses1623627973950 implements MigrationInterface {
 
     public async up(queryRunner: QueryRunner): Promise<void> {
         await queryRunner.createForeignKeys(

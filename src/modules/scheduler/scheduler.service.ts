@@ -15,8 +15,12 @@ export class SchedulerService {
     ) { }
 
 
-    async findOneByUUID(data: SchedulerFetchDataDto): Promise<Schedules | undefined> {
-        return this.schedulerRepository.findOne({ id_agendamento: data.id_agendamento });
+    async findOneByUUID(uid: string): Promise<Schedules | undefined> {
+        return this.schedulerRepository.findOne({ id_agendamento: uid });
+    }
+
+    async findOneByServiceUUID(uid: string): Promise<Schedules[] | undefined> {
+        return this.schedulerRepository.find({ servicos_id_servico: uid });
     }
 
     async cancelScheduler(code: string, date: string) {

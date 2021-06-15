@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Param, Post, UseGuards } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post, Put, UseGuards } from '@nestjs/common';
 import { Services } from 'src/models/services.models';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { ReportsDto } from '../reports/Dto/reports.dto';
@@ -19,6 +19,18 @@ export class CraftController {
     @Get(':uid')
     findByUUID(@Param() param): Promise<Services[]> {
         return this.craftService.findByCompanyUUID(param.uid);
+    }
+
+    // @UseGuards(JwtAuthGuard)
+    @Put('disable/:uid')
+    deactivationService(@Param() param) {
+        return this.craftService.disable(param.uid);
+    }
+
+    // @UseGuards(JwtAuthGuard)
+    @Put('activate/:uid')
+    activationService(@Param() param) {
+        return this.craftService.activate(param.uid);
     }
 
     @UseGuards(JwtAuthGuard)
