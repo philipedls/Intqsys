@@ -24,8 +24,8 @@ export class HourlyController {
         const allHours = new Array();
         const hoursMorning = (parseInt(body.horario_atendimento_manha.split('-')[1]) - parseInt(body.horario_atendimento_manha.split('-')[0])) * 60;
         const attendance = hoursMorning / parseInt(body.tempo_atendimento);
-        console.log(parseInt(body.tempo_atendimento));
-        console.log(moment(body.horario_atendimento_manha.split('-')[0], 'hh:mm').add(parseInt(body.tempo_atendimento), 'minutes').format('hh:mm'));
+        // console.log(parseInt(body.tempo_atendimento));
+        // console.log(moment(body.horario_atendimento_manha.split('-')[0], 'hh:mm').add(parseInt(body.tempo_atendimento), 'minutes').format('hh:mm'));
 
         for (let index = 0; index < attendance; index++) {
             if (index == 0) {
@@ -34,8 +34,6 @@ export class HourlyController {
                 );
             } else {
                 const hour = moment(`${allHours[index - 1]}`, 'hh:mm').add(parseInt(body.tempo_atendimento), 'minutes').format('hh:mm');
-                console.log(hour);
-                // console.log(hour);
                 allHours.push(hour);
             }
         }
@@ -45,13 +43,14 @@ export class HourlyController {
         allHours.forEach(hour => {
             hourlies.push({
                 hora: hour,
-                empresas_id_empresa: param.uid,
+                servicos_id_servico: param.uid,
                 status: true,
                 token: null
             });
         });
 
-
+        // console.log(hourlies);
+        // return hourlies;
         return this.hourlyService.storeCompanyHours(hourlies, param.uid);
     }
 }

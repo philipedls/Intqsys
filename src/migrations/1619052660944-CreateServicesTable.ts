@@ -51,6 +51,11 @@ export class CreateServicesTable1619052660944 implements MigrationInterface {
                         isNullable: true
                     },
                     {
+                        name: 'tempo_medio_atendimento',
+                        type: 'varchar',
+                        isNullable: true,
+                    },
+                    {
                         name: 'empresas_id_empresa',
                         type: 'uuid',
                         isNullable: true

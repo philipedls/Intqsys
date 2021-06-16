@@ -6,9 +6,9 @@ export class RelationCompaniesHourlies1623627952448 implements MigrationInterfac
         await queryRunner.createForeignKey(
             'horarios', new TableForeignKey(
                 {
-                    columnNames: ['empresas_id_empresa'],
-                    referencedTableName: 'empresas',
-                    referencedColumnNames: ['id_empresa']
+                    columnNames: ['servicos_id_servico'],
+                    referencedTableName: 'servicos',
+                    referencedColumnNames: ['id_servico']
                 }
             )
         );

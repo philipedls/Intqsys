@@ -23,7 +23,7 @@ export class HourlyService {
     }
 
     findByCompanyUUID(idCompany: string): Promise<Hourlies[]> {
-        return this.hourlyRepository.find({ empresas_id_empresa: idCompany });
+        return this.hourlyRepository.find({ servicos_id_servico: idCompany });
     }
 
     findByHours(hora: string): Promise<Hourlies> {
@@ -33,31 +33,33 @@ export class HourlyService {
     async storeCompanyHours(dataList: HourlyCompanyDto[], uid: string): Promise<Hourlies[] | undefined> {
         for (let index = 0; index < dataList.length; index++) {
             dataList[index].status = true;
-            dataList[index].empresas_id_empresa = uid;
-            dataList[index].token = parseInt(Math.floor(9).toString()
+            dataList[index].servicos_id_servico = uid;
+            dataList[index].token = Math.floor(9).toString()
                 + Math.floor(Math.random() * (10 + 1)).toString()
                 + Math.floor(Math.random() * (10 + 1)).toString()
                 + Math.floor(Math.random() * (10 + 1)).toString()
                 + Math.floor(Math.random() * (10 + 1)).toString()
-                + Math.floor(Math.random() * (10 + 1)).toString()
-            );
+                + Math.floor(Math.random() * (10 + 1)).toString();
+
             const hourly = await this.hourlyRepository.create(dataList);
             console.log(hourly);
-            this.hourlyRepository.save(hourly)
+            await this.hourlyRepository.save(hourly)
+
+            // break;
         }
 
-        return this.hourlyRepository.find({ empresas_id_empresa: uid })
+        return this.hourlyRepository.find({ servicos_id_servico: uid })
     }
 
     async store(data: HourlyDto) {
         data.status = true;
-        data.token = parseInt(Math.floor(9).toString()
+        data.token = Math.floor(9).toString()
             + Math.floor(Math.random() * (10 + 1)).toString()
             + Math.floor(Math.random() * (10 + 1)).toString()
             + Math.floor(Math.random() * (10 + 1)).toString()
             + Math.floor(Math.random() * (10 + 1)).toString()
             + Math.floor(Math.random() * (10 + 1)).toString()
-        );
+            ;
         const hourly = await this.hourlyRepository.create(data);
         return this.hourlyRepository.save(hourly);
     }
