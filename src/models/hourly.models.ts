@@ -23,8 +23,8 @@ export class Hourlies {
     status: boolean
 
     @Column()
-    token: number
+    token: string
 
     @Column('uuid')
-    empresas_id_empresa: string
+    servicos_id_servico: string
 }

@@ -11,7 +11,7 @@ export class CraftService {
         @InjectRepository(Services)
         private craftRepository: Repository<Services>
     ) { }
-    ƒ
+
     findByUUID(id_service: string) {
         return this.craftRepository.findOne({ id_servico: id_service });
     }
@@ -32,7 +32,6 @@ export class CraftService {
     }
 
     async store(data: ServicesDto): Promise<Services> {
-
         let flag: boolean = true;
 
         do {
@@ -52,7 +51,7 @@ export class CraftService {
             }
         } while (flag);
 
-        const service = await this.craftRepository.create(data);
+        const service = this.craftRepository.create(data);
         return this.craftRepository.save(service);
     }
 

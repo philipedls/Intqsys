@@ -37,15 +37,20 @@ export class CreateAttendanceTable1622301622587 implements MigrationInterface {
                         isNullable: true
                     },
                     {
-                        name: 'inicio_atendimento',
+                        name: 'hora_inicio',
                         type: 'varchar',
                         isNullable: true
                     },
                     {
-                        name: 'fim_atendimento',
+                        name: 'hora_final',
                         type: 'varchar',
                         isNullable: true
                     },
+                    {
+                        name: 'tempo_atendimento',
+                        type: 'varchar',
+                        isNullable: true
+                    }
                 ]
             }));
     }

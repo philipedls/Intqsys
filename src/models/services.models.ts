@@ -28,6 +28,9 @@ export class Services {
     @Column()
     token: number
 
+    @Column()
+    tempo_medio_atendimento: string
+
     @Column('uuid')
     empresas_id_empresa: string
 

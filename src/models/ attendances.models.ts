@@ -17,10 +17,13 @@ export class Atttendances {
     data_atualizado: Date
 
     @Column()
-    inicio_atendimento: string
+    hora_inicio: string
 
     @Column()
-    fim_atendimento: string
+    hora_final: string
+
+    @Column()
+    tempo_atendimento: string
 
     @Column()
     status: boolean
