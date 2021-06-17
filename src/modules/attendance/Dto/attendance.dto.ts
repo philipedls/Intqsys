@@ -1,5 +1,5 @@
 export class AttendanceDto {
-    inicio_atendimenot: string;
+    inicio_atendimento: string;
     fim_atendimento: string;
     status: boolean;
 }

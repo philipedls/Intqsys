@@ -1,4 +1,4 @@
-import { Body, Controller, Param, Put } from '@nestjs/common';
+import { Body, Controller, Param, Post, Put } from '@nestjs/common';
 import { AttendanceService } from './attendance.service';
 
 @Controller('attendance')
@@ -15,5 +15,10 @@ export class AttendanceController {
     @Put('finalize/:uid')
     finalizeAttendance(@Param() param, @Body() body) {
         return this.attendanceService.endAttendance(param.uid, body.hora);
+    }
+
+    @Put('time/:uid')
+    updateTotalTomeAttendancd(@Param() param, @Body() body) {
+        return this.attendanceService.timeAttendance(param.uid, body.time);
     }
 }

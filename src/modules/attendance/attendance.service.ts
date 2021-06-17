@@ -35,4 +35,10 @@ export class AttendanceService {
         attendance.hora_final = hour;
         return this.attendanceService.save(attendance);
     }
+
+    async timeAttendance(uid: string, time: string): Promise<Atttendances | undefined> {
+        const attendance = await this.attendanceService.findOne({ id_atendimento: uid });
+        attendance.tempo_atendimento = time;
+        return this.attendanceService.save(attendance);
+    }
 }
