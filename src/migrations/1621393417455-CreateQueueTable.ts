@@ -52,6 +52,11 @@ export class CreateQueueTable1621393417455 implements MigrationInterface {
                         type: 'boolean'
                     },
                     {
+                        name: 'checkin',
+                        type: 'boolean',
+                        isNullable: true
+                    },
+                    {
                         name: 'data_atendimento',
                         type: 'timestamp',
                     },

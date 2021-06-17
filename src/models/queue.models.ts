@@ -35,6 +35,9 @@ export class Queues {
     cancelado: boolean
 
     @Column()
+    checkin: boolean
+
+    @Column()
     data_cancelamento: Date
 
     @Column()

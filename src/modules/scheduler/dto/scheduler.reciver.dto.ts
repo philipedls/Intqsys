@@ -7,4 +7,5 @@ export class SchedulerReciverDto {
     id_empresa: string;
     data: string;
     hora: string;
+    situation: string;
 }
