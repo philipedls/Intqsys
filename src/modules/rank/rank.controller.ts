@@ -98,8 +98,8 @@ export class RankController {
 
         this.reportService.store(report);
         const queueElement = await this.rankService.store(body, schedulerDate);
-        await this.rankService.notifyQueue(queueElement.codigo, patient.paciente_email, patient.paciente_nome);
+        const notifyResponse = await this.rankService.notifyQueue(queueElement.codigo, patient.paciente_email, patient.paciente_nome);
 
-        return queueElement;
+        return { result: queueElement, notify: notifyResponse }
     }
 }
