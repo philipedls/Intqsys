@@ -128,8 +128,8 @@ export class SchedulerController {
         const service = await this.craftService.findByUUID(body.id_servico);
 
         const attendanceData: AttendanceDto = {
-            inicio_atendimenot: hourly.hora,
-            fim_atendimento: null,
+            hora_inicio: hourly.hora,
+            hora_final: null,
             status: true
         };
 
