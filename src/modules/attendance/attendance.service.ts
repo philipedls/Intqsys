@@ -23,4 +23,16 @@ export class AttendanceService {
         const attendance = await this.attendanceService.create(data);
         return this.attendanceService.save(attendance);
     }
+
+    async startAttendance(uid: string, hour: string): Promise<Atttendances | undefined> {
+        const attendance = await this.attendanceService.findOne({ id_atendimento: uid });
+        attendance.hora_inicio = hour;
+        return this.attendanceService.save(attendance);
+    }
+
+    async endAttendance(uid: string, hour: string): Promise<Atttendances | undefined> {
+        const attendance = await this.attendanceService.findOne({ id_atendimento: uid });
+        attendance.hora_final = hour;
+        return this.attendanceService.save(attendance);
+    }
 }
