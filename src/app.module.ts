@@ -7,6 +7,7 @@ import { Atttendances } from './models/ attendances.models';
 import { Avaliations } from './models/avaliations.models';
 import { Charges } from './models/charges.models';
 import { Companies } from './models/companies.models';
+import { HourliesCanceleds } from './models/HourliesCanceleds';
 import { Hourlies } from './models/hourly.models';
 import { Licences } from './models/licences.models';
 import { Paineis } from './models/panels.models';
@@ -61,6 +62,7 @@ import { UsersService } from './modules/users/users.service';
           Charges,
           Companies,
           Hourlies,
+          HourliesCanceleds,
           Licences,
           Paineis,
           Patients,
@@ -71,10 +73,10 @@ import { UsersService } from './modules/users/users.service';
           Users,
           Queues,
           Reports,
-          Atttendances
+          Atttendances,
         ]
     }),
-    TypeOrmModule.forFeature([Avaliations, Charges, Companies, Hourlies, Licences, Paineis, Patients, Payments, Schedules, Services, Totems, Users, Queues, Reports, Atttendances]),
+    TypeOrmModule.forFeature([Avaliations, Charges, Companies, Hourlies, HourliesCanceleds, Licences, Paineis, Patients, Payments, Schedules, Services, Totems, Users, Queues, Reports, Atttendances]),
   ],
   controllers: [AppController, UserController, CompanyController, PanelController, TotemController, SchedulerController, CraftController, PatientController, HourlyController, RankController, ReportsController, AttendanceController],
   providers: [AppService, UsersService, CompanyService, PanelService, TotemService, SchedulerService, CraftService, PatientService, HourlyService, RankService, ReportsService, AttendanceService],
