@@ -88,27 +88,6 @@ export class SchedulerController {
 
         const schedulers = await this.schedulerService.findOndeByDate(schedulerDate);
 
-        if (schedulers != null) {
-            for (let index = 0; index < schedulers.length; index++) {
-                let valueHours = await this.hourlyService.findByUUID(schedulers[index].horarios_id_horario);
-                let timeResponse = await this.hourlyService.findSchedulesTimesByeHourly(valueHours.id_horario);
-
-                for (const time of timeResponse) {
-                    const conditionDay = time.data_atendimento.getDate().toFixed();
-                    const conditionMonth = time.data_atendimento.getMonth().toFixed();
-
-                    const date = `${conditionDay}/${conditionMonth}/${time.data_atendimento.getFullYear().toFixed()}`;
-                    if (time.horarios_id_horario == body.id_horario && date == body.data) {
-                        throw new HttpException('Scheduler already exists!', HttpStatus.CONFLICT);
-                    }
-                }
-
-                // if (time. == body.id_horario) {
-                //     throw new HttpException('Scheduler already exists', HttpStatus.CONFLICT);
-                // }
-            }
-        }
-
         let hourly: Hourlies;
         const hourlies = await this.hourlyService.findByServiceUUID(body.id_servico);
         hourlies.map(hour => hour.id_horario == body.id_horario ? hourly = hour : null);
@@ -223,7 +202,9 @@ export class SchedulerController {
 
             };
 
-            await this.hourlyService.storeScheduleTime(scheduleTime, schedulerDate);
+            const response = await this.hourlyService.storeScheduleTime(scheduleTime, schedulerDate);
+
+            console.log(response);
 
             this.reportService.store(report);
 

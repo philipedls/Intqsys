@@ -34,8 +34,8 @@ export class HourlyService {
         return this.hourlyRepository.findOne({ hora: hora });
     }
 
-    findSchedulesTimesByeHourly(hourlyId: string) {
-        return this.scheduleTimeRepository.find({ id_horario_marcado: hourlyId });
+    findSchedulesTimesByeHourly(hourlyUID: string) {
+        return this.scheduleTimeRepository.find({ horarios_id_horario: hourlyUID });
     }
 
     private generateToken(): string {

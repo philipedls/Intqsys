@@ -1,11 +1,8 @@
-import { Body, Controller, Get, Param, Post, UseGuards } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post } from '@nestjs/common';
 import * as moment from 'moment';
-import { timeEnd } from 'node:console';
 import { Hourlies } from 'src/models/hourly.models';
-import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { HourlyAttendanceDto } from './Dto/hourly.attendance.dto';
 import { HourlyCompanyDto } from './Dto/hourly.company.dto';
-import { HourlyDto } from './Dto/hourly.dto';
 import { HourlyService } from './hourly.service';
 
 @Controller('hourly')
@@ -21,15 +18,20 @@ export class HourlyController {
 
         for (const hourly of hourlies) {
             const schedulesTime = await this.hourlyService.findSchedulesTimesByeHourly(hourly.id_horario);
-            console.log(hourlies);
 
-            // for (const time of schedulesTime) {
-            //     if (hourly.id_horario != time.horarios_id_horario && time.data_atendimento.toLocaleDateString('pt-BR') == body.date) {
-            //         list.push(hourly);
-            //     }
-            // }
+            for (const time of schedulesTime) {
+                const day = time.data_atendimento.getDate().toFixed();
+                const month = time.data_atendimento.getDate().toFixed();
+                const year = time.data_atendimento.getFullYear().toFixed();
 
-            if(schedulesTime.length == 0) {
+                const date = day + '/' + month + '/' + year
+
+                if (hourly.id_horario != time.horarios_id_horario && date == body.date) {
+                    list.push(hourly);
+                }
+            }
+
+            if (schedulesTime.length == 0) {
                 list.push(hourly);
             }
         }
