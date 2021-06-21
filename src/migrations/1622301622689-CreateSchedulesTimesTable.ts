@@ -1,6 +1,6 @@
 import { MigrationInterface, QueryRunner, Table } from "typeorm";
 
-export class CreateHourliesCanceledTable1624113477579 implements MigrationInterface {
+export class CreateHourliesCanceledTable1622301622689 implements MigrationInterface {
 
     public async up(queryRunner: QueryRunner): Promise<void> {
         queryRunner.createTable(
@@ -8,7 +8,7 @@ export class CreateHourliesCanceledTable1624113477579 implements MigrationInterf
                 name: 'horarios_cancelados',
                 columns: [
                     {
-                        name: 'id_horario_cancelado',
+                        name: 'id_horario_marcado',
                         type: 'uuid',
                         isPrimary: true,
                         isGenerated: true,
@@ -32,6 +32,11 @@ export class CreateHourliesCanceledTable1624113477579 implements MigrationInterf
                         default: 'now()'
                     },
                     {
+                        name: 'data_atendimento',
+                        type: 'timestamp',
+                        isNullable: true
+                    },
+                    {
                         name: 'hora',
                         type: 'varchar',
                         isNullable: true
@@ -45,7 +50,12 @@ export class CreateHourliesCanceledTable1624113477579 implements MigrationInterf
                         name: 'horarios_id_horario',
                         type: 'uuid',
                         isNullable: true
-                    }
+                    },
+                    {
+                        name: 'agendamentos_id_agendamento',
+                        type: 'uuid',
+                        isNullable: true
+                    },
                 ]
             }));
     }

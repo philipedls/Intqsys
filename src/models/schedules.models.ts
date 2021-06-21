@@ -1,4 +1,5 @@
-import { Column, CreateDateColumn, Entity, Generated, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
+import { Column, CreateDateColumn, Entity, Generated, OneToOne, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
+import { SchedulesTimes } from "./schedules.times";
 
 @Entity({ name: 'agendamentos' })
 export class Schedules {
@@ -44,7 +45,10 @@ export class Schedules {
     pacientes_id_paciente: string
 
     @Column('uuid')
-    atendimentos_id_atendimento: string
+    atendimentos_id_atendimento: string;
+
+    @OneToOne(() => SchedulesTimes, scheduleTime => scheduleTime.id_horario_marcado)
+    horario_marcado: SchedulesTimes;
 
     // @ManyToOne(type => Hourlies, horario => horario.agendamentos)
     // horario: Hourlies

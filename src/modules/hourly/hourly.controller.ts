@@ -1,5 +1,6 @@
 import { Body, Controller, Get, Param, Post, UseGuards } from '@nestjs/common';
 import * as moment from 'moment';
+import { timeEnd } from 'node:console';
 import { Hourlies } from 'src/models/hourly.models';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { HourlyAttendanceDto } from './Dto/hourly.attendance.dto';
@@ -14,43 +15,53 @@ export class HourlyController {
     ) { }
 
     @Get(':uid')
-    indexByCompany(@Param() param): Promise<Hourlies[]> {
-        return this.hourlyService.findByCompanyUUID(param.uid);
+    async indexByCompany(@Param() param, @Body() body): Promise<Hourlies[]> {
+        const list = new Array<Hourlies>();
+        const hourlies = await this.hourlyService.findByServiceUUID(param.uid);
+
+        for (const hourly of hourlies) {
+            const schedulesTime = await this.hourlyService.findSchedulesTimesByeHourly(hourly.id_horario);
+            console.log(hourlies);
+
+            // for (const time of schedulesTime) {
+            //     if (hourly.id_horario != time.horarios_id_horario && time.data_atendimento.toLocaleDateString('pt-BR') == body.date) {
+            //         list.push(hourly);
+            //     }
+            // }
+
+            if(schedulesTime.length == 0) {
+                list.push(hourly);
+            }
+        }
+        return list;
     }
 
     // @UseGuards(JwtAuthGuard)
     @Post('add/:uid')
     storeCompanyHour(@Param() param, @Body() body: HourlyAttendanceDto) {
-        const allHours = new Array();
-        const hoursMorning = (parseInt(body.horario_atendimento_manha.split('-')[1]) - parseInt(body.horario_atendimento_manha.split('-')[0])) * 60;
-        const attendance = hoursMorning / parseInt(body.tempo_atendimento);
-        // console.log(parseInt(body.tempo_atendimento));
-        // console.log(moment(body.horario_atendimento_manha.split('-')[0], 'hh:mm').add(parseInt(body.tempo_atendimento), 'minutes').format('hh:mm'));
-
-        for (let index = 0; index < attendance; index++) {
-            if (index == 0) {
-                allHours.push(
-                    moment(body.horario_atendimento_manha.split('-')[0], 'hh:mm').add(0, 'minutes').format('hh:mm')
-                );
-            } else {
-                const hour = moment(`${allHours[index - 1]}`, 'hh:mm').add(parseInt(body.tempo_atendimento), 'minutes').format('hh:mm');
-                allHours.push(hour);
-            }
-        }
-
+        const amountMinutes = (parseInt(body.horario_atendimento_manha.split('-')[1]) - parseInt(body.horario_atendimento_manha.split('-')[0])) * 60;
+        const attendances = amountMinutes / parseInt(body.tempo_atendimento);
         const hourlies = Array<HourlyCompanyDto>();
 
-        allHours.forEach(hour => {
-            hourlies.push({
-                hora: hour,
-                servicos_id_servico: param.uid,
-                status: true,
-                token: null
-            });
-        });
-
-        // console.log(hourlies);
-        // return hourlies;
+        for (let index = 0; index < attendances; index++) {
+            if (index == 0) {
+                const hour = moment(body.horario_atendimento_manha.split('-')[0], 'hh:mm').add(0, 'minutes').format('hh:mm');
+                hourlies.push({
+                    hora: hour,
+                    servicos_id_servico: param.uid,
+                    status: true,
+                    token: null
+                });
+            } else {
+                const hour = moment(`${hourlies[index - 1].hora}`, 'hh:mm').add(parseInt(body.tempo_atendimento), 'minutes').format('hh:mm');
+                hourlies.push({
+                    hora: hour,
+                    servicos_id_servico: param.uid,
+                    status: true,
+                    token: null
+                });
+            }
+        }
         return this.hourlyService.storeCompanyHours(hourlies, param.uid);
     }
 }

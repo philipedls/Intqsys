@@ -1,10 +1,12 @@
 import { Body, Controller, Get, HttpException, HttpStatus, Param, Post, Put, UseGuards } from '@nestjs/common';
 import { Atttendances } from 'src/models/ attendances.models';
+import { Hourlies } from 'src/models/hourly.models';
 import { AttendanceService } from '../attendance/attendance.service';
 import { AttendanceDto } from '../attendance/Dto/attendance.dto';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { CraftService } from '../craft/craft.service';
 import { HourlyDto } from '../hourly/Dto/hourly.dto';
+import { ScheduleTimeDto } from '../hourly/Dto/scheduler.time.dto';
 import { HourlyService } from '../hourly/hourly.service';
 import { PatientsDto } from '../patient/Dto/patients.dto';
 import { PatientService } from '../patient/patient.service';
@@ -89,124 +91,148 @@ export class SchedulerController {
         if (schedulers != null) {
             for (let index = 0; index < schedulers.length; index++) {
                 let valueHours = await this.hourlyService.findByUUID(schedulers[index].horarios_id_horario);
+                let timeResponse = await this.hourlyService.findSchedulesTimesByeHourly(valueHours.id_horario);
 
-                if (valueHours.hora == body.hora) {
-                    throw new HttpException('Scheduler already exists', HttpStatus.CONFLICT);
+                for (const time of timeResponse) {
+                    const conditionDay = time.data_atendimento.getDate().toFixed();
+                    const conditionMonth = time.data_atendimento.getMonth().toFixed();
+
+                    const date = `${conditionDay}/${conditionMonth}/${time.data_atendimento.getFullYear().toFixed()}`;
+                    if (time.horarios_id_horario == body.id_horario && date == body.data) {
+                        throw new HttpException('Scheduler already exists!', HttpStatus.CONFLICT);
+                    }
                 }
+
+                // if (time. == body.id_horario) {
+                //     throw new HttpException('Scheduler already exists', HttpStatus.CONFLICT);
+                // }
+            }
+        }
+
+        let hourly: Hourlies;
+        const hourlies = await this.hourlyService.findByServiceUUID(body.id_servico);
+        hourlies.map(hour => hour.id_horario == body.id_horario ? hourly = hour : null);
+
+        // console.log(body.id_horario);
+        // console.log(hourly);
+
+        if (hourly) {
+            const patienteData: PatientsDto = {
+                paciente_nome: body.paciente_nome,
+                paciente_cpf: body.paciente_cpf,
+                paciente_telefone: body.paciente_telefone,
+                paciente_email: body.paciente_email,
+                cancelado: false
             }
 
+            const patient = await this.patientSerivce.store(patienteData);
+
+            const code = Math.floor(9).toString()
+                + Math.floor(Math.random() * (10 + 1)).toString()
+                + Math.floor(Math.random() * (10 + 1)).toString()
+                + Math.floor(Math.random() * (10 + 1)).toString()
+                + Math.floor(Math.random() * (10 + 1)).toString()
+                + Math.floor(Math.random() * (10 + 1)).toString()
+                + Math.floor(Math.random() * (10 + 1)).toString()
+                + Math.floor(Math.random() * (10 + 1)).toString()
+                + Math.floor(Math.random() * (10 + 1)).toString();
+
+            const service = await this.craftService.findByUUID(body.id_servico);
+
+            const attendanceData: AttendanceDto = {
+                hora_inicio: hourly?.hora,
+                hora_final: null,
+                status: true
+            };
+
+            const attendance = await this.attendanceService.store(attendanceData);
+
+            const schedulerData: SchedulerEntentyDto = {
+                codigo: code,
+                data: body.data,
+                horarios_id_horario: hourly.id_horario,
+                servicos_id_servico: service.id_servico,
+                pacientes_id_paciente: patient.id_paciente,
+                horario: hourly?.hora,
+                servico: service.titulo,
+                paciente: patient.paciente_nome,
+                empresas_id_empresa: body.id_empresa,
+                status: true,
+                cancelado: false,
+                data_atendimento: null,
+                situation: 'WAITING',
+                atendimentos_id_atendimento: attendance.id_atendimento
+            }
+
+            const scheduleResulto = await this.schedulerService.storeDefault(schedulerData, schedulerDate);
+            const nofifyResponse = await this.schedulerService.notifyScheduler(scheduleResulto.codigo, patient.paciente_email, patient.paciente_nome);
+
+            const queueElement: RankRegisterDto = {
+                codigo: Math.floor(9).toString()
+                    + Math.floor(Math.random() * (10 + 1)).toString()
+                    + Math.floor(Math.random() * (10 + 1)).toString()
+                    + Math.floor(Math.random() * (10 + 1)).toString()
+                    + Math.floor(Math.random() * (10 + 1)).toString()
+                    + Math.floor(Math.random() * (10 + 1)).toString()
+                    + Math.floor(Math.random() * (10 + 1)).toString()
+                    + Math.floor(Math.random() * (10 + 1)).toString()
+                    + Math.floor(Math.random() * (10 + 1)).toString(),
+                posicao: null,
+                horarios_id_horario: hourly?.id_horario ?? '',
+                servicos_id_servico: service.id_servico ?? '',
+                pacientes_id_paciente: patient.id_paciente ?? '',
+                paciente_email: patient.paciente_email ?? '',
+                paciente_cpf: patient.paciente_cpf ?? '',
+                data_atendimento: scheduleResulto.data_atendimento,
+                paciente: patient.paciente_nome ?? '',
+                paciente_telefone: '',
+                cancelado: false,
+                data: body.data,
+                id_servico: null,
+                servico: service.titulo,
+                status: true,
+                tipo: 'Agendado',
+                horario: hourly?.hora,
+                situation: 'WAITING',
+            };
+
+            const report: ReportsDto = {
+                autor_usuario: null,
+                autor_cliente: patient.id_paciente,
+                id_cliente: body.id_empresa,
+                codigo_acao: null,
+                categoria: 'SERVICO',
+                operador: service.titulo.toUpperCase(),
+                cancelar: false,
+                cadastrar: false,
+                editar: false,
+                login: false,
+                logout: false,
+                agendamento: true,
+                fila: false,
+                walkin: false,
+                atendimento: false,
+                observacao: null,
+            };
+
+
+            const scheduleTime: ScheduleTimeDto = {
+                status: true,
+                hora: hourly?.hora,
+                horarios_id_horario: hourly?.id_horario,
+
+            };
+
+            await this.hourlyService.storeScheduleTime(scheduleTime, schedulerDate);
+
+            this.reportService.store(report);
+
+            await this.queueService.store(queueElement, schedulerDate);
+
+            return { result: scheduleResulto, notify: nofifyResponse }
         }
 
-        const hourlyData: HourlyDto = {
-            hora: body.hora,
-            status: true,
-            token: null
-        };
-
-        const hourly = await this.hourlyService.store(hourlyData);
-
-        const patienteData: PatientsDto = {
-            paciente_nome: body.paciente_nome,
-            paciente_cpf: body.paciente_cpf,
-            paciente_telefone: body.paciente_telefone,
-            paciente_email: body.paciente_email,
-            cancelado: false
-        }
-
-        const patient = await this.patientSerivce.store(patienteData);
-
-        const code = Math.floor(9).toString()
-            + Math.floor(Math.random() * (10 + 1)).toString()
-            + Math.floor(Math.random() * (10 + 1)).toString()
-            + Math.floor(Math.random() * (10 + 1)).toString()
-            + Math.floor(Math.random() * (10 + 1)).toString()
-            + Math.floor(Math.random() * (10 + 1)).toString()
-            + Math.floor(Math.random() * (10 + 1)).toString()
-            + Math.floor(Math.random() * (10 + 1)).toString()
-            + Math.floor(Math.random() * (10 + 1)).toString();
-
-        const service = await this.craftService.findByUUID(body.id_servico);
-
-        const attendanceData: AttendanceDto = {
-            hora_inicio: hourly.hora,
-            hora_final: null,
-            status: true
-        };
-
-        const attendance = await this.attendanceService.store(attendanceData);
-
-        const schedulerData: SchedulerEntentyDto = {
-            codigo: code,
-            data: body.data,
-            horarios_id_horario: hourly.id_horario,
-            servicos_id_servico: service.id_servico,
-            pacientes_id_paciente: patient.id_paciente,
-            horario: hourly.hora,
-            servico: service.titulo,
-            paciente: patient.paciente_nome,
-            empresas_id_empresa: body.id_empresa,
-            status: true,
-            cancelado: false,
-            data_atendimento: null,
-            situation: 'WAITING',
-            atendimentos_id_atendimento: attendance.id_atendimento
-        }
-
-        const result = await this.schedulerService.storeWithoutHours(schedulerData, schedulerDate);
-        const nofifyResponse = await this.schedulerService.notifyScheduler(result.codigo, patient.paciente_email, patient.paciente_nome);
-
-        const queueElement: RankRegisterDto = {
-            codigo: Math.floor(9).toString()
-                + Math.floor(Math.random() * (10 + 1)).toString()
-                + Math.floor(Math.random() * (10 + 1)).toString()
-                + Math.floor(Math.random() * (10 + 1)).toString()
-                + Math.floor(Math.random() * (10 + 1)).toString()
-                + Math.floor(Math.random() * (10 + 1)).toString()
-                + Math.floor(Math.random() * (10 + 1)).toString()
-                + Math.floor(Math.random() * (10 + 1)).toString()
-                + Math.floor(Math.random() * (10 + 1)).toString(),
-            posicao: null,
-            horarios_id_horario: hourly.id_horario ?? '',
-            servicos_id_servico: service.id_servico ?? '',
-            pacientes_id_paciente: patient.id_paciente ?? '',
-            paciente_email: patient.paciente_email ?? '',
-            paciente_cpf: patient.paciente_cpf ?? '',
-            data_atendimento: result.data_atendimento,
-            paciente: patient.paciente_nome ?? '',
-            paciente_telefone: '',
-            cancelado: false,
-            data: body.data,
-            id_servico: null,
-            servico: service.titulo,
-            status: true,
-            tipo: 'Agendado',
-            horario: hourly.hora,
-            situation: 'WAITING',
-        };
-
-        const report: ReportsDto = {
-            autor_usuario: null,
-            autor_cliente: patient.id_paciente,
-            id_cliente: body.id_empresa,
-            codigo_acao: null,
-            categoria: 'SERVICO',
-            operador: service.titulo.toUpperCase(),
-            cancelar: false,
-            cadastrar: false,
-            editar: false,
-            login: false,
-            logout: false,
-            agendamento: true,
-            fila: false,
-            walkin: false,
-            atendimento: false,
-            observacao: null,
-        };
-
-        this.reportService.store(report);
-        await this.queueService.store(queueElement, schedulerDate);
-
-        return { result: result, notify: nofifyResponse }
+        throw new HttpException('hourly undefined', HttpStatus.NO_CONTENT);
     }
 
     // @UseGuards(JwtAuthGuard)

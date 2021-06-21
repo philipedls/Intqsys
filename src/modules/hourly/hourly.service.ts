@@ -1,16 +1,20 @@
-import { Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import { SchedulesTimes } from 'src/models/schedules.times';
 import { Hourlies } from 'src/models/hourly.models';
 import { Repository } from 'typeorm';
 import { HourlyCompanyDto } from './Dto/hourly.company.dto';
 import { HourlyDto } from './Dto/hourly.dto';
+import { ScheduleTimeDto } from './Dto/scheduler.time.dto';
 
 @Injectable()
 export class HourlyService {
 
     constructor(
         @InjectRepository(Hourlies)
-        private hourlyRepository: Repository<Hourlies>
+        private hourlyRepository: Repository<Hourlies>,
+        @InjectRepository(SchedulesTimes)
+        private scheduleTimeRepository: Repository<SchedulesTimes>
     ) { }
 
     async index(data: HourlyDto) {
@@ -22,7 +26,7 @@ export class HourlyService {
         return this.hourlyRepository.findOne({ id_horario: id_horario });
     }
 
-    findByCompanyUUID(idCompany: string): Promise<Hourlies[]> {
+    findByServiceUUID(idCompany: string): Promise<Hourlies[]> {
         return this.hourlyRepository.find({ servicos_id_servico: idCompany });
     }
 
@@ -30,22 +34,24 @@ export class HourlyService {
         return this.hourlyRepository.findOne({ hora: hora });
     }
 
+    findSchedulesTimesByeHourly(hourlyId: string) {
+        return this.scheduleTimeRepository.find({ id_horario_marcado: hourlyId });
+    }
+
+    private generateToken(): string {
+        return Math.floor(9).toString()
+            + Math.floor(Math.random() * (10 + 1)).toString()
+            + Math.floor(Math.random() * (10 + 1)).toString()
+            + Math.floor(Math.random() * (10 + 1)).toString()
+            + Math.floor(Math.random() * (10 + 1)).toString()
+            + Math.floor(Math.random() * (10 + 1)).toString();
+    }
+
     async storeCompanyHours(dataList: HourlyCompanyDto[], uid: string): Promise<Hourlies[] | undefined> {
         for (let index = 0; index < dataList.length; index++) {
-            dataList[index].status = true;
-            dataList[index].servicos_id_servico = uid;
-            dataList[index].token = Math.floor(9).toString()
-                + Math.floor(Math.random() * (10 + 1)).toString()
-                + Math.floor(Math.random() * (10 + 1)).toString()
-                + Math.floor(Math.random() * (10 + 1)).toString()
-                + Math.floor(Math.random() * (10 + 1)).toString()
-                + Math.floor(Math.random() * (10 + 1)).toString();
-
-            const hourly = await this.hourlyRepository.create(dataList);
-            console.log(hourly);
+            dataList[index].token = this.generateToken();
+            const hourly = this.hourlyRepository.create(dataList[index]);
             await this.hourlyRepository.save(hourly)
-
-            // break;
         }
 
         return this.hourlyRepository.find({ servicos_id_servico: uid })
@@ -53,14 +59,25 @@ export class HourlyService {
 
     async store(data: HourlyDto) {
         data.status = true;
-        data.token = Math.floor(9).toString()
-            + Math.floor(Math.random() * (10 + 1)).toString()
-            + Math.floor(Math.random() * (10 + 1)).toString()
-            + Math.floor(Math.random() * (10 + 1)).toString()
-            + Math.floor(Math.random() * (10 + 1)).toString()
-            + Math.floor(Math.random() * (10 + 1)).toString()
-            ;
+        data.token = this.generateToken();
         const hourly = await this.hourlyRepository.create(data);
         return this.hourlyRepository.save(hourly);
+    }
+
+    async storeScheduleTime(data: ScheduleTimeDto, date: Date) {
+        const hourly = await this.hourlyRepository.findOne({ id_horario: data.horarios_id_horario });
+
+        // if (hourly) {
+        //     throw new HttpException('schedule time alredy exits', HttpStatus.CONFLICT);
+        // }
+        const scheduleTime = this.scheduleTimeRepository.create(
+            {
+                horarios_id_horario: data.horarios_id_horario,
+                horario: hourly,
+                data_atendimento: date
+            }
+        );
+
+        return this.scheduleTimeRepository.save(scheduleTime);
     }
 }

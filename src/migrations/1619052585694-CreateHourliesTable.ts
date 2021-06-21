@@ -49,6 +49,11 @@ export class CreateHourliesTable1619052585694 implements MigrationInterface {
                         name: 'servicos_id_servico',
                         type: 'uuid',
                         isNullable: true
+                    },
+                    {
+                        name: 'horarios_id_horario_marcado',
+                        type: 'uuid',
+                        isNullable: true
                     }
                 ]
             }));

@@ -5,6 +5,7 @@ import { Repository } from 'typeorm';
 import { SchedulerEntentyDto } from './dto/scheduler.ententy.dto';
 import { SchedulerFetchDataDto } from './dto/scheduler.fetch.data.dto';
 import * as nodemailer from 'nodemailer';
+import { SchedulesTimes } from 'src/models/schedules.times';
 
 @Injectable()
 export class SchedulerService {
@@ -21,6 +22,16 @@ export class SchedulerService {
 
     async findOneByServiceUUID(uid: string): Promise<Schedules[] | undefined> {
         return this.schedulerRepository.find({ servicos_id_servico: uid });
+    }
+
+    async findScheduleTime(hora: string, date: string): Promise<Schedules> {
+        const schedulesTimes = await this.schedulerRepository.find();
+
+        for (const time of schedulesTimes) {
+            if (time.horario_marcado.horario.hora == hora && time.data_atendimento.toLocaleDateString('pt-BR')) {
+                return time;
+            }
+        }
     }
 
     async cancelScheduler(code: string, date: string) {
@@ -288,7 +299,7 @@ Quando a sua vez chegar, você verá o seu número no monitor, além de receber 
         return this.schedulerRepository.save(scheduler);
     }
 
-    storeWithoutHours(data: SchedulerEntentyDto, date: Date): Promise<Schedules> {
+    storeDefault(data: SchedulerEntentyDto, date: Date): Promise<Schedules> {
         data.data_atendimento = date;
         const scheduler = this.schedulerRepository.create(data);
         return this.schedulerRepository.save(scheduler);

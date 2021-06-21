@@ -1,4 +1,5 @@
-import { Column, CreateDateColumn, Entity, Generated, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
+import { Column, CreateDateColumn, Entity, Generated, OneToOne, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
+import { SchedulesTimes } from "./schedules.times";
 
 @Entity({ name: 'horarios' })
 export class Hourlies {
@@ -27,4 +28,7 @@ export class Hourlies {
 
     @Column('uuid')
     servicos_id_servico: string
+
+    @OneToOne(() => SchedulesTimes, schedulesTimes => schedulesTimes.id_horario_marcado)
+    horario_marcado: SchedulesTimes
 }

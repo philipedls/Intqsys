@@ -19,6 +19,13 @@ export class RelationHourliesCanceledAndHourliesAndServiceTable1624113676510 imp
                         referencedTableName: 'horarios',
                         referencedColumnNames: ['id_horario']
                     }
+                ),
+                new TableForeignKey(
+                    {
+                        columnNames: ['agendamentos_id_agendamento'],
+                        referencedTableName: 'agendamentos',
+                        referencedColumnNames: ['id_agendamento']
+                    }
                 )
             ]
         );
