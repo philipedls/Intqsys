@@ -9,4 +9,5 @@ export class SchedulerReciverDto {
     hora: string;
     id_horario: string;
     situation: string;
+    codigo: string;
 }

@@ -5,7 +5,6 @@ import { AttendanceService } from '../attendance/attendance.service';
 import { AttendanceDto } from '../attendance/Dto/attendance.dto';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { CraftService } from '../craft/craft.service';
-import { HourlyDto } from '../hourly/Dto/hourly.dto';
 import { ScheduleTimeDto } from '../hourly/Dto/scheduler.time.dto';
 import { HourlyService } from '../hourly/hourly.service';
 import { PatientsDto } from '../patient/Dto/patients.dto';
@@ -36,17 +35,6 @@ export class SchedulerController {
     index(@Param() param) {
         return this.schedulerService.findOneByServiceUUID(param.uid);
     }
-
-    // // @UseGuards(JwtAuthGuard)
-    // @Get('today')
-    // indexByToday() {
-    //     return this.schedulerService.findSheduleToday();
-    // }
-
-    // @Get('today/amount')
-    // indexByTodayAmount() {
-    //     return this.schedulerService.findSheduleTodayAmount();
-    // }
 
     @UseGuards(JwtAuthGuard)
     @Get('month')
@@ -86,14 +74,9 @@ export class SchedulerController {
 
         const schedulerDate = new Date(year, month, day, Number(listHours[0]), Number(listHours[0]));
 
-        const schedulers = await this.schedulerService.findOndeByDate(schedulerDate);
-
         let hourly: Hourlies;
         const hourlies = await this.hourlyService.findByServiceUUID(body.id_servico);
         hourlies.map(hour => hour.id_horario == body.id_horario ? hourly = hour : null);
-
-        // console.log(body.id_horario);
-        // console.log(hourly);
 
         if (hourly) {
             const patienteData: PatientsDto = {
@@ -106,16 +89,6 @@ export class SchedulerController {
 
             const patient = await this.patientSerivce.store(patienteData);
 
-            const code = Math.floor(9).toString()
-                + Math.floor(Math.random() * (10 + 1)).toString()
-                + Math.floor(Math.random() * (10 + 1)).toString()
-                + Math.floor(Math.random() * (10 + 1)).toString()
-                + Math.floor(Math.random() * (10 + 1)).toString()
-                + Math.floor(Math.random() * (10 + 1)).toString()
-                + Math.floor(Math.random() * (10 + 1)).toString()
-                + Math.floor(Math.random() * (10 + 1)).toString()
-                + Math.floor(Math.random() * (10 + 1)).toString();
-
             const service = await this.craftService.findByUUID(body.id_servico);
 
             const attendanceData: AttendanceDto = {
@@ -127,7 +100,7 @@ export class SchedulerController {
             const attendance = await this.attendanceService.store(attendanceData);
 
             const schedulerData: SchedulerEntentyDto = {
-                codigo: code,
+                codigo: body.codigo,
                 data: body.data,
                 horarios_id_horario: hourly.id_horario,
                 servicos_id_servico: service.id_servico,
@@ -147,15 +120,7 @@ export class SchedulerController {
             const nofifyResponse = await this.schedulerService.notifyScheduler(scheduleResulto.codigo, patient.paciente_email, patient.paciente_nome);
 
             const queueElement: RankRegisterDto = {
-                codigo: Math.floor(9).toString()
-                    + Math.floor(Math.random() * (10 + 1)).toString()
-                    + Math.floor(Math.random() * (10 + 1)).toString()
-                    + Math.floor(Math.random() * (10 + 1)).toString()
-                    + Math.floor(Math.random() * (10 + 1)).toString()
-                    + Math.floor(Math.random() * (10 + 1)).toString()
-                    + Math.floor(Math.random() * (10 + 1)).toString()
-                    + Math.floor(Math.random() * (10 + 1)).toString()
-                    + Math.floor(Math.random() * (10 + 1)).toString(),
+                codigo: body.codigo,
                 posicao: null,
                 horarios_id_horario: hourly?.id_horario ?? '',
                 servicos_id_servico: service.id_servico ?? '',
