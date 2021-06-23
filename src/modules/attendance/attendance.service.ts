@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Atttendances } from 'src/models/ attendances.models';
+import { Services } from 'src/models/services.models';
 import { Repository } from 'typeorm';
 import { AttendanceDto } from './Dto/attendance.dto';
 
@@ -19,14 +20,23 @@ export class AttendanceService {
         return this.attendanceService.findOne({ id_atendimento: uid });
     }
 
+    indexByServiceUID(uid: string): Promise<Atttendances[] | undefined> {
+        return this.attendanceService.find({ servicos_id_servico: uid });
+    }
+
+    indexCompletedByServiceUID(uid: string): Promise<Atttendances[] | undefined> {
+        return this.attendanceService.find({ servicos_id_servico: uid, status: true });
+    }
+
     async store(data: AttendanceDto): Promise<Atttendances | undefined> {
         const attendance = await this.attendanceService.create(data);
         return this.attendanceService.save(attendance);
     }
 
-    async startAttendance(uid: string, hour: string): Promise<Atttendances | undefined> {
+    async startAttendance(uid: string, hour: string, serviceID: string): Promise<Atttendances | undefined> {
         const attendance = await this.attendanceService.findOne({ id_atendimento: uid });
         attendance.hora_inicio = hour;
+        attendance.servicos_id_servico = serviceID;
         return this.attendanceService.save(attendance);
     }
 

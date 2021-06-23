@@ -50,6 +50,11 @@ export class CreateAttendanceTable1622301622587 implements MigrationInterface {
                         name: 'tempo_atendimento',
                         type: 'varchar',
                         isNullable: true
+                    },
+                    {
+                        name: 'servicos_id_servico',
+                        type: 'uuid',
+                        isNullable: true
                     }
                 ]
             }));

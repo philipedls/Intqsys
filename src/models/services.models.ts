@@ -1,4 +1,5 @@
-import { Column, CreateDateColumn, Entity, Generated, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
+import { Column, CreateDateColumn, Entity, Generated, OneToOne, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
+import { Atttendances } from "./ attendances.models";
 
 @Entity({ name: 'servicos' })
 export class Services {
@@ -33,6 +34,9 @@ export class Services {
 
     @Column('uuid')
     empresas_id_empresa: string
+
+    @OneToOne(() => Atttendances, attendance => attendance.id_atendimento)
+    atendimento: Atttendances
 
     // @ManyToOne(type => Companies, empresa => empresa.avaliacoes)
     // empresas: Companies

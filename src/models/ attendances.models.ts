@@ -1,4 +1,5 @@
-import { Column, CreateDateColumn, Entity, Generated, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
+import { Column, CreateDateColumn, Entity, Generated, OneToOne, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
+import { Services } from "./services.models";
 
 @Entity({ name: 'atendimentos' })
 export class Atttendances {
@@ -28,4 +29,9 @@ export class Atttendances {
     @Column()
     status: boolean
 
+    @Column('uuid')
+    servicos_id_servico: string
+
+    @OneToOne(() => Services, service => service.id_servico)
+    servico: Services
 }
