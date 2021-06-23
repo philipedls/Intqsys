@@ -1,6 +1,7 @@
 import { Body, Controller, Get, Param, Post, Put, UseGuards } from '@nestjs/common';
 import { Atttendances } from 'src/models/ attendances.models';
 import { AttendanceService } from '../attendance/attendance.service';
+import { AttendanceDto } from '../attendance/Dto/attendance.dto';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { CraftService } from '../craft/craft.service';
 import { HourlyService } from '../hourly/hourly.service';
@@ -61,6 +62,14 @@ export class RankController {
         const patient = await this.patientService.store(patienteData);
         const service = await this.craftServive.findByUUID(body.id_servico);
 
+        const attendanceData: AttendanceDto = {
+            hora_inicio: null,
+            hora_final: null,
+            status: true
+        };
+
+        const attendance = await this.attendanceService.store(attendanceData);
+
         body.servicos_id_servico = service.id_servico;
         body.servico = service.titulo;
         body.tipo = 'Fila';
@@ -69,7 +78,7 @@ export class RankController {
         body.data_atendimento = schedulerDate;
         body.status = true;
         body.cancelado = false;
-        // body.horario = '',
+        body.atendimentos_id_atendimento = attendance.id_atendimento
 
         const report: ReportsDto = {
             autor_usuario: null,

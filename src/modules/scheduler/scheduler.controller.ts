@@ -113,7 +113,6 @@ export class SchedulerController {
                 cancelado: false,
                 data_atendimento: null,
                 situation: 'WAITING',
-                atendimentos_id_atendimento: attendance.id_atendimento
             }
 
             const scheduleResulto = await this.schedulerService.storeDefault(schedulerData, schedulerDate);
@@ -138,6 +137,7 @@ export class SchedulerController {
                 tipo: 'Agendado',
                 horario: hourly?.hora,
                 situation: 'WAITING',
+                atendimentos_id_atendimento: attendance.id_atendimento
             };
 
             const report: ReportsDto = {

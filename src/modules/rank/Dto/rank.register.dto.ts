@@ -12,6 +12,7 @@ export class RankRegisterDto {
     horarios_id_horario: string;
     servicos_id_servico: string;
     pacientes_id_paciente: string;
+    atendimentos_id_atendimento: string;
     data: string;
     status: boolean;
     cancelado: boolean;
