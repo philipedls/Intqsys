@@ -14,7 +14,6 @@ async function bootstrap() {
     "allowedHeaders": "Content-Type, Accept, Authorization",
 
   }
-
   app.enableCors(options);
 
   const config = new DocumentBuilder()
@@ -23,7 +22,6 @@ async function bootstrap() {
     .setVersion('2.0')
     .addTag('gofila')
     .build();
-    
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('doc', app, document);
   await app.listen(3333);
