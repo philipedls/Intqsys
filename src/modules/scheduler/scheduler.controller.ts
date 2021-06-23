@@ -205,21 +205,4 @@ export class SchedulerController {
     storeQueue(@Param() param, @Body() body) {
         return this.schedulerService.cancelScheduler(param.code, body.data);
     }
-
-    @UseGuards(JwtAuthGuard)
-    @Get('attendance/:uid') // Service UID to fetch
-    async indexAttendanceByService(@Param() param) {
-        const attendances = new Array<Atttendances>();
-        const schedulers = await this.schedulerService.findOneByServiceUUID(param.uid);
-
-        console.log(schedulers);
-        for (const scheduler of schedulers) {
-            const attendance = await this.attendanceService.indexByUID(scheduler.atendimentos_id_atendimento);
-            if (attendance) {
-                attendances.push(attendance);
-            }
-        }
-
-        return attendances;
-    }
 }

@@ -58,6 +58,9 @@ export class Queues {
     @Column('uuid')
     pacientes_id_paciente: string
 
+    @Column('uuid')
+    atendimentos_id_atendimento: string;
+
     @Column()
     situation: string
 }

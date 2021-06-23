@@ -27,13 +27,6 @@ export class RelationCompaniesSchedules1623629338691 implements MigrationInterfa
                         referencedColumnNames: ['id_paciente']
                     }
                 ),
-                new TableForeignKey(
-                    {
-                        columnNames: ['atendimentos_id_atendimento'],
-                        referencedTableName: 'atendimentos',
-                        referencedColumnNames: ['id_atendimento']
-                    }
-                ),
             ]
         );
     }

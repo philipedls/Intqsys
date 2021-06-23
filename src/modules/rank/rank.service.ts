@@ -97,4 +97,7 @@ Quando a sua vez chegar, você verá o seu número no monitor, além de receber 
         return this.queuesRepository.save(queue);
 
     }
+    async findOneByServiceUUID(uid: string): Promise<Queues[] | undefined> {
+        return this.queuesRepository.find({ servicos_id_servico: uid });
+    }
 }

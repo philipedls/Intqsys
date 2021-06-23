@@ -1,4 +1,6 @@
 import { Body, Controller, Get, Param, Post, Put, UseGuards } from '@nestjs/common';
+import { Atttendances } from 'src/models/ attendances.models';
+import { AttendanceService } from '../attendance/attendance.service';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { CraftService } from '../craft/craft.service';
 import { HourlyService } from '../hourly/hourly.service';
@@ -17,7 +19,8 @@ export class RankController {
         private patientService: PatientService,
         private craftServive: CraftService,
         private hourlyService: HourlyService,
-        private reportService: ReportsService
+        private reportService: ReportsService,
+        private attendanceService: AttendanceService
     ) { }
 
     @UseGuards(JwtAuthGuard)
@@ -92,5 +95,22 @@ export class RankController {
         const notifyResponse = await this.rankService.notifyQueue(queueElement.codigo, patient.paciente_email, patient.paciente_nome);
 
         return { result: queueElement, notify: notifyResponse }
+    }
+
+    @UseGuards(JwtAuthGuard)
+    @Get('attendance/:uid') // Service UID to fetch
+    async indexAttendanceByService(@Param() param) {
+        const attendances = new Array<Atttendances>();
+        const schedulers = await this.rankService.findOneByServiceUUID(param.uid);
+
+        console.log(schedulers);
+        for (const scheduler of schedulers) {
+            const attendance = await this.attendanceService.indexByUID(scheduler.atendimentos_id_atendimento);
+            if (attendance) {
+                attendances.push(attendance);
+            }
+        }
+
+        return attendances;
     }
 }
