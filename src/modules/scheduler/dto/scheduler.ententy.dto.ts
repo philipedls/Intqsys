@@ -11,6 +11,5 @@ export class SchedulerEntentyDto {
     servicos_id_servico: string;
     pacientes_id_paciente: string;
     empresas_id_empresa: string;
-    atendimentos_id_atendimento: string;
     situation: string;
 }

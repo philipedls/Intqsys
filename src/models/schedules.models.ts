@@ -44,9 +44,6 @@ export class Schedules {
     @Column('uuid')
     pacientes_id_paciente: string
 
-    @Column('uuid')
-    atendimentos_id_atendimento: string;
-
     @OneToOne(() => SchedulesTimes, scheduleTime => scheduleTime.id_horario_marcado)
     horario_marcado: SchedulesTimes;
 
