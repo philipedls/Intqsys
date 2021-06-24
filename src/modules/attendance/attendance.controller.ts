@@ -11,8 +11,8 @@ export class AttendanceController {
 
     @Get(':uid')
     indexByService(@Param() param) {
-        // return this.attendanceService.indexByServiceUID(param.uid);
-        return this.attendanceService.index();
+        return this.attendanceService.indexByServiceUID(param.uid);
+        // return this.attendanceService.index();
     }
 
     @Get('completed/:uid')
