@@ -1,4 +1,5 @@
-import { Column, CreateDateColumn, Entity, Generated, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
+import { Column, CreateDateColumn, Entity, Generated, OneToOne, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
+import { Atttendances } from "./ attendances.models";
 
 @Entity({ name: 'filas' })
 export class Queues {
@@ -63,4 +64,7 @@ export class Queues {
 
     @Column()
     situation: string
+
+    @OneToOne(() => Atttendances, attendance => attendance.id_atendimento)
+    atendimento: Atttendances
 }

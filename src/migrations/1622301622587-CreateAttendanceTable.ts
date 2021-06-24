@@ -55,6 +55,11 @@ export class CreateAttendanceTable1622301622587 implements MigrationInterface {
                         name: 'servicos_id_servico',
                         type: 'uuid',
                         isNullable: true
+                    },
+                    {
+                        name: 'filas_id_fila',
+                        type: 'uuid',
+                        isNullable: true
                     }
                 ]
             }));

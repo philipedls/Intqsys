@@ -1,4 +1,5 @@
 import { Column, CreateDateColumn, Entity, Generated, OneToOne, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
+import { Queues } from "./queue.models";
 import { Services } from "./services.models";
 
 @Entity({ name: 'atendimentos' })
@@ -34,4 +35,7 @@ export class Atttendances {
 
     @OneToOne(() => Services, service => service.id_servico)
     servico: Services
+
+    @OneToOne(() => Queues, queue => queue.id_fila)
+    fila: Queues
 }
