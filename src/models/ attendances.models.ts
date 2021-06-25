@@ -33,6 +33,12 @@ export class Atttendances {
     @Column('uuid')
     servicos_id_servico: string
 
+    @Column('uuid')
+    atendimentos_id_atendimento: string
+
+    @Column('uuid')
+    pacientes_id_paciente
+
     @OneToOne(() => Services, service => service.id_servico)
     servico: Services
 
