@@ -11,8 +11,13 @@ export class HourlyController {
         private readonly hourlyService: HourlyService
     ) { }
 
+    @Get('fetch/:uid')
+    index(@Param() param) {
+        return this.hourlyService.findByUUID(param.uid);
+    }
+
     @Get(':uid')
-    async indexByCompany(@Param() param, @Body() body): Promise<Hourlies[]> {
+    async indexByService(@Param() param, @Body() body): Promise<Hourlies[]> {
         const list = new Array<Hourlies>();
         const hourlies = await this.hourlyService.findByServiceUUID(param.uid);
 
