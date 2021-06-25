@@ -54,7 +54,7 @@ export class Schedules {
     // @ManyToOne(type => Services, servico => servico.agendamentos)
     // servico: Services
 
-    @ManyToOne(type => Patients, paciente => paciente.agendamentos)
-    paciente: Patients
+    // @ManyToOne(type => Patients, paciente => paciente.agendamentos)
+    // paciente: Patients
 
 }

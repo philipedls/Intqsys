@@ -15,10 +15,8 @@ export class PatientController {
 
     // @UseGuards(JwtAuthGuard)
     @Get(':uid')
-    async index(@Param() param) {
-        const patient = await this.patientService.index(param.uid)
-
-        return patient.agendamentos;
+    index(@Param() param) {
+        return this.patientService.index(param.uid)
     }
 
     // @UseGuards(JwtAuthGuard)

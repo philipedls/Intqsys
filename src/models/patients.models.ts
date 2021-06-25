@@ -41,6 +41,6 @@ export class Patients {
     @Column()
     token: number
 
-    @OneToMany(() => Schedules, agendamento => agendamento.paciente)
-    agendamentos: Schedules[]
+    // @OneToMany(() => Schedules, agendamento => agendamento.paciente)
+    // agendamentos: Schedules[]
 }
