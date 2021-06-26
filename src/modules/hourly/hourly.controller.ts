@@ -3,6 +3,7 @@ import * as moment from 'moment';
 import { Hourlies } from 'src/models/hourly.models';
 import { HourlyAttendanceDto } from './Dto/hourly.attendance.dto';
 import { HourlyCompanyDto } from './Dto/hourly.company.dto';
+import { HourlyFetchDto } from './Dto/hourly.fetch.dt';
 import { HourlyService } from './hourly.service';
 
 @Controller('hourly')
@@ -16,22 +17,26 @@ export class HourlyController {
         return this.hourlyService.findByUUID(param.uid);
     }
 
-    @Get(':uid')
-    async indexByService(@Param() param, @Body() body): Promise<Hourlies[]> {
+    @Post(':uid')
+    async indexByService(@Param() param, @Body() body: HourlyFetchDto): Promise<any> {
         const list = new Array<Hourlies>();
-        const hourlies = await this.hourlyService.findByServiceUUID(param.uid);
+        const date = new Date(body.date);
+        const hourlies =
+            body.hora != null ? await
+                this.hourlyService.findByServiceWithRangeUUID(
+                    param.uid,
+                    Number(body.hora.split(':')[0]),
+                    Number(body.hora.split(':')[1])
+                ) : await this.hourlyService.findByServiceUUID(param.uid);
 
         for (const hourly of hourlies) {
             const schedulesTime = await this.hourlyService.findSchedulesTimesByeHourly(hourly.id_horario);
 
             for (const time of schedulesTime) {
-                const day = time.data_atendimento.getDate().toFixed();
-                const month = time.data_atendimento.getDate().toFixed();
-                const year = time.data_atendimento.getFullYear().toFixed();
-
-                const date = day + '/' + month + '/' + year
-
-                if (hourly.id_horario != time.horarios_id_horario && date == body.date) {
+                if (
+                    hourly.id_horario != time.horarios_id_horario
+                    && time.data_atendimento.toLocaleDateString('pt-BR') == date.toLocaleDateString('pt-BR')
+                ) {
                     list.push(hourly);
                 }
             }
@@ -40,19 +45,22 @@ export class HourlyController {
                 list.push(hourly);
             }
         }
+
         return list;
     }
 
     // @UseGuards(JwtAuthGuard)
     @Post('add/:uid')
     storeCompanyHour(@Param() param, @Body() body: HourlyAttendanceDto) {
-        const amountMinutes = (parseInt(body.horario_atendimento_manha.split('-')[1]) - parseInt(body.horario_atendimento_manha.split('-')[0])) * 60;
+        const amountMinutes =
+            (parseInt(body.horario_atendimento.split('-')[1]) - parseInt(body.horario_atendimento.split('-')[0])) * 60;
+
         const attendances = amountMinutes / parseInt(body.tempo_atendimento);
         const hourlies = Array<HourlyCompanyDto>();
 
         for (let index = 0; index < attendances; index++) {
             if (index == 0) {
-                const hour = moment(body.horario_atendimento_manha.split('-')[0], 'hh:mm').add(0, 'minutes').format('hh:mm');
+                const hour = moment(body.horario_atendimento.split('-')[0], 'HH:mm').add(0, 'minutes').format('HH:mm');
                 hourlies.push({
                     hora: hour,
                     servicos_id_servico: param.uid,
@@ -60,7 +68,7 @@ export class HourlyController {
                     token: null
                 });
             } else {
-                const hour = moment(`${hourlies[index - 1].hora}`, 'hh:mm').add(parseInt(body.tempo_atendimento), 'minutes').format('hh:mm');
+                const hour = moment(`${hourlies[index - 1].hora}`, 'HH:mm').add(parseInt(body.tempo_atendimento), 'minutes').format('HH:mm');
                 hourlies.push({
                     hora: hour,
                     servicos_id_servico: param.uid,

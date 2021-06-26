@@ -26,8 +26,25 @@ export class HourlyService {
         return this.hourlyRepository.findOne({ id_horario: id_horario });
     }
 
-    findByServiceUUID(idCompany: string): Promise<Hourlies[]> {
+    async findByServiceWithRangeUUID(idCompany: string, hour: number, minute: number): Promise<Hourlies[]> {
+        const hourlies = new Array<Hourlies>();
+        const responseHourlies = await this.hourlyRepository.find({ servicos_id_servico: idCompany });
+        responseHourlies.map(hourly => {
+            let hourElement = Number(hourly.hora.split(':')[0]);
+            let minuteElement = Number(hourly.hora.split(':')[1]);
+
+            if (hourElement >= hour && minuteElement >= minute) {
+                // console.log(hourly);
+                hourlies.push(hourly);
+            }
+        });
+
+        return hourlies;
+    }
+
+    async findByServiceUUID(idCompany: string): Promise<Hourlies[]> {
         return this.hourlyRepository.find({ servicos_id_servico: idCompany });
+
     }
 
     findByHours(hora: string): Promise<Hourlies> {
