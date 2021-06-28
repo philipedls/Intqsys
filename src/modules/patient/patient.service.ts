@@ -24,6 +24,10 @@ export class PatientService {
         return this.patientRepository.findOne({ id_paciente: uid });
     }
 
+    indexAllPatients() {
+        return this.patientRepository.find();
+    }
+
     async indexByUUIDList(data: PatientFetchListDto): Promise<Patients[]> {
         // return this.patientRepository.findOne({ id_paciente: data.id_paciente });
         const patients = Array<Patients>();

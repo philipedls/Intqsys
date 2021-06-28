@@ -14,9 +14,14 @@ export class PatientController {
     ) { }
 
     // @UseGuards(JwtAuthGuard)
-    @Get(':uid')
+    @Get('fetch:uid')
     index(@Param() param) {
         return this.patientService.index(param.uid)
+    }
+
+    @Get()
+    indexAll() {
+        return this.patientService.indexAllPatients();
     }
 
     // @UseGuards(JwtAuthGuard)
