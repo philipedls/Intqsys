@@ -116,7 +116,13 @@ export class SchedulerController {
             }
 
             const scheduleResulto = await this.schedulerService.storeDefault(schedulerData, schedulerDate);
-            const nofifyResponse = await this.schedulerService.notifyScheduler(scheduleResulto.codigo, patient.paciente_email, patient.paciente_nome);
+            const nofifyResponse = await this.schedulerService.notifyScheduler(
+                scheduleResulto.codigo,
+                patient.paciente_email,
+                patient.paciente_nome,
+                schedulerDate.toLocaleDateString('pt-BR'),
+                hourly.hora
+            );
 
             const queueElement: RankRegisterDto = {
                 codigo: body.codigo,

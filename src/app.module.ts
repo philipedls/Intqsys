@@ -7,7 +7,7 @@ import { Atttendances } from './models/ attendances.models';
 import { Avaliations } from './models/avaliations.models';
 import { Charges } from './models/charges.models';
 import { Companies } from './models/companies.models';
-import { SchedulesTimes } from './models/schedules.times';
+import { Desk } from './models/desk.models';
 import { Hourlies } from './models/hourly.models';
 import { Licences } from './models/licences.models';
 import { Paineis } from './models/panels.models';
@@ -16,6 +16,7 @@ import { Payments } from './models/payments.models';
 import { Queues } from './models/queue.models';
 import { Reports } from './models/reports.models';
 import { Schedules } from './models/schedules.models';
+import { SchedulesTimes } from './models/schedules.times';
 import { Services } from './models/services.models';
 import { Totems } from './models/totems.models';
 import { Users } from './models/users.models';
@@ -26,6 +27,8 @@ import { CompanyController } from './modules/company/company.controller';
 import { CompanyService } from './modules/company/company.service';
 import { CraftController } from './modules/craft/craft.controller';
 import { CraftService } from './modules/craft/craft.service';
+import { DeskController } from './modules/desk/desk.controller';
+import { DeskService } from './modules/desk/desk.service';
 import { HourlyController } from './modules/hourly/hourly.controller';
 import { HourlyService } from './modules/hourly/hourly.service';
 import { PanelController } from './modules/panel/panel.controller';
@@ -74,11 +77,32 @@ import { UsersService } from './modules/users/users.service';
           Queues,
           Reports,
           Atttendances,
+          Desk
         ]
     }),
-    TypeOrmModule.forFeature([Avaliations, Charges, Companies, Hourlies, SchedulesTimes, Licences, Paineis, Patients, Payments, Schedules, Services, Totems, Users, Queues, Reports, Atttendances]),
+    TypeOrmModule.forFeature(
+      [
+        Avaliations,
+        Charges,
+        Companies,
+        Hourlies,
+        SchedulesTimes,
+        Licences,
+        Paineis,
+        Patients,
+        Payments,
+        Schedules,
+        Services,
+        Totems,
+        Users,
+        Queues,
+        Reports,
+        Atttendances,
+        Desk
+      ]
+    ),
   ],
-  controllers: [AppController, UserController, CompanyController, PanelController, TotemController, SchedulerController, CraftController, PatientController, HourlyController, RankController, ReportsController, AttendanceController],
-  providers: [AppService, UsersService, CompanyService, PanelService, TotemService, SchedulerService, CraftService, PatientService, HourlyService, RankService, ReportsService, AttendanceService],
+  controllers: [AppController, UserController, CompanyController, PanelController, TotemController, SchedulerController, CraftController, PatientController, HourlyController, RankController, ReportsController, AttendanceController, DeskController],
+  providers: [AppService, UsersService, CompanyService, PanelService, TotemService, SchedulerService, CraftService, PatientService, HourlyService, RankService, ReportsService, AttendanceService, DeskService],
 })
 export class AppModule { }

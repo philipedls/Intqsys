@@ -254,7 +254,7 @@ export class SchedulerService {
         return randomNum
     }
 
-    async notifyScheduler(code: string, email: string, name: string): Promise<any> {
+    async notifyScheduler(code: string, email: string, name: string, date: string, hour: string): Promise<any> {
 
         const transporter = nodemailer.createTransport({
             host: process.env.MAILER_SMTP_HOST,
@@ -273,6 +273,8 @@ export class SchedulerService {
             text: `${name},
     
 Código de confirmação: ${code}
+Data do atendimento: ${date}
+Horário do atendimento: ${hour}
 
 Dados necessários:
 *

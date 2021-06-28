@@ -43,7 +43,7 @@ export class RankService {
         return randomNum
     }
 
-    async notifyQueue(code: string, email: string, name: string): Promise<any> {
+    async notifyQueue(code: string, email: string, name: string, date: string, hour: string): Promise<any> {
 
         const transporter = nodemailer.createTransport({
             host: process.env.MAILER_SMTP_HOST,
@@ -62,6 +62,8 @@ export class RankService {
             text: `${name},
     
 Código de confirmação: ${code}
+Data do atendimento: ${date}
+Horário do atendimento: ${hour}
 
 Dados necessários:
 *
