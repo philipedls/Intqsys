@@ -80,6 +80,7 @@ export class RankController {
         body.cancelado = false;
         body.atendimentos_id_atendimento = attendance.id_atendimento
 
+
         const report: ReportsDto = {
             autor_usuario: null,
             autor_cliente: patient.id_paciente,
