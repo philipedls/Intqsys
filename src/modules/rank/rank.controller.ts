@@ -1,5 +1,6 @@
-import { Body, Controller, Get, Param, Post, Put, UseGuards } from '@nestjs/common';
+import { Body, Controller, Get, HttpException, HttpStatus, Param, Post, Put, UseGuards } from '@nestjs/common';
 import { Atttendances } from 'src/models/ attendances.models';
+import { Hourlies } from 'src/models/hourly.models';
 import { AttendanceService } from '../attendance/attendance.service';
 import { AttendanceDto } from '../attendance/Dto/attendance.dto';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
@@ -51,66 +52,73 @@ export class RankController {
 
         const schedulerDate = new Date(year, month, day);
 
-        const patienteData: PatientsDto = {
-            paciente_nome: body.paciente,
-            paciente_cpf: body.paciente_cpf,
-            paciente_telefone: body.paciente_telefone,
-            paciente_email: body.paciente_email,
-            cancelado: false
+        let hourly: Hourlies;
+        const hourlies = await this.hourlyService.findByServiceUUID(body.id_servico);
+        hourlies.map(hour => hour.id_horario == body.horarios_id_horario ? hourly = hour : null);
+
+        if (hourly) {
+            const patienteData: PatientsDto = {
+                paciente_nome: body.paciente,
+                paciente_cpf: body.paciente_cpf,
+                paciente_telefone: body.paciente_telefone,
+                paciente_email: body.paciente_email,
+                cancelado: false
+            }
+
+            const patient = await this.patientService.store(patienteData);
+            const service = await this.craftServive.findByUUID(body.id_servico);
+
+            const attendanceData: AttendanceDto = {
+                hora_inicio: null,
+                hora_final: null,
+                status: true
+            };
+
+            const attendance = await this.attendanceService.store(attendanceData);
+
+            body.servicos_id_servico = service.id_servico;
+            body.servico = service.titulo;
+            body.tipo = 'Fila';
+            body.paciente = patient.paciente_nome;
+            body.pacientes_id_paciente = patient.id_paciente;
+            body.data_atendimento = schedulerDate;
+            body.status = true;
+            body.cancelado = false;
+            body.atendimentos_id_atendimento = attendance.id_atendimento
+
+            const report: ReportsDto = {
+                autor_usuario: null,
+                autor_cliente: patient.id_paciente,
+                id_cliente: service.empresas_id_empresa,
+                codigo_acao: null,
+                categoria: 'SERVIÇO',
+                operador: null,
+                cancelar: false,
+                cadastrar: false,
+                editar: false,
+                login: false,
+                logout: false,
+                agendamento: false,
+                fila: true,
+                walkin: false,
+                atendimento: false,
+                observacao: null,
+            };
+
+            this.reportService.store(report);
+            const queueElement = await this.rankService.store(body, schedulerDate);
+
+            const notifyResponse = await this.rankService.notifyQueue(
+                queueElement.codigo,
+                patient.paciente_email,
+                patient.paciente_nome,
+                schedulerDate.toLocaleDateString('pt-BR'),
+                body.horario
+            );
+
+            return { result: queueElement, notify: notifyResponse }
         }
-
-        const patient = await this.patientService.store(patienteData);
-        const service = await this.craftServive.findByUUID(body.id_servico);
-
-        const attendanceData: AttendanceDto = {
-            hora_inicio: null,
-            hora_final: null,
-            status: true
-        };
-
-        const attendance = await this.attendanceService.store(attendanceData);
-
-        body.servicos_id_servico = service.id_servico;
-        body.servico = service.titulo;
-        body.tipo = 'Fila';
-        body.paciente = patient.paciente_nome;
-        body.pacientes_id_paciente = patient.id_paciente;
-        body.data_atendimento = schedulerDate;
-        body.status = true;
-        body.cancelado = false;
-        body.atendimentos_id_atendimento = attendance.id_atendimento
-
-
-        const report: ReportsDto = {
-            autor_usuario: null,
-            autor_cliente: patient.id_paciente,
-            id_cliente: service.empresas_id_empresa,
-            codigo_acao: null,
-            categoria: 'SERVIÇO',
-            operador: null,
-            cancelar: false,
-            cadastrar: false,
-            editar: false,
-            login: false,
-            logout: false,
-            agendamento: false,
-            fila: true,
-            walkin: false,
-            atendimento: false,
-            observacao: null,
-        };
-
-        this.reportService.store(report);
-        const queueElement = await this.rankService.store(body, schedulerDate);
-        const notifyResponse = await this.rankService.notifyQueue(
-            queueElement.codigo,
-            patient.paciente_email,
-            patient.paciente_nome,
-            schedulerDate.toLocaleDateString('pt-BR'),
-            ''
-        );
-
-        return { result: queueElement, notify: notifyResponse }
+        throw new HttpException('hourly undefined', HttpStatus.NO_CONTENT);
     }
 
     @UseGuards(JwtAuthGuard)

@@ -273,7 +273,7 @@ export class SchedulerService {
             text: `${name},
     
 Código de confirmação: ${code}
-Data do atendimento: ${date}
+Data do atendimento: ${date.split('/')[1]}/${date.split('/')[0]}/${date.split('/')[2]}
 Horário do atendimento: ${hour}
 
 Dados necessários:
