@@ -269,7 +269,7 @@ export class SchedulerService {
         return await transporter.sendMail({
             from: process.env.SCHEDULER_EMAIL_ADDRES, // sender address
             to: email, // list of receivers
-            subject: "GoFila - Agendamento", // Subject line
+            subject: "Intqsys - Agendamento", // Subject line
             text: `${name},
     
 Código de confirmação: ${code}

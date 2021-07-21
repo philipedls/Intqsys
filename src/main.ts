@@ -17,10 +17,10 @@ async function bootstrap() {
   app.enableCors(options);
 
   const config = new DocumentBuilder()
-    .setTitle('GoFila API - Documentation')
-    .setDescription('The Gofila API description <Interim>')
-    .setVersion('2.0')
-    .addTag('gofila')
+    .setTitle('Intqsys API - Documentation')
+    // .setDescription('The Intqsys API description <Interim>')
+    .setVersion('1.0.0')
+    .addTag('intqsys')
     .build();
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('doc', app, document);

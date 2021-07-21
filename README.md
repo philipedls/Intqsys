@@ -24,7 +24,7 @@
 
 ## Description
 
-GoFila API
+Intqsys API
 
 ## Installation
 
@@ -72,7 +72,7 @@ Nest is an MIT-licensed open source project. It can grow thanks to the sponsors 
 
 ## Stay in touch
 
-- Author - [Philipe Soares](https://sparkmobile.com.br)
+- Author - [Philipe Soares](https://www.linkedin.com/in/philipe-soares)
 <!-- - Website - [https://nestjs.com](https://nestjs.com/)
 - Twitter - [@nestframework](https://twitter.com/nestframework) -->
 

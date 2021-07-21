@@ -102,7 +102,7 @@ export class AuthService {
         return await transporter.sendMail({
             from: process.env.CONTACT_EMAIL_ADDRES, // sender address
             to: body.email, // list of receivers
-            subject: "GoFila - Redefinição de senha", // Subject line
+            subject: "Intqsys - Redefinição de senha", // Subject line
             text: `Oi ${user.nome}, tudo bem?`, // plain text body
             html: `<html>
             <body>
@@ -110,7 +110,7 @@ export class AuthService {
                 <div style="background-color: #d3d3d3; max-width: 840px; margin: 0; padding: 30px;">
                   <h2 style="color: #292536; text-align: center">Solicitação de alteração de senha</h2>
                   <p>Olá, ${user.nome}</p>
-                  <p>Você solicitou para redefinir sua senha de acesso ao GoFila. Para isso basta clicar no link abaixo para que você efetue essa alteração.</p>
+                  <p>Você solicitou para redefinir sua senha de acesso ao Intqsys. Para isso basta clicar no link abaixo para que você efetue essa alteração.</p>
                   <div style="margin: 20px auto; width: 120px; padding: 10px 20px; background-color: #442d52; border-radius: 5px">
                     <a href="http://localhost:3000/resetpassword/?token=${tokenRecoverPassword}" target="_blank" rel="noopener noreferrer" style="text-decoration: none; color: #fcfcfc; font-size: 18px; margin: 0 auto;">Alterar Senha</a>
                   </div>

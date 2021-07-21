@@ -58,7 +58,7 @@ export class RankService {
         return await transporter.sendMail({
             from: process.env.SCHEDULER_EMAIL_ADDRES, // sender address
             to: email, // list of receivers
-            subject: "GoFila - Fila", // Subject line
+            subject: "Intqsys - Fila", // Subject line
             text: `${name},
     
 Código de confirmação: ${code}
